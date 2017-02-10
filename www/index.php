@@ -24,10 +24,7 @@ $app->get("/", function () use ($app)
 
 $app->get("/stickerbooks/", function () use ($app)
 {
-	$dados = array(
-		"navItem" => "stickerbooks"
-	);
-	$app->render("header.php", $dados);
+	$app->render("header.php", array("navItem" => "stickerbooks"));
 	$app->render("stickerbooks.php");
 	$app->render("footer.php");
 });
@@ -47,12 +44,39 @@ $app->get("/user-account/", function () use ($app)
 
 $app->get("/create-user-account/", function () use ($app)
 {
-	$dados = array(
-		"navItem" => "create-user-account"
-	);	
-	$app->render("header.php", $dados);
+	$app->render("header.php", array("navItem" => "create-user-account"));
 	$app->render("create-user-account.php");
 	$app->render("footer.php");
+});
+
+$app->post("/create-user-account/", function () use ($app)
+{
+	$errors = array();
+	$email = $app->request->post("email");
+	if ($email == null)
+	{
+		$errors["email"] = "Seu endereço de e-mail deve ser informado.";
+	}
+	$password = $app->request->post("password");	
+	if ($password == null)
+	{
+		$errors["password"] = "Sua senha deve ser informada.";
+	}
+	if (count($errors) == 0)
+	{
+		$_SESSION["user"] = array(
+			"email" => $email
+		);		
+		$app->redirect("/stickerbooks");
+	} else {
+		$app->render("header.php", array("navItem" => "login"));
+		$data = array(
+			"email"   => $email,
+			"errors"  => $errors
+		);
+		$app->render("create-user-account.php", $data);
+		$app->render("footer.php");
+	}
 });
 
 
@@ -60,27 +84,50 @@ $app->get("/create-user-account/", function () use ($app)
 
 $app->get("/login/", function () use ($app)
 {
-	$dados = array(
-		"navItem" => "login"
-	);	
-	$app->render("header.php", $dados);
-	$app->render("login.php");
+ 	$uri = $app->request->post("uri");
+	if ($uri == null)
+	{
+		$uri = "/stickerbooks";
+	}
+	$app->render("header.php", array("navItem" => "login"));
+	$app->render("login.php", array("uri" => $uri));
 	$app->render("footer.php");
 });
 
 $app->post("/login/", function () use ($app)
 {
-	$uri      = $app->request->post("uri");
-	$email    = $app->request->post("email");
-	$password = $app->request->post("password");
-	
-	// TODO
-
-	$_SESSION["user"] = array(
-		"email" => $email
-	);
-	
-	$app->redirect($uri);
+	$uri = $app->request->post("uri");
+	if ($uri == null)
+	{
+		$uri = "/stickerbooks";
+	}
+	$errors = array();
+	$email = $app->request->post("email");
+	if ($email == null)
+	{
+		$errors["email"] = "Seu endereço de e-mail deve ser informado.";
+	}
+	$password = $app->request->post("password");	
+	if ($password == null)
+	{
+		$errors["password"] = "Sua senha deve ser informada.";
+	}
+	if (count($errors) == 0)
+	{
+		$_SESSION["user"] = array(
+			"email" => $email
+		);		
+		$app->redirect($uri);
+	} else {
+		$app->render("header.php", array("navItem" => "login"));
+		$data = array(
+			"uri"     => $uri,
+			"email"   => $email,
+			"errors"  => $errors
+		);
+		$app->render("login.php", $data);
+		$app->render("footer.php");
+	}
 });
 
 
@@ -107,7 +154,23 @@ $app->get("/reset-password/", function () use ($app)
 
 $app->post("/reset-password/", function () use ($app)
 {
-	echo "TODO POST /reset-password\n";
+	$errors = array();
+	$email = $app->request->post("email");
+	if ($email == null)
+	{
+		$errors["email"] = "Seu endereço de e-mail deve ser informado.";
+	}
+	if (count($errors) == 0)
+	{
+		$app->flashNow("info", "Enviamos um e-mail para você com um link de autorização.");
+	}
+	$app->render("header.php");
+	$data = array(
+		"email"   => $email,
+		"errors"  => $errors
+	);
+	$app->render("reset-password.php", $data);
+	$app->render("footer.php");
 });
 
 

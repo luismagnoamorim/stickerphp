@@ -1,3 +1,8 @@
+<?php
+
+    $email = isset($email)? $email: "";
+
+?>
 
 <div class="container">
     
@@ -9,19 +14,27 @@
                 <h6 class="card-subtitle text-muted text-center">Digite seu endereço de e-mail e crie uma senha.</h6>
             </div>
             <div class="card-block">
-                <form id="from-create-user-account" method="post" action="">
-                    <fieldset class="form-group">
-                        <input id="input-email" class="form-control form-control-lg" name="email" type="email" placeholder="usuario@dominio.com">
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <input class="form-control form-control-lg" name="password" type="password" placeholder="Senha">
-                    </fieldset>
-                    <fieldset class="form-group">
+                <form method="post" action="">
+                    <div class="form-group <?=isset($errors["email"])? "has-danger": "" ?>">
+                        <input id="input-email" class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>"
+                            name="email" type="text" placeholder="usuario@dominio.com" value="<?=$email ?>">
+                        <?php if (isset($errors["email"])) { ?>
+                            <div class="form-control-feedback"><?=$errors["email"] ?></div>
+                        <?php } ?>
+                    </div>
+                    <div class="form-group <?=isset($errors["password"])? "has-danger": "" ?>">
+                        <input class="form-control form-control-lg <?=isset($errors["password"])? "form-control-danger": "" ?>" 
+                            name="password" type="password" placeholder="Senha">
+                        <?php if (isset($errors["password"])) { ?>
+                            <div class="form-control-feedback"><?=$errors["password"] ?></div>
+                        <?php } ?>
+                    </div>
+                    <div class="form-group">
                         <input class="form-control form-control-lg" type="password" placeholder="Confirme sua senha">
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <a id="link-create-user-account" href="#" role="button" class="btn btn-primary btn-lg btn-block">Criar conta</a>
-                    </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Criar conta</button>
+                    </div>
                 </form>     
             </div>
         </div> 
@@ -36,17 +49,3 @@
     }
 
 </style>
-
-<script type="text/javascript">
-
-    $(document).ready(function()
-    {
-        
-        $("#link-create-user-account").click(function()
-        {
-            $("#from-create-user-account").submit();
-        });
-
-    });
-
-</script>

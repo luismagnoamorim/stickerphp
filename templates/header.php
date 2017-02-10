@@ -24,7 +24,7 @@
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="/">
             <img src="/img/stickertrade-logo.png" width="200" height="30" alt="StickerTrade">
         </a>
         <div class="collapse navbar-collapse" id="navbar-content">
@@ -62,3 +62,14 @@
             </ul>
         </div>
     </nav>
+    <div class="container">
+        <?php if (isset($flash["info"])) { ?>
+            <br>
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <?=$flash["info"] ?>
+            </div>
+        <?php } ?>
+    </div>

@@ -1,9 +1,11 @@
 <?php
 
-    $uri = isset($_GET["uri"])? $_GET["uri"]: "/stickerbooks";
+    $email = isset($email)? $email: "";
 
 ?>
+
 <div class="container">
+
     <div class="row">
         <div id="card-login" class="card col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
             <div class="card-block">
@@ -12,24 +14,33 @@
                 <h6 class="card-subtitle text-muted text-center">Digite seu endereço de e-mail e sua senha.</h6>
             </div>
             <div class="card-block">
-                <form id="form-login" method="post" action="">
+                <form method="post" action="">
                     <input type="hidden" name="uri" value="<?=$uri ?>">
-                    <fieldset class="form-group">
-                        <input class="form-control form-control-lg" name="email" type="email" placeholder="usuario@dominio.com">
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <input class="form-control form-control-lg" name="password" type="password" placeholder="Senha">
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <a id="link-login" href="#" role="button" class="btn btn-primary btn-lg btn-block">Efetuar login</a>
-                    </fieldset>
-                    <fieldset class="form-group text-center">
+                    <div class="form-group <?=isset($errors["email"])? "has-danger": "" ?>">
+                        <input class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>" 
+                            name="email" type="text" placeholder="usuario@dominio.com" value="<?=$email ?>">
+                        <?php if (isset($errors["email"])) { ?>
+                            <div class="form-control-feedback"><?=$errors["email"] ?></div>
+                        <?php } ?>
+                    </div>
+                    <div class="form-group <?=isset($errors["password"])? "has-danger": "" ?>">
+                        <input class="form-control form-control-lg <?=isset($errors["password"])? "form-control-danger": "" ?>" 
+                            name="password" type="password" placeholder="Senha">
+                        <?php if (isset($errors["password"])) { ?>
+                            <div class="form-control-feedback"><?=$errors["password"] ?></div>
+                        <?php } ?>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Efetuar login</button>
+                    </div>
+                    <div class="form-group text-center">
                         <a href="/reset-password">Esqueci minha senha</a>
-                    </fieldset>
+                    </div>
                 </form>     
             </div>
         </div> 
     </div>
+
 </div>
 
 <style>
@@ -39,18 +50,4 @@
     }
 
 </style>
-
-<script type="text/javascript">
-
-    $(document).ready(function()
-    {
-        
-        $("#link-login").click(function()
-        {
-            $("#form-login").submit();
-        });
-
-    });
-
-</script>
 
