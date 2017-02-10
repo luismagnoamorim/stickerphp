@@ -1,0 +1,38 @@
+{
+    "name": "stickertrade/app-stickertrade",
+    "description": "Web App StickerTrade",
+    "version": "1.0.0",
+    "repositories": [{
+        "type": "package",
+        "package": {
+            "name": "redbeanphp",
+            "version": "master",
+            "dist": {
+                "url": "http://www.redbeanphp.com/downloadredbean.php",
+                "type": "tar"
+            }
+        }
+    }],
+    "require": {
+        "slim/slim": "2.*",
+        "redbeanphp": "master@dev"
+    },
+    "license": "",
+    "authors": [
+        {
+            "name": "Fábio de S. V. Medeiros",
+            "email": "fabiosvm@outlook.com"
+        },
+        {
+            "name": "Luis Magno",
+            "email": "luismagno@hotmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-0": { "": "src/" },
+        "files": [
+            "vendor/redbeanphp/rb.php"
+        ]
+    }
+}

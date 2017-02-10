@@ -1,0 +1,22 @@
+{
+  "name": "stickertrade",
+  "version": "1.0.0",
+  "authors": [
+    "Fábio de S. V. Medeiros <fabiosvm@outlook.com>",
+    "Luis Magno <luismagno@hotmail.com>"
+  ],
+  "description": "stickertrade",
+  "keywords": [],
+  "homepage": "app-stickertrade.rhcloud.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~4.0",
+    "fontawesome": "~4.4.0"
+  }
+}
