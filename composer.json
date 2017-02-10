@@ -2,6 +2,9 @@
     "name": "stickertrade/app-stickertrade",
     "description": "Web App StickerTrade",
     "version": "1.0.0",
+    "config": {
+        "secure-http": false
+    }, 
     "repositories": [{
         "type": "package",
         "package": {
