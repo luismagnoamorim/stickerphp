@@ -17,7 +17,8 @@
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="/js/jquery.slim.min.js"></script>
     <script src="/js/tether.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>    
+    <script src="/js/bootstrap.min.js"></script>  
+    <script src="/js/custom.js"></script>
 </head>
 <body class="bg-faded">
     <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">

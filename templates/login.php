@@ -17,14 +17,14 @@
                 <form method="post" action="">
                     <input type="hidden" name="uri" value="<?=$uri ?>">
                     <div class="form-group <?=isset($errors["email"])? "has-danger": "" ?>">
-                        <input class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>" 
+                        <input id="input-email" class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>" 
                             name="email" type="text" placeholder="usuario@dominio.com" value="<?=$email ?>">
                         <?php if (isset($errors["email"])) { ?>
                             <div class="form-control-feedback"><?=$errors["email"] ?></div>
                         <?php } ?>
                     </div>
                     <div class="form-group <?=isset($errors["password"])? "has-danger": "" ?>">
-                        <input class="form-control form-control-lg <?=isset($errors["password"])? "form-control-danger": "" ?>" 
+                        <input id="input-password" class="form-control form-control-lg <?=isset($errors["password"])? "form-control-danger": "" ?>" 
                             name="password" type="password" placeholder="Senha">
                         <?php if (isset($errors["password"])) { ?>
                             <div class="form-control-feedback"><?=$errors["password"] ?></div>
@@ -51,3 +51,22 @@
 
 </style>
 
+<script type="text/javascript">
+
+    $(document).ready(function()
+    {
+
+        $("#input-email").enterKey(function(e)
+        {
+            $("#input-password").focus();
+            e.preventDefault();
+        });
+
+        $("#input-password").enterKey(function(e)
+        {
+            $("form").submit();
+        });
+        
+    });
+
+</script> 

@@ -5,7 +5,7 @@
 ?>
 
 <div class="container">
-    
+
     <div class="row">
         <div id="card-create-user-account" class="card col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
             <div class="card-block">
@@ -23,19 +23,20 @@
                         <?php } ?>
                     </div>
                     <div class="form-group <?=isset($errors["password"])? "has-danger": "" ?>">
-                        <input class="form-control form-control-lg <?=isset($errors["password"])? "form-control-danger": "" ?>" 
+                        <input id="input-password" class="form-control form-control-lg <?=isset($errors["password"])? "form-control-danger": "" ?>" 
                             name="password" type="password" placeholder="Senha">
                         <?php if (isset($errors["password"])) { ?>
                             <div class="form-control-feedback"><?=$errors["password"] ?></div>
                         <?php } ?>
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" type="password" placeholder="Confirme sua senha">
+                        <input id="input-confirm-password"  class="form-control form-control-lg" type="password"
+                            placeholder="Confirme sua senha">
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Criar conta</button>
                     </div>
-                </form>     
+                </form>
             </div>
         </div> 
     </div>
@@ -49,3 +50,29 @@
     }
 
 </style>
+
+<script type="text/javascript">
+
+    $(document).ready(function()
+    {
+
+        $("#input-email").enterKey(function(e)
+        {
+            $("#input-password").focus();
+            e.preventDefault();
+        });
+
+        $("#input-password").enterKey(function(e)
+        {
+            $("#input-confirm-password").focus();
+            e.preventDefault();
+        });
+
+        $("#input-confirm-password").enterKey(function(e)
+        {
+            $("form").submit();
+        });
+        
+    });
+
+</script> 
