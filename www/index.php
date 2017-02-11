@@ -19,7 +19,6 @@ $app->get("/", function () use ($app)
 	$app->render("footer.php");
 });
 
-
 // Meus álbuns
 
 $app->get("/stickerbooks/", function () use ($app)
@@ -28,6 +27,16 @@ $app->get("/stickerbooks/", function () use ($app)
 	$app->render("stickerbooks.php");
 	$app->render("footer.php");
 });
+
+// -- detalhar informacoes de um album
+$app->get("/detail-stickerbook/:albumId", function ($albumId) use ($app)
+{
+	$album = StickerBook::detailStickerBook($albumId);
+	$app->render("header.php");
+	$app->render("detail-stickerbook.php" , array('album' => $album));
+	$app->render("footer.php");
+});
+
 
 
 // Meus dados
@@ -40,7 +49,7 @@ $app->get("/user-account/", function () use ($app)
 });
 
 
-// Criar minh conta
+// Criar minha conta
 
 $app->get("/create-user-account/", function () use ($app)
 {
@@ -172,6 +181,62 @@ $app->post("/reset-password/", function () use ($app)
 	$app->render("reset-password.php", $data);
 	$app->render("footer.php");
 });
+
+// area admin
+// -- formulario para criacao de novo album
+$app->get("/admin/create-stickerbook/", function () use ($app)
+{
+	$app->render("header.php");
+	$app->render("/admin/create-stickerbook.php");
+	$app->render("footer.php");
+});
+// -- criar novo album - metodo post para submeter formulario
+$app->post("/admin/create-stickerbook/", function () use ($app)
+{
+	$errors = array();
+	$titulo				= $app->request->post("titulo");
+	$editora			= $app->request->post("editora");
+	$anoPublicacao		= $app->request->post("anoPublicacao");
+	$idioma				= $app->request->post("idioma");
+	$quantidadeCromo	= $app->request->post("quantidadeCromo");
+
+	if ($titulo == null)
+	{
+		$errors["titulo"] = "Título do álbum deve ser informado.";
+	}
+	if ($editora == null)
+	{
+		$errors["editora"] = "Nome da editora deve ser informado.";
+	}
+	if ($anoPublicacao == null)
+	{
+		$errors["anoPublicacao"] = "Ano de publicação deve ser informado.";
+	}
+	if ($idioma == null)
+	{
+		$errors["idioma"] = "Idioma deve ser informado.";
+	}
+	if ($quantidadeCromo == null)
+	{
+		$errors["quantidadeCromo"] = "Quantidade total de cromos deve ser informada.";
+	}
+	if (count($errors) == 0)
+	{
+		$param = StickerBook::createStickerBook($titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma);
+
+	    //$app->render('home.php', array('errMessage' => '', 'palavraChave' => '' , 'listaAlbuns' => $listaAlbuns));
+		$app->redirect("/admin/detail-stickerbook.php");
+	} else {
+		$app->render("header.php", array("navItem" => "login"));
+		$data = array(
+			"titulo"   => $titulo,
+			"errors"  => $errors
+		);
+		$app->render("/admin/create-stickerbook.php", $data);
+		$app->render("footer.php");
+	}
+});
+
 
 
 $app->run();
