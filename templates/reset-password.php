@@ -14,9 +14,9 @@
                 <h6 class="card-subtitle text-muted text-center">Digite seu endereço de e-mail para redefinir sua senha.</h6>
             </div>
             <div class="card-block">
-                <form id="form-reset-password" method="post" action="">
+                <form method="post" action="">
                     <div class="form-group <?=isset($errors["email"])? "has-danger": "" ?>">
-                        <input class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>" 
+                        <input id="input-email" class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>" 
                             name="email" type="text" placeholder="usuario@dominio.com" value="<?=$email ?>">
                         <?php if (isset($errors["email"])) { ?>
                             <div class="form-control-feedback"><?=$errors["email"] ?></div>
@@ -42,3 +42,17 @@
     }
 
 </style>
+
+<script type="text/javascript">
+
+    $(document).ready(function()
+    {
+
+        $("#input-email").enterKey(function(e)
+        {
+            $("form").submit();
+        });
+        
+    });
+
+</script> 

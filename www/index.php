@@ -55,12 +55,12 @@ $app->post("/create-user-account/", function () use ($app)
 	$email = $app->request->post("email");
 	if ($email == null)
 	{
-		$errors["email"] = "Seu endereço de e-mail deve ser informado.";
+		$errors["email"] = "Informe seu endereço de e-mail.";
 	}
 	$password = $app->request->post("password");	
 	if ($password == null)
 	{
-		$errors["password"] = "Sua senha deve ser informada.";
+		$errors["password"] = "Informe sua senha.";
 	}
 	if (count($errors) == 0)
 	{
@@ -105,12 +105,12 @@ $app->post("/login/", function () use ($app)
 	$email = $app->request->post("email");
 	if ($email == null)
 	{
-		$errors["email"] = "Seu endereço de e-mail deve ser informado.";
+		$errors["email"] = "Informe seu endereço de e-mail.";
 	}
 	$password = $app->request->post("password");	
 	if ($password == null)
 	{
-		$errors["password"] = "Sua senha deve ser informada.";
+		$errors["password"] = "Informe sua senha.";
 	}
 	if (count($errors) == 0)
 	{
@@ -158,11 +158,11 @@ $app->post("/reset-password/", function () use ($app)
 	$email = $app->request->post("email");
 	if ($email == null)
 	{
-		$errors["email"] = "Seu endereço de e-mail deve ser informado.";
+		$errors["email"] = "Informe seu endereço de e-mail.";
 	}
 	if (count($errors) == 0)
 	{
-		$app->flashNow("info", "Enviamos um e-mail para você com um link de autorização.");
+		$app->flashNow("info", "Enviamos link para esse e-mail que autoriza a redefinição de senha.");
 	}
 	$app->render("header.php");
 	$data = array(
