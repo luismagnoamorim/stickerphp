@@ -16,18 +16,18 @@
             <div class="card-block">
                 <form method="post" action="/admin/create-stickerbook/">
                     <div class="form-group <?=isset($errors["email"])? "has-danger": "" ?>">
-                        <input id="titulo" class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>"
+                        <input id="titulo" class="form-control form-control-lg <?=isset($errors["titulo"])? "form-control-danger": "" ?>"
                             name="titulo" type="text" placeholder="Título do álbum" value="<?=$email ?>">
-                        <input id="editora" class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>"
+                        <input id="editora" class="form-control form-control-lg <?=isset($errors["editora"])? "form-control-danger": "" ?>"
                             name="editora" type="text" placeholder="Editora" value="<?=$email ?>">
-                        <input id="anoPublicacao" class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>"
+                        <input id="anoPublicacao" class="form-control form-control-lg <?=isset($errors["anoPublicacao"])? "form-control-danger": "" ?>"
                             name="anoPublicacao" type="text" placeholder="Ano de publicação" value="<?=$email ?>">
-                        <input id="idioma" class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>"
+                        <input id="idioma" class="form-control form-control-lg <?=isset($errors["idioma"])? "form-control-danger": "" ?>"
                             name="idioma" type="text" placeholder="Idioma" value="<?=$email ?>">                            
-                        <input id="quantidadeCromo" class="form-control form-control-lg <?=isset($errors["email"])? "form-control-danger": "" ?>"
+                        <input id="quantidadeCromo" class="form-control form-control-lg <?=isset($errors["quantidadeCromo"])? "form-control-danger": "" ?>"
                             name="quantidadeCromo" type="text" placeholder="Quantidade total de cromos" value="<?=$email ?>">
-                        <?php if (isset($errors["email"])) { ?>
-                            <div class="form-control-feedback"><?=$errors["email"] ?></div>
+                        <?php if (isset($errors["titulo"])) { ?>
+                            <div class="form-control-feedback"><?=$errors["titulo"] ?></div>
                         <?php } ?>
                     </div>
                     <div class="form-group">

@@ -3,24 +3,42 @@
 class StickerBook {
 
 
-  public static function createStickerBook($tituloAlbum,$quantidadeCromos,$editora,$anoPublicacao,$idioma){
+  public static function createStickerBook($tituloAlbum,$quantidadeCromo,$editora,$anoPublicacao,$idioma){
     self::configurar();
     $album = R::dispense('album');
     $album -> titulo            = $tituloAlbum;
     $album -> dataInclusao      = date("d.m.Y");
-    $album -> quantidadeCromos  = $quantidadeCromos;
+    $album -> quantidadeCromo   = $quantidadeCromo;
     $album -> editora           = $editora;
     $album -> anoPublicacao     = $anoPublicacao;
     $album -> idioma            = $idioma;
     
-    for ($i = 1; $i <= (int)$quantidadeCromos; $i++) {
+    for ($i = 1; $i <= (int)$quantidadeCromo; $i++) {
       $cromo =  R::dispense('cromo');
       $cromo -> numero = $i; 
       $cromo -> nome   = ' ';
       $album -> ownCromoList[] = $cromo ;
+
+      if ($i % 50 == 0 ){
+        R::store($album);
+      }
     }
     
     R::store($album);
+  }
+
+  //atualiza dados do album
+  public static function updateStickerBook($albumId,$tituloAlbum,$quantidadeCromo,$editora,$anoPublicacao,$idioma){
+    self::configurar();
+    $album = R::Load('album',$albumId);
+    $album -> titulo            = $tituloAlbum;
+    $album -> quantidadeCromo   = $quantidadeCromo;
+    $album -> editora           = $editora;
+    $album -> anoPublicacao     = $anoPublicacao;
+    $album -> idioma            = $idioma;
+   
+    R::store($album);
+    return $album;
   }
 
   public static function detailStickerBook($albumId){
@@ -29,7 +47,12 @@ class StickerBook {
     $album = R::Load('album', $albumId );
     return $album;
   }
-
+  
+  public static function listSticker($albumId){ //////////////////////////////// FUNCIONAMENTO OK
+      self::configurar();      
+      $stickers = R::findAll('cromo', 'album_id = :id ', [ ':id'=>$albumId ]);
+      return $stickers;
+  }  
 
 // TODO Lógica do Negócio Aqui
 

@@ -37,8 +37,6 @@ $app->get("/detail-stickerbook/:albumId", function ($albumId) use ($app)
 	$app->render("footer.php");
 });
 
-
-
 // Meus dados
 
 $app->get("/user-account/", function () use ($app)
@@ -232,9 +230,42 @@ $app->post("/admin/create-stickerbook/", function () use ($app)
 			"titulo"   => $titulo,
 			"errors"  => $errors
 		);
-		$app->render("/admin/create-stickerbook.php", $data);
+		$app->render("/admin/update-stickerbook.php", $data);
 		$app->render("footer.php");
 	}
+});
+
+// -- atualizar informacoes de um album existente
+$app->get("/admin/update-stickerbook/:albumId", function ($albumId) use ($app)
+{
+
+	$album 		= StickerBook::detailStickerBook($albumId);
+	$stickers	= StickerBook::listSticker($albumId);
+	$app->render("header.php");
+	$data = array(
+			"album"   => $album,
+			"stickers"  => $stickers
+	);
+	$app->render("/admin/update-stickerbook.php" , $data);
+	$app->render("footer.php");
+});
+$app->post("/admin/update-stickerbook/:albumId", function () use ($app)
+{
+	$albumId			= $app->request->post("albumId");
+	$titulo				= $app->request->post("titulo");
+	$editora			= $app->request->post("editora");
+	$anoPublicacao		= $app->request->post("anoPublicacao");
+	$idioma				= $app->request->post("idioma");
+	$quantidadeCromo	= $app->request->post("quantidadeCromo");
+	$album = StickerBook::updateStickerBook($albumId,$titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma);
+	$stickers	= StickerBook::listSticker($albumId);
+	$app->render("header.php");
+		$data = array(
+			"album"   => $album,
+			"stickers"  => $stickers
+	);
+	$app->render("/admin/update-stickerbook.php" , $data);
+	$app->render("footer.php");
 });
 
 
