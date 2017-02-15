@@ -13,19 +13,23 @@ class StickerBook {
     $album -> anoPublicacao     = $anoPublicacao;
     $album -> idioma            = $idioma;
     
+    R::store($album);
+  }
+
+  public static function addStickerToBook($albumId){
+    self::configurar();
+    $album = R::Load('album' , $albumId);
+    
+    $quantidadeCromo = 50;
+
     for ($i = 1; $i <= (int)$quantidadeCromo; $i++) {
       $cromo =  R::dispense('cromo');
-      $cromo -> numero = $i; 
-      $cromo -> nome   = ' ';
+      $cromo -> codigo ; 
       $album -> ownCromoList[] = $cromo ;
-
-      if ($i % 50 == 0 ){
-        R::store($album);
-      }
     }
     
     R::store($album);
-  }
+  }  
 
   //atualiza dados do album
   public static function updateStickerBook($albumId,$tituloAlbum,$quantidadeCromo,$editora,$anoPublicacao,$idioma){

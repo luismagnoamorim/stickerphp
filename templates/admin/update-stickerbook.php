@@ -35,31 +35,55 @@
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Salvar</button>
                     </div>
                 </form> 
+                <form method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
+                    <input type='hidden' id='albumId' name='albumId' value='<?=$album['id']?>'> 
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block"><?=count($stickers)?>+50</button>
+                    </div>                
+                </form>
             </div>
-                <?php 
-
-                        if ($stickers) :
-                ?>
-                            <div class="col-sm-12">
-                            <form method="post" action="/admin/update-stickerbook/<?=$album['id']?>">
-                <?php
-                            $i = 0;
-                            foreach ($stickers as $sticker) {
-                                $i = $i + 1;
-                ?>
-                                    <h2><?php echo $sticker['id'] ?></h2>
-                                    <h2><?php echo $sticker['numero'] ?></h2>
-                                    <h2><?php echo $sticker['nome'] ?></h2>
-                                    
-                                    
-                <?php                      
-                            }endif;
-                ?>
-                            </form>
-                            </div>
-            
         </div> 
+
+        <form method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
+            <div class="row">
+            <?php 
+
+                if ($stickers) :
+            ?>
+             
+            
+            <?php
+                        $i = 0;
+                        foreach ($stickers as $sticker) {
+                            $i = $i + 1;
+                        if ($i%5)
+            ?>
+                            
+                              <div class="col-sm-2">
+                                <div class="input-group">
+                                  <span class="input-group-addon" id="btnGroupAddon"><?=$sticker['id']?></span>
+                                  <input type="text" class="form-control" placeholder="Código" value="<?=$sticker['codigo']?>">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-secondary" type="button">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                    
+                                  </span>
+                                </div>
+                              </div>
+                            
+                              
+            <?php                      
+                        }
+                endif;
+            ?>
+            </div>    
+        </form>
+
+
     </div>
+
+
 
 </div>
 

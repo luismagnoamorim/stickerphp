@@ -269,5 +269,20 @@ $app->post("/admin/update-stickerbook/:albumId", function () use ($app)
 });
 
 
+$app->post("/admin/add-sticker-to-book/:albumId", function () use ($app)
+{
+	$albumId			= $app->request->post("albumId");
+	$quantidadeCromo	= $app->request->post("quantidadeCromo");
+	
+	$album 				= StickerBook::addStickerToBook($albumId, $quantidadeCromo);
+	$stickers			= StickerBook::listSticker($albumId);
+	$app->render("header.php");
+		$data = array(
+			"album"   => $album,
+			"stickers"  => $stickers
+	);
+	$app->render("/admin/update-stickerbook.php" , $data);
+	$app->render("footer.php");
+});
 
 $app->run();
