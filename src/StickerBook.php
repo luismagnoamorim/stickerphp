@@ -16,16 +16,16 @@ class StickerBook {
     R::store($album);
   }
 
-  public static function addStickerToBook($albumId){
+  public static function addStickerToBook($albumId, $stickerList){
     self::configurar();
     $album = R::Load('album' , $albumId);
-    
-    $quantidadeCromo = 50;
 
-    for ($i = 1; $i <= (int)$quantidadeCromo; $i++) {
-      $cromo =  R::dispense('cromo');
-      $cromo -> codigo ; 
-      $album -> ownCromoList[] = $cromo ;
+    for ($i = 0; $i < count($stickerList); $i++) {
+      if ($stickerList[$i] != '') {
+        $cromo =  R::dispense('cromo');
+        $cromo -> codigo = $stickerList[$i]; 
+        $album -> ownCromoList[] = $cromo ;
+      }
     }
     
     R::store($album);

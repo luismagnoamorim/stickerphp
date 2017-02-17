@@ -26,7 +26,7 @@
                             name="idioma" type="text" placeholder="Idioma" value="<?=$album['idioma'] ?>">                            
                         <input id="quantidadeCromo" class="form-control form-control-lg <?=isset($errors["quantidadeCromo"])? "form-control-danger": "" ?>"
                             name="quantidadeCromo" type="text" placeholder="Quantidade total de cromos" value="<?=$album['quantidadeCromo'] ?>">
-                        <input type='hidden' id='albumId' name='albumId' value='<?=$album['id']?>'>    
+                        <input type='hidden' id='albumId' name='albumId' value='<?=$album['id']?>'>
                         <?php if (isset($errors["titulo"])) { ?>
                             <div class="form-control-feedback"><?=$errors["titulo"] ?></div>
                         <?php } ?>
@@ -35,52 +35,65 @@
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Salvar</button>
                     </div>
                 </form> 
-                <form method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
-                    <input type='hidden' id='albumId' name='albumId' value='<?=$album['id']?>'> 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-lg btn-block"><?=count($stickers)?>+50</button>
-                    </div>                
-                </form>
             </div>
+
         </div> 
 
-        <form method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
-            <div class="row">
-            <?php 
 
-                if ($stickers) :
-            ?>
-             
-            
-            <?php
-                        $i = 0;
-                        foreach ($stickers as $sticker) {
-                            $i = $i + 1;
-                        if ($i%5)
-            ?>
+
+        <div class="col-sm-12">
+                <form class="form-horizontal" method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
+                    <div class="row">
+
+                        <?php
+                            $i = 0;
+                            foreach ($stickers as $sticker) {
                             
-                              <div class="col-sm-2">
-                                <div class="input-group">
-                                  <span class="input-group-addon" id="btnGroupAddon"><?=$sticker['id']?></span>
-                                  <input type="text" class="form-control" placeholder="Código" value="<?=$sticker['codigo']?>">
-                                  <span class="input-group-btn">
-                                    <button class="btn btn-secondary" type="button">
-                                        <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
-                                    
-                                  </span>
+                        ?> 
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" id="cromo_<?=$i?>" placeholder="Cod" value="<?=$sticker['codigo']?>">
                                 </div>
-                              </div>
-                            
-                              
-            <?php                      
+                                
+                        <?php
+                            $i++;                      
+                            }
+                    
+                        ?>                   
+                    </div>
+                    
+                    <?php 
+                        if ($i > 0){
+                    ?>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Atualizar cromos</button>
+                            </div>
+                    <?php
                         }
-                endif;
-            ?>
-            </div>    
-        </form>
+                    ?>              
+                </form>
 
-
+                <button class="btn  btn-lg btn-block" data-toggle="collapse" data-target="#demo">+50</button>
+                <div id="demo" class="collapse">
+                    <form method="post" action="/admin/add-sticker-to-book/">
+                        
+                        <div class="row">
+                        <?php
+                            for ($i = 1 ; $i<= 50 ; $i++) {
+                        ?> 
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" name="newSticker[]">
+                                </div>                        
+                        <?php
+                            }
+                        ?>                            
+                        </div>
+                        <div class="form-group">
+                            <input type='hidden' id='albumId' name='albumId' value='<?=$album['id']?>'>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Adicionar</button>
+                        </div>
+                    </form>                
+                </div> 
+        </div>                   
     </div>
 
 
@@ -93,4 +106,4 @@
         margin-top: 60px;
     }
 
-</style>
+</style> 
