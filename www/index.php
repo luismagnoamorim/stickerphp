@@ -286,5 +286,20 @@ $app->post("/admin/update-stickerbook/:albumId", function () use ($app)
 });
 
 
+$app->post("/admin/add-sticker-to-book/", function () use ($app)
+{
+	$albumId			= $app->request->post("albumId");
+	$stickerList        = $app->request->post("newSticker");
+
+	$album 				= StickerBook::addStickerToBook($albumId, $stickerList);
+	$stickers			= StickerBook::listSticker($albumId);
+	$app->render("header.php");
+		$data = array(
+			"album"   => $album,
+			"stickers"  => $stickers
+	);
+	$app->render("/admin/update-stickerbook/$albumId" , $data);
+	$app->render("footer.php");
+});
 
 $app->run();

@@ -26,7 +26,7 @@
                             name="idioma" type="text" placeholder="Idioma" value="<?=$album['idioma'] ?>">                            
                         <input id="quantidadeCromo" class="form-control form-control-lg <?=isset($errors["quantidadeCromo"])? "form-control-danger": "" ?>"
                             name="quantidadeCromo" type="text" placeholder="Quantidade total de cromos" value="<?=$album['quantidadeCromo'] ?>">
-                        <input type='hidden' id='albumId' name='albumId' value='<?=$album['id']?>'>    
+                        <input type='hidden' id='albumId' name='albumId' value='<?=$album['id']?>'>
                         <?php if (isset($errors["titulo"])) { ?>
                             <div class="form-control-feedback"><?=$errors["titulo"] ?></div>
                         <?php } ?>
@@ -36,30 +36,67 @@
                     </div>
                 </form> 
             </div>
-                <?php 
 
-                        if ($stickers) :
-                ?>
-                            <div class="col-sm-12">
-                            <form method="post" action="/admin/update-stickerbook/<?=$album['id']?>">
-                <?php
+        </div> 
+
+
+
+        <div class="col-sm-12">
+                <form class="form-horizontal" method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
+                    <div class="row">
+
+                        <?php
                             $i = 0;
                             foreach ($stickers as $sticker) {
-                                $i = $i + 1;
-                ?>
-                                    <h2><?php echo $sticker['id'] ?></h2>
-                                    <h2><?php echo $sticker['numero'] ?></h2>
-                                    <h2><?php echo $sticker['nome'] ?></h2>
-                                    
-                                    
-                <?php                      
-                            }endif;
-                ?>
-                            </form>
+                            
+                        ?> 
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" id="cromo_<?=$i?>" placeholder="Cod" value="<?=$sticker['codigo']?>">
+                                </div>
+                                
+                        <?php
+                            $i++;                      
+                            }
+                    
+                        ?>                   
+                    </div>
+                    
+                    <?php 
+                        if ($i > 0){
+                    ?>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Atualizar cromos</button>
                             </div>
-            
-        </div> 
+                    <?php
+                        }
+                    ?>              
+                </form>
+
+                <button class="btn  btn-lg btn-block" data-toggle="collapse" data-target="#demo">+50</button>
+                <div id="demo" class="collapse">
+                    <form method="post" action="/admin/add-sticker-to-book/">
+                        
+                        <div class="row">
+                        <?php
+                            for ($i = 1 ; $i<= 50 ; $i++) {
+                        ?> 
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" name="newSticker[]">
+                                </div>                        
+                        <?php
+                            }
+                        ?>                            
+                        </div>
+                        <div class="form-group">
+                            <input type='hidden' id='albumId' name='albumId' value='<?=$album['id']?>'>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Adicionar</button>
+                        </div>
+                    </form>                
+                </div> 
+        </div>                   
     </div>
+
+
 
 </div>
 
@@ -69,4 +106,4 @@
         margin-top: 60px;
     }
 
-</style>
+</style> 
