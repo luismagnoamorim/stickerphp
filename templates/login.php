@@ -46,7 +46,7 @@
 <style>
 
     #card-login {
-        margin-top: 60px;
+        margin-top: 30px;
     }
 
 </style>

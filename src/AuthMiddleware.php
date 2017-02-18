@@ -7,7 +7,8 @@ class AuthMiddleware extends \Slim\Middleware
         "/",
         "/login",
         "/create-user-account",
-        "/reset-password"
+        "/reset-password",
+        "/admin/create-stickerbook"
     );
 
     private function isPublic($uri)

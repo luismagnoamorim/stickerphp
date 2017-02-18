@@ -1,6 +1,8 @@
 <?php
 
-    $email = isset($email)? $email: "";
+    $email            = isset($email)? $email: "";
+    $password         = isset($password)? $password: "";
+    $confirm_password = isset($confirm_password)? $confirm_password: "";
 
 ?>
 
@@ -24,14 +26,17 @@
                     </div>
                     <div class="form-group <?=isset($errors["password"])? "has-danger": "" ?>">
                         <input id="input-password" class="form-control form-control-lg <?=isset($errors["password"])? "form-control-danger": "" ?>" 
-                            name="password" type="password" placeholder="Senha">
+                            name="password" type="password" placeholder="Senha" value="<?=$password ?>">
                         <?php if (isset($errors["password"])) { ?>
                             <div class="form-control-feedback"><?=$errors["password"] ?></div>
                         <?php } ?>
                     </div>
-                    <div class="form-group">
-                        <input id="input-confirm-password"  class="form-control form-control-lg" type="password"
-                            placeholder="Confirme sua senha">
+                    <div class="form-group <?=isset($errors["confirm_password"])? "has-danger": "" ?>">
+                        <input id="input-confirm-password"  class="form-control form-control-lg <?=isset($errors["confirm_password"])? "form-control-danger": "" ?>"
+                            name="confirm_password" type="password" placeholder="Confirme sua senha" value="<?=$confirm_password ?>">
+                        <?php if (isset($errors["confirm_password"])) { ?>
+                            <div class="form-control-feedback"><?=$errors["confirm_password"] ?></div>
+                        <?php } ?>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Criar conta</button>
@@ -46,7 +51,7 @@
 <style>
 
     #card-create-user-account {
-        margin-top: 60px;
+        margin-top: 30px;
     }
 
 </style>
@@ -72,7 +77,7 @@
         {
             $("form").submit();
         });
-        
+
     });
 
 </script> 
