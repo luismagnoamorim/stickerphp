@@ -39,8 +39,6 @@
 
         </div> 
 
-
-
         <div class="col-sm-12">
                 <form class="form-horizontal" method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
                     <div class="row">
@@ -48,19 +46,15 @@
                         <?php
                             $i = 0;
                             foreach ($stickers as $sticker) {
-                            
                         ?> 
                                 <div class="col-sm-1">
-                                    <input type="text" class="form-control" id="cromo_<?=$i?>" placeholder="Cod" value="<?=$sticker['codigo']?>">
+                                    <input type="text" class="form-control" id="cromo_<?=$sticker['id']?>_<?=$album['id']?>" placeholder="Cod" value="<?=$sticker['codigo']?>" name="sticker[]">
                                 </div>
-                                
                         <?php
                             $i++;                      
                             }
-                    
                         ?>                   
                     </div>
-                    
                     <?php 
                         if ($i > 0){
                     ?>
@@ -107,3 +101,32 @@
     }
 
 </style> 
+
+<script>
+    jQuery(document).ready(function () {
+        $('input[name="sticker[]"]').change(function(e) {
+            $stickerId  = $(this).attr('id').split('_')[1];
+            $albumId    = $(this).attr('id').split('_')[2];
+            $novoCodigo = $(this).val();
+
+            $url        =  '/admin/update-sticker/';
+            //alert('Id:' +  $stickerId + ', valor:' + $novoCodigo + ', album:' + $albumId); 
+            $.ajax({
+                type: 'POST'
+                ,url: $url
+                ,dataType: 'html'
+                ,data: { stickerId: $stickerId , novoCodigo: $novoCodigo  , albumId: $albumId} 
+            //,success: function(html){
+            //  $("#results").append(html);
+            //        alert('textGoogleKey' + textGoogleKey);
+            //}
+            ///,error: function(jqXHR, textStatus) {
+                //console.error("error");
+                    //alert('Not working!' + textStatus);
+            ///}
+            }); //$.ajax
+         
+        });//btn.click
+        
+    });//jQuery
+</script>    

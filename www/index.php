@@ -220,17 +220,22 @@ $app->post("/admin/create-stickerbook/", function () use ($app)
 	}
 	if (count($errors) == 0)
 	{
-		$param = StickerBook::createStickerBook($titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma);
+		$album = StickerBook::createStickerBook($titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma);
+		$app->render("header.php");
+		$data = array(
+				"album"   => $album,
+				"stickers"  => $stickers
+		);
+		$app->render("/admin/update-stickerbook/" , $data);
+		$app->render("footer.php");
 
-	    //$app->render('home.php', array('errMessage' => '', 'palavraChave' => '' , 'listaAlbuns' => $listaAlbuns));
-		$app->redirect("/admin/detail-stickerbook.php");
 	} else {
 		$app->render("header.php", array("navItem" => "login"));
 		$data = array(
 			"titulo"   => $titulo,
 			"errors"  => $errors
 		);
-		$app->render("/admin/update-stickerbook.php", $data);
+		$app->render("/admin/create-stickerbook/", $data);
 		$app->render("footer.php");
 	}
 });
@@ -249,6 +254,7 @@ $app->get("/admin/update-stickerbook/:albumId", function ($albumId) use ($app)
 	$app->render("/admin/update-stickerbook.php" , $data);
 	$app->render("footer.php");
 });
+// -- recebe dados do formulario para atualizar um album existente
 $app->post("/admin/update-stickerbook/:albumId", function () use ($app)
 {
 	$albumId			= $app->request->post("albumId");
@@ -268,7 +274,6 @@ $app->post("/admin/update-stickerbook/:albumId", function () use ($app)
 	$app->render("footer.php");
 });
 
-
 $app->post("/admin/add-sticker-to-book/", function () use ($app)
 {
 	$albumId			= $app->request->post("albumId");
@@ -283,6 +288,26 @@ $app->post("/admin/add-sticker-to-book/", function () use ($app)
 	);
 	$app->render("/admin/update-stickerbook/$albumId" , $data);
 	$app->render("footer.php");
+});
+
+// -- atualizar informações de cromos existentes
+$app->post("/admin/update-sticker/", function () use ($app)
+{
+	$stickerId  = $app->request->post("stickerId");
+	$albumId    = $app->request->post("albumId");
+	$novoCodigo = $app->request->post("novoCodigo");
+	
+	StickerBook::updateSticker($stickerId , $novoCodigo);
+	//$stickers = StickerBook::listSticker($albumId);
+	//$album 	  = StickerBook::detailStickerBook($albumId);
+
+	//$app->render("header.php");
+	//	$data = array(
+	//		"album"   => $album,
+	//		"stickers"  => $stickers
+	//);
+	//$app->render("/admin/update-stickerbook/:albumId" , $data);
+	//$app->render("footer.php");
 });
 
 $app->run();

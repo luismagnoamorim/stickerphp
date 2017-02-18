@@ -14,6 +14,7 @@ class StickerBook {
     $album -> idioma            = $idioma;
     
     R::store($album);
+    return $album;
   }
 
   public static function addStickerToBook($albumId, $stickerList){
@@ -30,6 +31,13 @@ class StickerBook {
     
     R::store($album);
   }  
+
+  public static function updateSticker($stickerId, $novoCodigo){
+    self::configurar();
+    $sticker = R::Load('cromo' , $stickerId);
+    $sticker -> codigo = $novoCodigo; 
+    R::store($sticker);
+  }
 
   //atualiza dados do album
   public static function updateStickerBook($albumId,$tituloAlbum,$quantidadeCromo,$editora,$anoPublicacao,$idioma){
