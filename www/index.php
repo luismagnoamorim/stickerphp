@@ -60,17 +60,32 @@ $app->post("/create-user-account/", function () use ($app)
 {
 	$errors = array();
 	$email = $app->request->post("email");
-	if ($email == null)
+	if (($email == null) || (empty(trim($email))))
 	{
 		$errors["email"] = "Informe seu endereço de e-mail.";
 	}
 	$password = $app->request->post("password");	
-	if ($password == null)
+	if (($password == null) || (empty(trim($password))))
 	{
 		$errors["password"] = "Informe sua senha.";
 	}
+	$confirm_password = $app->request->post("confirm_password");	
+	if (($confirm_password == null) || (empty(trim($confirm_password))))
+	{
+		$errors["confirm_password"] = "Informe sua senha novamente.";
+	}
+	if (!isset($errors["password"]) && !isset($errors["confirm_password"]))
+	{
+		if ($password != $confirm_password)
+		{
+			$app->flashNow("error", "As senhas informadas não conferem.");
+			$errors["password"] = "";
+			$errors["confirm_password"] = "";
+		}
+	}
 	if (count($errors) == 0)
 	{
+		// TODO inserir uma conta de usuário nova e efetuar login
 		$_SESSION["user"] = array(
 			"email" => $email
 		);		
@@ -78,8 +93,10 @@ $app->post("/create-user-account/", function () use ($app)
 	} else {
 		$app->render("header.php", array("navItem" => "login"));
 		$data = array(
-			"email"   => $email,
-			"errors"  => $errors
+			"email"            => $email,
+			"password"         => $password,
+			"confirm_password" => $confirm_password,
+			"errors"           => $errors
 		);
 		$app->render("create-user-account.php", $data);
 		$app->render("footer.php");

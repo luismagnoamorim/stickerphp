@@ -38,7 +38,7 @@
 <style>
 
     #card-reset-password {
-        margin-top: 60px;
+        margin-top: 30px;
     }
 
 </style>
