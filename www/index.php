@@ -28,15 +28,6 @@ $app->get("/stickerbooks/", function () use ($app)
 	$app->render("footer.php");
 });
 
-// -- detalhar informacoes de um album
-$app->get("/detail-stickerbook/:albumId", function ($albumId) use ($app)
-{
-	$album = StickerBook::detailStickerBook($albumId);
-	$app->render("header.php");
-	$app->render("detail-stickerbook.php" , array('album' => $album));
-	$app->render("footer.php");
-});
-
 // Meus dados
 
 $app->get("/user-account/", function () use ($app)
@@ -303,7 +294,7 @@ $app->post("/admin/add-sticker-to-book/", function () use ($app)
 			"album"   => $album,
 			"stickers"  => $stickers
 	);
-	$app->render("/admin/update-stickerbook/$albumId" , $data);
+	$app->render("/admin/update-stickerbook.php" , $data);
 	$app->render("footer.php");
 });
 
@@ -325,6 +316,41 @@ $app->post("/admin/update-sticker/", function () use ($app)
 	//);
 	//$app->render("/admin/update-stickerbook/:albumId" , $data);
 	//$app->render("footer.php");
+});
+
+// -- detalhar informacoes de um album
+$app->get("/detail-stickerbook/:albumId/:colecaoId", function ($albumId , $colecaoId) use ($app)
+{
+	$album 		  = StickerBook::detailStickerBook($albumId);
+	$stickers 	  = StickerBook::listSticker($albumId);
+	$userStickers = StickerBook::listStickerCollection($albumId, $colecaoId);
+	$app->render("header.php");
+	$data = array(
+			  "album"        => $album
+			, "stickers"     => $stickers
+			, "userStickers" => $userStickers
+	);	
+	$app->render("/detail-stickerbook.php" , $data);
+	$app->render("footer.php");
+});
+
+// -- incluir um stickerbook na collection de um usuario
+$app->post("/add-stickerbook-to-collection/", function () use ($app)
+{
+	$albumId   = $app->request->post("albumId");
+	$usuarioId = $app->request->post("usuarioId");
+
+	$album 	   = StickerBook::addStickerBookToCollection($albumId, $usuarioId);
+	$stickers  = StickerBook::listSticker($albumId);
+
+	$app->render("header.php");
+		$data = array(
+			  "album"   => $album
+			, "stickers"  => $stickers 
+			, "userStickers"  => $userStickers
+	);
+	$app->render("/detail-stickerbook.php" , $data);
+	$app->render("footer.php");
 });
 
 $app->run();

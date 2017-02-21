@@ -19,7 +19,7 @@ class StickerBook
   }
 
   public static function addStickerToBook($albumId, $stickerList){
-    self::configurar();
+    self::setup();
     $album = R::Load('album' , $albumId);
 
     for ($i = 0; $i < count($stickerList); $i++) {
@@ -34,7 +34,7 @@ class StickerBook
   }  
 
   public static function updateSticker($stickerId, $novoCodigo){
-    self::configurar();
+    self::setup();
     $sticker = R::Load('cromo' , $stickerId);
     $sticker -> codigo = $novoCodigo; 
     R::store($sticker);
@@ -67,6 +67,39 @@ class StickerBook
       $stickers = R::findAll('cromo', 'album_id = :id ', [ ':id'=>$albumId ]);
       return $stickers;
   }  
+
+
+/// -----------------colecao -------------------------------------------------------------------------------
+// usuario escolhe album para colecionar
+  public static function addStickerBookToCollection($albumId, $usuarioId){
+    self::setup();
+
+    $album = R::load('album' , $albumId);
+    $usuario = R::load('usuario' , $usuarioId);
+
+    $colecao = R::dispense('colecao');
+    $colecao->usuario = $usuario;
+    $colecao->album = $album;
+    $colecao->dataInclusao = date("d.m.Y");
+    $colecao->quantidadeCromos = 0;
+    $colecao->dataUltimaAtualizacao = date("d.m.Y");
+    R::store($colecao);
+
+    return $album;
+  }      
+
+// listar stickers de uma collection do usuario
+  public static function listStickerCollection($albumId, $colecaoId){
+    self::setup();
+    $album   = R::load('album' , $albumId);
+    $colecao = R::load('colecao' , $colecaoId);
+
+    $cromos = $colecao
+        ->via( 'album' )
+        ->sharedCromoList;
+
+    return $cromos;
+  }        
 
 // TODO Lógica do Negócio Aqui
 

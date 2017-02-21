@@ -26,7 +26,7 @@
                 <p><b>Formato:</b> <?php echo $album['formato']?></p>
                 <p><b>Data inclusão:</b> <?php echo $album['dataInclusao']?></p>
 
-                <form action="/add-stickerbook-collection/" method="post">
+                <form action="/add-stickerbook-to-collection/" method="post">
                     <?php if (isset($_SESSION['usuario'])) { 
                         $podeColecionar = true;
                     ?>
@@ -44,6 +44,30 @@
                 </form>
             </div>
         </div> 
+
+
+        <div class="col-sm-12">
+                <form class="form-horizontal" method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
+                    <div class="row">
+
+                        <?php
+                            $i = 0;
+                            foreach ($stickers as $sticker) {
+                        ?> 
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" id="cromo_<?=$sticker['id']?>_<?=$album['id']?>" placeholder="Cod" value="<?=$sticker['codigo']?>" name="sticker[]">
+                                </div>
+                        <?php
+                            $i++;                      
+                            }
+                        ?>                   
+                    </div>
+                </form>
+        </div>                   
+
+
+
+
     </div>
 
 </div>
