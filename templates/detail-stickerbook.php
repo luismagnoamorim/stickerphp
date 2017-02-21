@@ -18,12 +18,12 @@
                 <p><b>Editora: <?php echo $album['editora']?></b></p>
                 
                 
-                <p><b>Quantidade Cromos:</b> <?php echo $album['quantidadeCromos']?></p>
+                <p><b>Quantidade Cromos:</b> <?php echo $album['quantidadeCromo']?></p>
                 <p><b>Idioma:</b> <?php echo $album['idioma']?></p>
                 
                 
-                <p><b>Data publicação:</b> <?php echo $album['dataPublicacao']?></p>
-                <p><b>Formato:</b> <?php echo $album['formato']?></p>
+                <p><b>Data publicação:</b> <?php echo $album['anoPublicacao']?></p>
+                
                 <p><b>Data inclusão:</b> <?php echo $album['dataInclusao']?></p>
 
                 <form action="/add-stickerbook-to-collection/" method="post">
@@ -40,22 +40,29 @@
                     ?>
                     <input type='hidden' id='album' name='albumId' value='<?php echo $album['id'] ?>'>
 
-                    <button type="submit" class="btn btn-default">Colecionar</button>
+                    <button type="submit" class="btn btn-default" id="btnIncluir">Incluir da coleção</button>
+                    <button type="submit" class="btn btn-default" id="btnRetirar">Retirar da coleção</button>
                 </form>
             </div>
         </div> 
 
 
         <div class="col-sm-12">
-                <form class="form-horizontal" method="post" action="/admin/add-sticker-to-book/<?=$album['id']?>">
+                <form class="form-horizontal" method="post" action="/updateCollection/">
                     <div class="row">
 
                         <?php
                             $i = 0;
                             foreach ($stickers as $sticker) {
                         ?> 
-                                <div class="col-sm-1">
+
+                                <div class="input-group col-sm-2">
+                                    <button id="#btn_remove_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
                                     <input type="text" class="form-control" id="cromo_<?=$sticker['id']?>_<?=$album['id']?>" placeholder="Cod" value="<?=$sticker['codigo']?>" name="sticker[]">
+									<button id="#btn_add_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button>
+
+                                    <!-- ///////////////////////////// RECUPERAR IDENTIFICADOR DA COLECAO ////////////////////////////////--> 
+									<input type='hidden' id='colecao' name='colecaoId' value='1'>
                                 </div>
                         <?php
                             $i++;                      
@@ -79,3 +86,30 @@
     }
 
 </style>
+
+<script>
+    jQuery(document).ready(function () {
+		$('.btn-xs').click(function(e) {
+        	$colecaoId	= $("#colecao").attr('value');
+        	$acao 		= $(this).attr('id').split('_')[1];
+        	$cromoId	= $(this).attr('id').split('_')[2];
+        	$url 		= "/updateCollection";
+        	alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
+        	$.ajax({
+            	type: 'POST'
+             	,url: $url
+            	,dataType: 'html'
+            	,data: { colecaoId: $colecaoId , cromoId: $cromoId , acao: $acao } 
+            //,success: function(html){
+   			// 	$("#results").append(html);
+   			//        alert('textGoogleKey' + textGoogleKey);
+  			//}
+            ///,error: function(jqXHR, textStatus) {
+                //console.error("error");
+                    //alert('Not working!' + textStatus);
+            ///}
+            });	//$.ajax
+        });//btn.click
+        
+    });//jQuery
+</script>    

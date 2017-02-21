@@ -339,9 +339,31 @@ $app->post("/add-stickerbook-to-collection/", function () use ($app)
 {
 	$albumId   = $app->request->post("albumId");
 	$usuarioId = $app->request->post("usuarioId");
+	$usuarioId = 1;
 
 	$album 	   = StickerBook::addStickerBookToCollection($albumId, $usuarioId);
 	$stickers  = StickerBook::listSticker($albumId);
+   
+	$app->render("header.php");
+		$data = array(
+			  "album"   => $album
+			, "stickers"  => $stickers 
+	
+	);
+	$app->render("/detail-stickerbook.php" , $data);
+	$app->render("footer.php");
+});
+
+// -- adicionar ou remover cromo a uma colecao
+$app->post("/updateCollection/", function () use ($app)
+{
+	$colecaoId = $app->request->post("colecaoId");
+	$cromoId   = $app->request->post("cromoId");
+	$acao      = $app->request->post("acao");
+
+	$album 	      = StickerBook::updateCollection($colecaoId , $cromoId , $acao );
+	$stickers     = StickerBook::listSticker($albumId);
+	$userStickers = StickerBook::listStickerCollection($albumId , $colecaoId) ;
 
 	$app->render("header.php");
 		$data = array(
@@ -349,7 +371,7 @@ $app->post("/add-stickerbook-to-collection/", function () use ($app)
 			, "stickers"  => $stickers 
 			, "userStickers"  => $userStickers
 	);
-	$app->render("/detail-stickerbook.php" , $data);
+	$app->render("/stickerbooks.php" , $data);
 	$app->render("footer.php");
 });
 

@@ -101,6 +101,23 @@ class StickerBook
     return $cromos;
   }        
 
+// incluir ou remover cromo da coleção 
+  public static function updateCollection($colecaoId, $cromoId , $acao){
+    self::setup();      
+
+    $colecao  = R::load('colecao' , $colecaoId);
+    $cromo    = R::load('cromo' ,  $cromoId );
+    $colecao->sharedCromoList[] = $cromo;
+    if ($acao == "add"){
+      $colecao->sharedCromoList[] = $cromo;
+    }
+    else {
+      unset($colecao->sharedCromoList[$cromoId] );
+    }
+    R::store($colecao);
+    return $colecao;
+  }
+
 // TODO Lógica do Negócio Aqui
 
 // -------------- configuracao de ambiente -----------------------------------
