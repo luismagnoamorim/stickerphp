@@ -89,16 +89,10 @@ class StickerBook
   }      
 
 // listar stickers de uma collection do usuario
-  public static function listStickerCollection($albumId, $colecaoId){
+  public static function listStickerCollection($colecaoId){
     self::setup();
-    $album   = R::load('album' , $albumId);
-    $colecao = R::load('colecao' , $colecaoId);
-
-    $cromos = $colecao
-        ->via( 'album' )
-        ->sharedCromoList;
-
-    return $cromos;
+    $listStickerCollection = R::findAll('cromoColecao' , $colecaoId);
+    return $listStickerCollection;
   }        
 
 // incluir ou remover cromo da coleção 
@@ -107,15 +101,24 @@ class StickerBook
 
     $colecao  = R::load('colecao' , $colecaoId);
     $cromo    = R::load('cromo' ,  $cromoId );
-    $colecao->sharedCromoList[] = $cromo;
+    
     if ($acao == "add"){
-      $colecao->sharedCromoList[] = $cromo;
+      $cromoColecao = R::findOrCreate( 'cromocolecao', [ 'colecao_id' => $colecaoId , 'cromo_id' => $cromoId]);
+      
+        if(is_null($cromoColecao->quantidade)){ // se registro esta sendo criado define quantidade 1
+          $cromoColecao->quantidade = 1;
+        }else{
+          $cromoColecao->quantidade = $cromoColecao->quantidade + 1;
+        }
+      
     }
     else {
-      unset($colecao->sharedCromoList[$cromoId] );
+      $cromoColecao = R::findOne('cromocolecao' , [ 'colecao_id' => $colecaoId , 'cromo_id' => $cromoId]);
+      if ($cromoColecao->quantidade > 0){
+        $cromoColecao->quantidade = $cromoColecao->quantidade - 1;  
+      }
     }
-    R::store($colecao);
-    return $colecao;
+    R::store($cromoColecao);
   }
 
 // TODO Lógica do Negócio Aqui

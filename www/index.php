@@ -362,7 +362,7 @@ $app->post("/updateCollection/", function () use ($app)
 	$acao      = $app->request->post("acao");
 
 	$album 	      = StickerBook::updateCollection($colecaoId , $cromoId , $acao );
-	$stickers     = StickerBook::listSticker($albumId);
+	$stickers     = StickerBook::listSticker($albumId);      //// nao implementado
 	$userStickers = StickerBook::listStickerCollection($albumId , $colecaoId) ;
 
 	$app->render("header.php");
