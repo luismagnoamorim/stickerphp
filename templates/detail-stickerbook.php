@@ -19,12 +19,17 @@
                 
                 
                 <p><b>Quantidade Cromos:</b> <?php echo $album['quantidadeCromo']?></p>
+                <?php
+                    $progresso = (( sizeof($userStickers) * 100 ) / $album['quantidadeCromo']) ;
+                ?>
+                <p><b>Porcentagem completo:</b> <?= $progresso?></p>
+
                 <p><b>Idioma:</b> <?php echo $album['idioma']?></p>
-                
                 
                 <p><b>Data publicação:</b> <?php echo $album['anoPublicacao']?></p>
                 
                 <p><b>Data inclusão:</b> <?php echo $album['dataInclusao']?></p>
+
 
                 <form action="/add-stickerbook-to-collection/" method="post">
                     <?php if (isset($_SESSION['usuario'])) { 
@@ -55,10 +60,21 @@
                             $i = 0;
                             foreach ($stickers as $sticker) {
                         ?> 
-
                                 <div class="input-group col-sm-2">
                                     <button id="#btn_remove_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
                                     <input type="text" class="form-control" id="cromo_<?=$sticker['id']?>_<?=$album['id']?>" placeholder="Cod" value="<?=$sticker['codigo']?>" name="sticker[]">
+                                    <?php
+                                    	$quantidade = 0;
+                                    	foreach ($userStickers as $userSticker) {
+                                    		if($sticker['id'] == $userSticker['cromo_id']){
+                                				$quantidade = $userSticker['quantidade'];
+                                				break;
+                                    		}
+                                    	}
+                                    ?>
+                                    <input type="text" class="form-control" id="quantidade_<?=$sticker['id']?>_<?=$album['id']?>" value="<?=$quantidade?>" name="sticker[]">
+
+
 									<button id="#btn_add_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button>
 
                                     <!-- ///////////////////////////// RECUPERAR IDENTIFICADOR DA COLECAO ////////////////////////////////--> 
@@ -94,7 +110,7 @@
         	$acao 		= $(this).attr('id').split('_')[1];
         	$cromoId	= $(this).attr('id').split('_')[2];
         	$url 		= "/updateCollection";
-        	alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
+        	//alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
         	$.ajax({
             	type: 'POST'
              	,url: $url

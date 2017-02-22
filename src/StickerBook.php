@@ -113,9 +113,9 @@ class StickerBook
       
     }
     else {
-      $cromoColecao = R::findOne('cromocolecao' , [ 'colecao_id' => $colecaoId , 'cromo_id' => $cromoId]);
+      $cromoColecao = R::findOne('cromocolecao' , 'colecao_id = :colecaoId AND cromo_id = :cromoId' , [ ':colecaoId' => $colecaoId , ':cromoId' => $cromoId]);
       if ($cromoColecao->quantidade > 0){
-        $cromoColecao->quantidade = $cromoColecao->quantidade - 1;  
+        $cromoColecao->quantidade = $cromoColecao->quantidade - 1;
       }
     }
     R::store($cromoColecao);
