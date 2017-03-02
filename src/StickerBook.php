@@ -18,28 +18,6 @@ class StickerBook
     return $album;
   }
 
-  public static function addStickerToBook($albumId, $stickerList){
-    self::setup();
-    $album = R::Load('album' , $albumId);
-
-    for ($i = 0; $i < count($stickerList); $i++) {
-      if ($stickerList[$i] != '') {
-        $cromo =  R::dispense('cromo');
-        $cromo -> codigo = $stickerList[$i]; 
-        $album -> ownCromoList[] = $cromo ;
-      }
-    }
-    
-    R::store($album);
-  }  
-
-  public static function updateSticker($stickerId, $novoCodigo){
-    self::setup();
-    $sticker = R::Load('cromo' , $stickerId);
-    $sticker -> codigo = $novoCodigo; 
-    R::store($sticker);
-  }
-
   //atualiza dados do album
   public static function updateStickerBook($albumId, $tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma)
   {
@@ -61,7 +39,43 @@ class StickerBook
     $album = R::Load('album', $albumId );
     return $album;
   }
-  
+//listar albuns que compoem a collection do usuario
+  public static function listStickerBookCollection($usuarioId){
+    self::setup();
+
+    $listaColecao = self::listUserCollection($usuarioId);
+    $listaAlbunsColecao;
+
+    foreach ($listaColecao as $itemColecao) {
+      $album = R::load('album' , $itemColecao['album_id']);  
+
+      $listaAlbunsColecao[] = $album;
+    }
+    
+    return $listaAlbunsColecao;
+  }
+
+  public static function addStickerToBook($albumId, $stickerList){
+    self::setup();
+    $album = R::Load('album' , $albumId);
+
+    for ($i = 0; $i < count($stickerList); $i++) {
+      if ($stickerList[$i] != '') {
+        $cromo =  R::dispense('cromo');
+        $cromo -> codigo = $stickerList[$i]; 
+        $album -> ownCromoList[] = $cromo ;
+      }
+    }
+    R::store($album);
+  }  
+
+  public static function updateSticker($stickerId, $novoCodigo){
+    self::setup();
+    $sticker = R::Load('cromo' , $stickerId);
+    $sticker -> codigo = $novoCodigo; 
+    R::store($sticker);
+  }
+
   public static function listSticker($albumId){ //////////////////////////////// FUNCIONAMENTO OK
       self::setup();      
       $stickers = R::findAll('cromo', 'album_id = :id ', [ ':id'=>$albumId ]);
@@ -88,12 +102,20 @@ class StickerBook
     return $album;
   }      
 
+// listar as colecoes de um usuario
+  public static function listUserCollection($usuarioId){
+    self::setup();
+
+    $listUserCollection = R::findAll('colecao' , 'usuario_id = :id' , [ ':id' => $usuarioId] );
+    return $listUserCollection;
+  }
+
 // listar stickers de uma collection do usuario
   public static function listStickerCollection($colecaoId){
     self::setup();
-    $listStickerCollection = R::findAll('cromoColecao' , $colecaoId);
+    $listStickerCollection = R::findAll('cromoColecao' , 'colecao_id = :id' , [ ':id' => $colecaoId]);
     return $listStickerCollection;
-  }        
+  }
 
 // incluir ou remover cromo da coleção 
   public static function updateCollection($colecaoId, $cromoId , $acao){

@@ -323,7 +323,7 @@ $app->get("/detail-stickerbook/:albumId/:colecaoId", function ($albumId , $colec
 {
 	$album 		  = StickerBook::detailStickerBook($albumId);
 	$stickers 	  = StickerBook::listSticker($albumId);
-	$userStickers = StickerBook::listStickerCollection($albumId, $colecaoId);
+	$userStickers = StickerBook::listStickerCollection($colecaoId);
 	$app->render("header.php");
 	$data = array(
 			  "album"        => $album
@@ -363,7 +363,7 @@ $app->post("/updateCollection/", function () use ($app)
 
 	$album 	      = StickerBook::updateCollection($colecaoId , $cromoId , $acao );
 	$stickers     = StickerBook::listSticker($albumId);      //// nao implementado
-	$userStickers = StickerBook::listStickerCollection($albumId , $colecaoId) ;
+	$userStickers = StickerBook::listStickerCollection($colecaoId) ;
 
 	$app->render("header.php");
 		$data = array(
@@ -374,5 +374,24 @@ $app->post("/updateCollection/", function () use ($app)
 	$app->render("/stickerbooks.php" , $data);
 	$app->render("footer.php");
 });
+
+// -- detalhar informacoes de um album
+$app->post("/collections/", function () use ($app)
+{
+	$usuarioId = $app->request->post("usuarioId");
+	$usuarioId = 1;
+
+	$collections  = StickerBook::listUserCollection($usuarioId);
+	$albuns       = StickerBook::listStickerBookCollection($usuarioId);
+	$app->render("header.php");
+	$data = array(
+			  	"collections"	=> $collections
+			  , "albuns"		=> $albuns
+	);	
+	$app->render("/collections.php" , $data);
+	$app->render("footer.php");
+});
+
+
 
 $app->run();
