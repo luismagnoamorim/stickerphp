@@ -13,19 +13,24 @@
                     <div class="row">
 
                         <?php
-                        	$i = 0;
                             foreach ($collections as $collection) {
+                            	//print_r($collection);
                         ?> 
-                                <div class="input-group col-sm-2">
-                                	<a href='/detail-stickerbook/<?=$collection['album_id']?>/<?=$collection['id'] ?>'><?= $albuns[$i]['titulo'] ?></a>
+                                <div class="input-group col-sm-4">
+                                	<div class="thumbnail">
+                                    	<img src='/img/capas/<?=$collection['album_id']?>.jpg' style="width:50%">
+                                    
+                                		<div class='caption'>
+                                			<a href='/detail-stickerbook/<?=$collection['album_id']?>/<?=$collection['id'] ?>'><?= $collection['album']['titulo'] ?></a>
+                                		</div>
+                                	</div>
                                 </div>
                         <?php
-                            $i++;                      
                             }
                         ?>                   
                     </div>
                 </form>
-        </div>                   
+        </div>
 
 
 

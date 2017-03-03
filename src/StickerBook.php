@@ -33,13 +33,23 @@ class StickerBook
     return $album;
   }
 
+  // listar todos os StickerBooks disponiveis
+  public static function listStickerBooks(){
+    self::setup();
+
+    $stickerBooks = R::findAll('album');
+    return $stickerBooks;
+  }
+
+
   public static function detailStickerBook($albumId){
     self::setup();
     
     $album = R::Load('album', $albumId );
     return $album;
   }
-//listar albuns que compoem a collection do usuario
+
+//listar albuns que compoem a collection do usuario --- SEM USO
   public static function listStickerBookCollection($usuarioId){
     self::setup();
 
@@ -48,8 +58,8 @@ class StickerBook
 
     foreach ($listaColecao as $itemColecao) {
       $album = R::load('album' , $itemColecao['album_id']);  
-
-      $listaAlbunsColecao[] = $album;
+      $itemColecao -> album = $album;
+      $listaAlbunsColecao[] = $itemColecao;
     }
     
     return $listaAlbunsColecao;
@@ -100,7 +110,27 @@ class StickerBook
     R::store($colecao);
 
     return $album;
-  }      
+  }
+
+// usuario escolhe album para colecionar
+  public static function removeStickerBookFromCollection($albumId, $usuarioId){
+    self::setup();
+
+    $album = R::load('album' , $albumId);
+    $usuario = R::load('usuario' , $usuarioId);
+
+    $colecao = R::dispense('colecao');
+    $colecao->usuario = $usuario;
+    $colecao->album = $album;
+    $colecao->dataInclusao = date("d.m.Y");
+    $colecao->quantidadeCromos = 0;
+    $colecao->dataUltimaAtualizacao = date("d.m.Y");
+    R::store($colecao);
+
+    return $album;
+  }
+
+
 
 // listar as colecoes de um usuario
   public static function listUserCollection($usuarioId){
@@ -172,11 +202,8 @@ class StickerBook
                 $dbname   = getenv('OPENSHIFT_GEAR_NAME');
                 $username = getenv('OPENSHIFT_MYSQL_DB_USERNAME');
                 $password = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
-                //R::debug(true);
-                //R::freeze(false);
             } else if ($ambiente == 'localhost') {
                 // localhost
-              
                 $host     = '127.0.0.1';
                 $port     = '3306';
                 $dbname   = 'stickertrade';
@@ -186,7 +213,7 @@ class StickerBook
             $dsn = "mysql:host=$host;port=$port;dbname=$dbname;";
             R::setup($dsn, $username, $password);
             R::debug(true);
-            //R::debug(false);
+            R::debug(false);
             R::freeze(false);
             self::$configurado = true;
         }

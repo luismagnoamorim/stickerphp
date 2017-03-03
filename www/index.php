@@ -23,8 +23,13 @@ $app->get("/", function () use ($app)
 
 $app->get("/stickerbooks/", function () use ($app)
 {
+	$stickerBooks = StickerBook::listStickerBooks();
+
 	$app->render("header.php", array("navItem" => "stickerbooks"));
-	$app->render("stickerbooks.php");
+	$data = array(
+			"stickerBooks"   => $stickerBooks
+	);
+	$app->render("stickerbooks.php" , $data);
 	$app->render("footer.php");
 });
 
@@ -381,12 +386,12 @@ $app->post("/collections/", function () use ($app)
 	$usuarioId = $app->request->post("usuarioId");
 	$usuarioId = 1;
 
-	$collections  = StickerBook::listUserCollection($usuarioId);
-	$albuns       = StickerBook::listStickerBookCollection($usuarioId);
+	$collections  = StickerBook::listStickerBookCollection($usuarioId);
+	
+
 	$app->render("header.php");
 	$data = array(
 			  	"collections"	=> $collections
-			  , "albuns"		=> $albuns
 	);	
 	$app->render("/collections.php" , $data);
 	$app->render("footer.php");

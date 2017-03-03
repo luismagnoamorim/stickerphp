@@ -7,30 +7,46 @@
 <div class="container">
     
     <div class="row">
-        <div id="card-create-user-account" class="card col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+        <div id="card-create-user-ac'count" class="col-sm-12 offset-sm-1 col-md-8 offset-md-2 offset-lg-3">
             <div class="card-block">
                 <h4 class="card-title text-center">Detalhes do álbum</h4>
                 <br>
             </div>
-            <div class="card-block">
-
+            
+            <div class="col-sm-6">
                 <h2><?php echo $album['titulo']?></h2>
                 <p><b>Editora: <?php echo $album['editora']?></b></p>
                 
                 
                 <p><b>Quantidade Cromos:</b> <?php echo $album['quantidadeCromo']?></p>
                 <?php
-                    $progresso = (( sizeof($userStickers) * 100 ) / $album['quantidadeCromo']) ;
+                    $progresso;
+                    $quantidadeColecao = 0;
+                    if (isset($userStickers)){
+                        foreach ($userStickers as $userSticker) {
+                            if($userSticker['quantidade'] > 0){
+                                $quantidadeColecao = $quantidadeColecao + 1;
+                            }
+                        }
+                    } else {
+                        $quantidadeColecao = 0;
+                    }
+                    $progresso = ($quantidadeColecao / $album['quantidadeCromo']) * 100;
                 ?>
-                <p><b>Porcentagem completo:</b> <?= $progresso?></p>
+                <p><b>Progresso:</b> <?= $progresso?> %</p>
 
                 <p><b>Idioma:</b> <?php echo $album['idioma']?></p>
                 
                 <p><b>Data publicação:</b> <?php echo $album['anoPublicacao']?></p>
                 
                 <p><b>Data inclusão:</b> <?php echo $album['dataInclusao']?></p>
+            </div>
+            
+            <div class="col-sm-6">
+                <img src='/img/capas/<?=$album['id']?>.jpg' style="width:50%">
+            </div>
 
-
+            <div class="col-sm-12">
                 <form action="/add-stickerbook-to-collection/" method="post">
                     <?php if (isset($_SESSION['usuario'])) { 
                         $podeColecionar = true;
@@ -65,15 +81,16 @@
                                     <input type="text" class="form-control" id="cromo_<?=$sticker['id']?>_<?=$album['id']?>" placeholder="Cod" value="<?=$sticker['codigo']?>" name="sticker[]">
                                     <?php
                                     	$quantidade = 0;
-                                    	foreach ($userStickers as $userSticker) {
-                                    		if($sticker['id'] == $userSticker['cromo_id']){
-                                				$quantidade = $userSticker['quantidade'];
-                                				break;
-                                    		}
-                                    	}
+                                        if(isset($userStickers)){
+                                        	foreach ($userStickers as $userSticker) {
+                                        		if($sticker['id'] == $userSticker['cromo_id']){
+                                    				$quantidade = $userSticker['quantidade'];
+                                    				break;
+                                        		}
+                                        	}
+                                        }
                                     ?>
                                     <input type="text" class="form-control" id="quantidade_<?=$sticker['id']?>_<?=$album['id']?>" value="<?=$quantidade?>" name="sticker[]">
-
 
 									<button id="#btn_add_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button>
 
@@ -86,7 +103,7 @@
                         ?>                   
                     </div>
                 </form>
-        </div>                   
+        </div>
 
 
 

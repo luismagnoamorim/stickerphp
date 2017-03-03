@@ -57,11 +57,7 @@
                     </div>
                     <?php 
                         if ($i > 0){
-                    ?>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-lg btn-block">Atualizar cromos</button>
-                            </div>
-                    <?php
+                    
                         }
                     ?>              
                 </form>

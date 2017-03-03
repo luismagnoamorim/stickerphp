@@ -33,7 +33,7 @@
             <ul class="navbar-nav mr-auto">
                 <?php if ($user != null) { ?>        
                     <li class="nav-item <?=$navItem == "stickerbooks"? "active" : "" ?>">
-                        <a class="nav-link" href="/stickerbooks">Meus álbuns</a>
+                        <a class="nav-link" href="/stickerbooks">Álbuns</a>
                     </li>
                 <?php } ?>
             </ul>
