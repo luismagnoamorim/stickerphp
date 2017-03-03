@@ -324,15 +324,26 @@ $app->post("/admin/update-sticker/", function () use ($app)
 });
 
 // -- detalhar informacoes de um album
-$app->get("/detail-stickerbook/:albumId/:colecaoId", function ($albumId , $colecaoId) use ($app)
+$app->post("/detail-stickerbook/", function () use ($app)
 {
+	$albumId      = $app->request->post("albumId");
+	$colecaoId    = $app->request->post("colecaoId");
+
 	$album 		  = StickerBook::detailStickerBook($albumId);
 	$stickers 	  = StickerBook::listSticker($albumId);
-	$userStickers = StickerBook::listStickerCollection($colecaoId);
+	if ($colecaoId != null){
+		$userStickers = StickerBook::listStickerCollection($colecaoId);
+	} else {
+		$userStickers = NULL;
+	}
+
+	
+	
 	$app->render("header.php");
 	$data = array(
 			  "album"        => $album
 			, "stickers"     => $stickers
+			, "colecaoId"    => $colecaoId
 			, "userStickers" => $userStickers
 	);	
 	$app->render("/detail-stickerbook.php" , $data);
@@ -340,20 +351,41 @@ $app->get("/detail-stickerbook/:albumId/:colecaoId", function ($albumId , $colec
 });
 
 // -- incluir um stickerbook na collection de um usuario
-$app->post("/add-stickerbook-to-collection/", function () use ($app)
+$app->post("/collection/stickerbook/add/", function () use ($app)
 {
 	$albumId   = $app->request->post("albumId");
 	$usuarioId = $app->request->post("usuarioId");
 	$usuarioId = 1;
 
-	$album 	   = StickerBook::addStickerBookToCollection($albumId, $usuarioId);
-	$stickers  = StickerBook::listSticker($albumId);
+	$album     	  = StickerBook::detailStickerBook($albumId);
+	$stickers  	  = StickerBook::listSticker($albumId);
+	$colecao   	  = StickerBook::addStickerBookToCollection($albumId, $usuarioId);
+	$userStickers = StickerBook::listStickerCollection($colecao->id);
+   
+	$app->render("header.php");
+		$data = array(
+			  "album"   		=> $album
+			, "stickers"		=> $stickers 
+			, "colecaoId"		=> $colecao->id
+			, "userStickers"	=> $userStickers
+	
+	);
+	$app->render("/detail-stickerbook.php" , $data);
+	$app->render("footer.php");
+});
+
+// -- incluir um stickerbook na collection de um usuario
+$app->post("/collection/stickerbook/remove/", function () use ($app)
+{
+	$colecaoId = $app->request->post("colecaoId");
+
+	$album 	   = StickerBook::removeStickerBookFromCollection($colecaoId);
+	$stickers  = StickerBook::listSticker($album->id);
    
 	$app->render("header.php");
 		$data = array(
 			  "album"   => $album
 			, "stickers"  => $stickers 
-	
 	);
 	$app->render("/detail-stickerbook.php" , $data);
 	$app->render("footer.php");

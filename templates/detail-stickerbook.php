@@ -2,6 +2,8 @@
 
     $email = isset($email)? $email: "";
 
+    $_SESSION['usuarioId']   = 1;
+
 ?>
 
 <div class="container">
@@ -11,12 +13,11 @@
             <div class="card-block">
                 <h4 class="card-title text-center">Detalhes do álbum</h4>
                 <br>
-            </div>
+            </div   >
             
             <div class="col-sm-6">
                 <h2><?php echo $album['titulo']?></h2>
                 <p><b>Editora: <?php echo $album['editora']?></b></p>
-                
                 
                 <p><b>Quantidade Cromos:</b> <?php echo $album['quantidadeCromo']?></p>
                 <?php
@@ -28,12 +29,18 @@
                                 $quantidadeColecao = $quantidadeColecao + 1;
                             }
                         }
-                    } else {
-                        $quantidadeColecao = 0;
-                    }
-                    $progresso = ($quantidadeColecao / $album['quantidadeCromo']) * 100;
+                        $progresso = ($quantidadeColecao / $album['quantidadeCromo']) * 100;    
                 ?>
-                <p><b>Progresso:</b> <?= $progresso?> %</p>
+                    <p><b>Tenho </b> <?=$quantidadeColecao?> de <?= $album['quantidadeCromo']?></p>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="<?=number_format($progresso,1) ?>"
+                      aria-valuemin="0" aria-valuemax="100" style="width:<?=$progresso?>%">
+                        <?=number_format($progresso,0)?>%
+                      </div>
+                    </div>                
+                <?php
+                    } 
+                ?>
 
                 <p><b>Idioma:</b> <?php echo $album['idioma']?></p>
                 
@@ -47,27 +54,53 @@
             </div>
 
             <div class="col-sm-12">
-                <form action="/add-stickerbook-to-collection/" method="post">
-                    <?php if (isset($_SESSION['usuario'])) { 
-                        $podeColecionar = true;
-                    ?>
-                    <input type='hidden' id='usuario' name='usuarioId' value='<?php echo $_SESSION['usuario']['id']?>'>
-                    <input type='hidden' id='colecao' name='colecaoId' value='<?php echo $colecao['id']?>'>
+                <?php
+                if (isset($userStickers)){
+                ?>
+                    <form action="/collection/stickerbook/remove/" method="post">
+                        <input type='hidden' id='usuario' name='usuarioId' value='<?= $_SESSION['usuarioId']?>'>
+                        <input type='hidden' id='colecao' name='colecaoId' value='<?= $colecaoId?>'>
 
-                    <?php } 
-                        else {
-                            $podeColecionar = false;
-                        }
-                    ?>
-                    <input type='hidden' id='album' name='albumId' value='<?php echo $album['id'] ?>'>
+                        <button type="submit" class="btn btn-default">Retirar da coleção</button>
+                    </form>
+                <?php 
+                } else {
+                ?>
+                    <form action="/collection/stickerbook/add/" method="post">
+                        <?php 
+                            if (isset($_SESSION['usuario'])) { 
+                        ?>
+                        <input type='hidden' id='usuario' name='usuarioId' value='<?php echo $_SESSION['usuario']['id']?>'>
+                        <input type='hidden' id='colecao' name='colecaoId' value='<?php echo $colecao['id']?>'>
 
-                    <button type="submit" class="btn btn-default" id="btnIncluir">Incluir da coleção</button>
-                    <button type="submit" class="btn btn-default" id="btnRetirar">Retirar da coleção</button>
-                </form>
+                        <?php 
+                            }
+                        ?>
+                        <input type='hidden' id='album' name='albumId' value='<?php echo $album['id'] ?>'>
+
+                        
+                        <?php
+                            if (isset($userStickers)){
+                        ?>
+                              <button type="submit" class="btn btn-default" id="btnRetirar">Retirar da coleção</button>
+                              /collection/stickerbook/remove/
+                        <?php
+                            }else{
+                        ?>
+                              <button type="submit" class="btn btn-default" id="btnIncluir">Incluir na coleção</button>  
+                        <?php
+                            }
+                        ?>
+                    </form>
+                <?php 
+                } 
+                ?>
             </div>
         </div> 
 
-
+    <?php
+      if (isset($userStickers)){
+    ?>
         <div class="col-sm-12">
                 <form class="form-horizontal" method="post" action="/updateCollection/">
                     <div class="row">
@@ -76,27 +109,25 @@
                             $i = 0;
                             foreach ($stickers as $sticker) {
                         ?> 
-                                <div class="input-group col-sm-2">
-                                    <button id="#btn_remove_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
-                                    <input type="text" class="form-control" id="cromo_<?=$sticker['id']?>_<?=$album['id']?>" placeholder="Cod" value="<?=$sticker['codigo']?>" name="sticker[]">
+                                  <div class=" col-xs-6 box">
+                                    <h4><?=$sticker['codigo']?></h4>
                                     <?php
-                                    	$quantidade = 0;
+                                        $quantidade = 0;
                                         if(isset($userStickers)){
-                                        	foreach ($userStickers as $userSticker) {
-                                        		if($sticker['id'] == $userSticker['cromo_id']){
-                                    				$quantidade = $userSticker['quantidade'];
-                                    				break;
-                                        		}
-                                        	}
+                                            foreach ($userStickers as $userSticker) {
+                                                if($sticker['id'] == $userSticker['cromo_id']){
+                                                    $quantidade = $userSticker['quantidade'];
+                                                    break;
+                                                }
+                                            }
                                         }
                                     ?>
-                                    <input type="text" class="form-control" id="quantidade_<?=$sticker['id']?>_<?=$album['id']?>" value="<?=$quantidade?>" name="sticker[]">
-
-									<button id="#btn_add_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button>
-
-                                    <!-- ///////////////////////////// RECUPERAR IDENTIFICADOR DA COLECAO ////////////////////////////////--> 
-									<input type='hidden' id='colecao' name='colecaoId' value='1'>
-                                </div>
+                                    <p><?=$quantidade?></p>
+                                    <button id="#btn_remove_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
+                                    <button id="#btn_add_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button>
+                                    <input type='hidden' id='colecao' name='colecaoId' value='1'>
+                                  </div>
+                     
                         <?php
                             $i++;                      
                             }
@@ -104,6 +135,9 @@
                     </div>
                 </form>
         </div>
+    <?php
+      }
+    ?>        
 
 
 
@@ -113,11 +147,33 @@
 </div>
 
 <style>
-
     #card-create-user-account {
         margin-top: 30px;
     }
 
+    .rect{  
+      margin:0 0 2px;
+      padding: 2px;
+      border:0px solid #333;
+      width 80%;
+      text-align:center;
+      color: #0000FF;
+    }
+    .header{
+       margin:0 auto;
+       padding: 5px 10px;
+       width:90%;
+       border:2px solid #333;
+    }
+    .box{
+      margin: 5px 0;
+      border:1px solid blue;
+      border-radius: 2px;
+      background: rgba(00,00,10, 0.1);
+      text-align:center;
+      color: #0000FF;
+    }
+    .    
 </style>
 
 <script>

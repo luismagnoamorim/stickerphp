@@ -13,7 +13,8 @@
                     <div class="row">
 
                         <?php
-                            foreach ($collections as $collection) {
+                        	if(isset($collections)){
+                            	foreach ($collections as $collection) {
                             	//print_r($collection);
                         ?> 
                                 <div class="input-group col-sm-4">
@@ -21,12 +22,23 @@
                                     	<img src='/img/capas/<?=$collection['album_id']?>.jpg' style="width:50%">
                                     
                                 		<div class='caption'>
-                                			<a href='/detail-stickerbook/<?=$collection['album_id']?>/<?=$collection['id'] ?>'><?= $collection['album']['titulo'] ?></a>
+                                			<a href='/detail-stickerbook/' id='a_<?=$collection['album_id']?>_<?=$collection['id']?>' class='albumRef'><?= $collection['album']['titulo'] ?></a>
                                 		</div>
                                 	</div>
                                 </div>
                         <?php
-                            }
+                            	}
+                        	}else {
+                       	?>
+                       			<div id="jumbotron" class="jumbotron">
+                       			<h1 class="display-5">Coleção vazia</h1>
+                       			<p>Selecione os álbuns que deseja colecionar e boa diversão	.</p>
+                        		<a class="btn btn-primary btn-lg" href="/stickerbooks" role="button">Iniciar coleção</a>
+                        		</div>
+                        <?php
+                        	}
+
+
                         ?>                   
                     </div>
                 </form>
@@ -49,27 +61,28 @@
 
 <script>
     jQuery(document).ready(function () {
-		$('.btn-xs').click(function(e) {
-        	$colecaoId	= $("#colecao").attr('value');
-        	$acao 		= $(this).attr('id').split('_')[1];
-        	$cromoId	= $(this).attr('id').split('_')[2];
-        	$url 		= "/updateCollection";
+		$('a.albumRef').click(function(e) {
+			
+        	event.preventDefault();
+        	$albumId    = $(this).attr('id').split('_')[1];
+        	$colecaoId	= $(this).attr('id').split('_')[2];
+        	$url 		= $(this).attr("href");	
         	//alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
         	$.ajax({
             	type: 'POST'
              	,url: $url
             	,dataType: 'html'
-            	,data: { colecaoId: $colecaoId , cromoId: $cromoId , acao: $acao } 
-            //,success: function(html){
-   			// 	$("#results").append(html);
-   			//        alert('textGoogleKey' + textGoogleKey);
-  			//}
+            	,data: { albumId: $albumId , colecaoId: $colecaoId} 
+            ,success: function(response){
+   			 	$("body").html(response);
+   			
+  			}
             ///,error: function(jqXHR, textStatus) {
                 //console.error("error");
                     //alert('Not working!' + textStatus);
             ///}
             });	//$.ajax
-        });//btn.click
+        });//href.click
         
     });//jQuery
 </script>    

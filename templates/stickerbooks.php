@@ -24,7 +24,7 @@
                                     	<img src='/img/capas/<?=$stickerBook['id']?>.jpg' style="width:50%">
                                     
                                 		<div class='caption'>
-                                			<a href='/detail-stickerbook/<?=$stickerBook['id']?>/<?=$stickerBook['id'] ?>'><?= $stickerBook['titulo'] ?></a>
+                                			<a href='/detail-stickerbook/' id='a_<?=$stickerBook['id']?>' class='albumRef'><?= $stickerBook['titulo'] ?></a>
                                 		</div>
                                 	</div>
                                 </div>
@@ -34,5 +34,29 @@
                     </div>
                 </form>
         </div>
-
 </div>
+<script>
+    jQuery(document).ready(function () {
+		$('a.albumRef').click(function(e) {
+			
+        	event.preventDefault();
+        	$albumId    = $(this).attr('id').split('_')[1];
+        	$url 		= $(this).attr("href");	
+        	$.ajax({
+            	type: 'POST'
+             	,url: $url
+            	,dataType: 'html'
+            	,data: { albumId: $albumId } 
+            ,success: function(response){
+   			 	$("body").html(response);
+   			
+  			}
+            ///,error: function(jqXHR, textStatus) {
+                //console.error("error");
+                    //alert('Not working!' + textStatus);
+            ///}
+            });	//$.ajax
+        });//href.click
+        
+    });//jQuery
+</script>   

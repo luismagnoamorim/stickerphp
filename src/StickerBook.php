@@ -109,24 +109,17 @@ class StickerBook
     $colecao->dataUltimaAtualizacao = date("d.m.Y");
     R::store($colecao);
 
-    return $album;
+    return $colecao;
   }
 
 // usuario escolhe album para colecionar
-  public static function removeStickerBookFromCollection($albumId, $usuarioId){
+  public static function removeStickerBookFromCollection($colecaoId){
     self::setup();
 
-    $album = R::load('album' , $albumId);
-    $usuario = R::load('usuario' , $usuarioId);
-
-    $colecao = R::dispense('colecao');
-    $colecao->usuario = $usuario;
-    $colecao->album = $album;
-    $colecao->dataInclusao = date("d.m.Y");
-    $colecao->quantidadeCromos = 0;
-    $colecao->dataUltimaAtualizacao = date("d.m.Y");
-    R::store($colecao);
-
+    $colecao = R::load('colecao' , $colecaoId);
+    $album = R::load('album' , $colecao->album_id);
+    R::trash($colecao);
+    
     return $album;
   }
 
