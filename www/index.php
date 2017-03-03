@@ -55,18 +55,18 @@ $app->get("/create-user-account/", function () use ($app)
 $app->post("/create-user-account/", function () use ($app)
 {
 	$errors = array();
-	$email = $app->request->post("email");
-	if (($email == null) || (empty(trim($email))))
+	$email = trim($app->request->post("email"));
+	if (empty($email))
 	{
 		$errors["email"] = "Informe seu endereço de e-mail.";
 	}
-	$password = $app->request->post("password");	
-	if (($password == null) || (empty(trim($password))))
+	$password = trim($app->request->post("password"));
+	if (empty($password))
 	{
 		$errors["password"] = "Informe sua senha.";
 	}
-	$confirm_password = $app->request->post("confirm_password");	
-	if (($confirm_password == null) || (empty(trim($confirm_password))))
+	$confirm_password = trim($app->request->post("confirm_password"));
+	if (empty($confirm_password))
 	{
 		$errors["confirm_password"] = "Informe sua senha novamente.";
 	}
