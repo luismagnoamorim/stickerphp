@@ -16,10 +16,10 @@
             </div   >
             
             <div class="col-sm-6">
-                <h2><?php echo $album['titulo']?></h2>
-                <p><b>Editora: <?php echo $album['editora']?></b></p>
+                <h2><?= $album['titulo']?></h2>
+                <p><b>Editora: <?= $album['editora']?></b></p>
                 
-                <p><b>Quantidade Cromos:</b> <?php echo $album['quantidadeCromo']?></p>
+                <p><b>Quantidade Cromos:</b> <?= $album['quantidadeCromo']?></p>
                 <?php
                     $progresso;
                     $quantidadeColecao = 0;
@@ -123,8 +123,8 @@
                                         }
                                     ?>
                                     <p><?=$quantidade?></p>
-                                    <button id="#btn_remove_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
-                                    <button id="#btn_add_<?php echo $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button>
+                                    <button id="#btn_remove_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
+                                    <button id="#btn_add_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button>
                                     <input type='hidden' id='colecao' name='colecaoId' value='1'>
                                   </div>
                      
@@ -155,30 +155,30 @@
       margin:0 0 2px;
       padding: 2px;
       border:0px solid #333;
-      width 80%;
+      width: 100%;
       text-align:center;
-      color: #0000FF;
+      color: #000000;
     }
     .header{
        margin:0 auto;
        padding: 5px 10px;
-       width:90%;
+       width:100%;
        border:2px solid #333;
     }
     .box{
       margin: 5px 0;
       border:1px solid blue;
       border-radius: 2px;
-      background: rgba(00,00,10, 0.1);
+      background: rgba(51, 153, 255, 1);
       text-align:center;
-      color: #0000FF;
+      color: #FFFFFF;
     }
     .    
 </style>
 
 <script>
     jQuery(document).ready(function () {
-		$('.btn-xs').click(function(e) {
+		$('.btn-xs').on('click touchstart' , function(e) {
         	$colecaoId	= $("#colecao").attr('value');
         	$acao 		= $(this).attr('id').split('_')[1];
         	$cromoId	= $(this).attr('id').split('_')[2];
