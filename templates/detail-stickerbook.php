@@ -15,6 +15,16 @@
                 <br>
             </div   >
             
+
+            <div class="col-sm-2">
+                <div class="sticker-box">
+                    <h1>box</h1>
+                    <div class="sticker-info">
+                        <h1>Info</h1>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-sm-6">
                 <h2><?= $album['titulo']?></h2>
                 <p><b>Editora: <?= $album['editora']?></b></p>
@@ -109,23 +119,31 @@
                             $i = 0;
                             foreach ($stickers as $sticker) {
                         ?> 
-                                  <div class=" col-xs-6 box">
-                                    <h4><?=$sticker['codigo']?></h4>
-                                    <?php
-                                        $quantidade = 0;
-                                        if(isset($userStickers)){
-                                            foreach ($userStickers as $userSticker) {
-                                                if($sticker['id'] == $userSticker['cromo_id']){
-                                                    $quantidade = $userSticker['quantidade'];
-                                                    break;
+                                  <div class="col-xs-4 sticker-box">
+                                    <div class="sticker-info">
+                                        <i class="fa fa-tag" aria-hidden="true"><?= $sticker['codigo']?></i>
+                                        <?php
+                                            $quantidade = 0;
+                                            if(isset($userStickers)){
+                                                foreach ($userStickers as $userSticker) {
+                                                    if($sticker['id'] == $userSticker['cromo_id']){
+                                                        $quantidade = $userSticker['quantidade'];
+                                                        break;
+                                                    }
                                                 }
                                             }
-                                        }
-                                    ?>
-                                    <p><?=$quantidade?></p>
-                                    <button id="#btn_remove_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
-                                    <button id="#btn_add_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button>
-                                    <input type='hidden' id='colecao' name='colecaoId' value='1'>
+                                        ?>
+                                        <p>Qt <?=$quantidade?></p>
+                                        <!--
+                                        <button id="#btn_remove_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
+                                        <button id="#btn_add_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button> -->
+                                        <input type='hidden' id='colecao' name='colecaoId' value='1'>
+                                    </div>
+                                    <div class="sticker-actions-footer">
+                                        <div class="sticker-action1">+</div>
+                                        <div class="sticker-action2">-</div>
+                                    </div>
+                                    
                                   </div>
                      
                         <?php
@@ -165,7 +183,7 @@
        width:100%;
        border:2px solid #333;
     }
-    .box{
+    .sticker-box{
       margin: 5px 0;
       border:1px solid blue;
       border-radius: 2px;
@@ -173,7 +191,40 @@
       text-align:center;
       color: #FFFFFF;
     }
-    .    
+
+    .sticker-info{
+        width: 100%;
+        height: 60%;
+        color: 2px solid red;
+
+    }
+    .sticker-container .sticker-actions-footer {
+      border-top: 1px solid #CCCCCC;
+      bottom: 0;
+      position: absolute;
+      width: 100%;
+      visibility: hidden;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      -webkit-transition-property: opacity;
+      transition-property: opacity;
+      -webkit-transition-duration: 0.2s;
+      transition-duration: 0.2s;
+    }
+    .sticker-container .sticker-action1,
+    .sticker-container .sticker-action2 {
+      cursor: pointer;
+      width: 50%;
+      float: left;
+      text-align: center;
+    }
+    .sticker-container .sticker-action1:hover,
+    .sticker-container .sticker-action2:hover {
+      background: #e44c4c;
+    }
+    .sticker-container .sticker-action1 {
+      border-right: 1px solid #ccc;
+    }
 </style>
 
 <script>

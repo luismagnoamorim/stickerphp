@@ -234,12 +234,13 @@ $app->post("/admin/create-stickerbook/", function () use ($app)
 	if (count($errors) == 0)
 	{
 		$album = StickerBook::createStickerBook($titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma);
+		$stickers = StickerBook::listSticker($album['id']);
 		$app->render("header.php");
 		$data = array(
 				"album"   => $album,
 				"stickers"  => $stickers
 		);
-		$app->render("/admin/update-stickerbook/" , $data);
+		$app->render("/admin/update-stickerbook.php" , $data);
 		$app->render("footer.php");
 
 	} else {
@@ -248,7 +249,7 @@ $app->post("/admin/create-stickerbook/", function () use ($app)
 			"titulo"   => $titulo,
 			"errors"  => $errors
 		);
-		$app->render("/admin/create-stickerbook/", $data);
+		$app->render("/admin/create-stickerbook.php", $data);
 		$app->render("footer.php");
 	}
 });
