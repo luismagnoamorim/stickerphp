@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/component.css" />
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="/js/jquery.slim.min.js"></script>
     <script src="/js/tether.min.js"></script>

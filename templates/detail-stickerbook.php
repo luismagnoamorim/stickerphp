@@ -16,15 +16,6 @@
             </div   >
             
 
-            <div class="col-sm-2">
-                <div class="sticker-box">
-                    <h1>box</h1>
-                    <div class="sticker-info">
-                        <h1>Info</h1>
-                    </div>
-                </div>
-            </div>
-
             <div class="col-sm-6">
                 <h2><?= $album['titulo']?></h2>
                 <p><b>Editora: <?= $album['editora']?></b></p>
@@ -107,18 +98,45 @@
                 ?>
             </div>
         </div> 
-
+    </div>
     <?php
       if (isset($userStickers)){
     ?>
-        <div class="col-sm-12">
+    <div class="row" >
+        <div class="col-xs-12">
                 <form class="form-horizontal" method="post" action="/updateCollection/">
-                    <div class="row">
-
-                        <?php
-                            $i = 0;
-                            foreach ($stickers as $sticker) {
-                        ?> 
+                   
+                        <div class="main">
+                            <ul id="rb-grid" class="rb-grid clearfix">
+                            <?php
+                                $i = 0;
+                                foreach ($stickers as $sticker) {
+                            ?> 
+                                <li>
+                                    <div class="rb-info">
+                                        <h3><?= $sticker['codigo']?></h3>
+                                        <?php
+                                            $quantidade = 0;
+                                            if(isset($userStickers)){
+                                                foreach ($userStickers as $userSticker) {
+                                                    if($sticker['id'] == $userSticker['cromo_id']){
+                                                        $quantidade = $userSticker['quantidade'];
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        ?>
+                                        <span class="rb-qtd">Qt <?=$quantidade?></span>    
+                                    </div>
+                                    <div class="rb-week">
+                                        <div><span>-1</span></div>
+                                        <div><span>+1</span></div>
+                                    </div>
+                                </li>
+                            
+                                
+                                        <!--                    
+                            
                                   <div class="col-xs-4 sticker-box">
                                     <div class="sticker-info">
                                         <i class="fa fa-tag" aria-hidden="true"><?= $sticker['codigo']?></i>
@@ -134,9 +152,9 @@
                                             }
                                         ?>
                                         <p>Qt <?=$quantidade?></p>
-                                        <!--
+                            
                                         <button id="#btn_remove_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
-                                        <button id="#btn_add_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button> -->
+                                        <button id="#btn_add_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button> 
                                         <input type='hidden' id='colecao' name='colecaoId' value='1'>
                                     </div>
                                     <div class="sticker-actions-footer">
@@ -145,12 +163,15 @@
                                     </div>
                                     
                                   </div>
+                                  -->
                      
                         <?php
                             $i++;                      
                             }
-                        ?>                   
-                    </div>
+                        ?>
+                            </ul>               
+                        </div>                   
+                   
                 </form>
         </div>
     <?php
@@ -167,63 +188,6 @@
 <style>
     #card-create-user-account {
         margin-top: 30px;
-    }
-
-    .rect{  
-      margin:0 0 2px;
-      padding: 2px;
-      border:0px solid #333;
-      width: 100%;
-      text-align:center;
-      color: #000000;
-    }
-    .header{
-       margin:0 auto;
-       padding: 5px 10px;
-       width:100%;
-       border:2px solid #333;
-    }
-    .sticker-box{
-      margin: 5px 0;
-      border:1px solid blue;
-      border-radius: 2px;
-      background: rgba(51, 153, 255, 1);
-      text-align:center;
-      color: #FFFFFF;
-    }
-
-    .sticker-info{
-        width: 100%;
-        height: 60%;
-        color: 2px solid red;
-
-    }
-    .sticker-container .sticker-actions-footer {
-      border-top: 1px solid #CCCCCC;
-      bottom: 0;
-      position: absolute;
-      width: 100%;
-      visibility: hidden;
-      opacity: 0;
-      filter: alpha(opacity=0);
-      -webkit-transition-property: opacity;
-      transition-property: opacity;
-      -webkit-transition-duration: 0.2s;
-      transition-duration: 0.2s;
-    }
-    .sticker-container .sticker-action1,
-    .sticker-container .sticker-action2 {
-      cursor: pointer;
-      width: 50%;
-      float: left;
-      text-align: center;
-    }
-    .sticker-container .sticker-action1:hover,
-    .sticker-container .sticker-action2:hover {
-      background: #e44c4c;
-    }
-    .sticker-container .sticker-action1 {
-      border-right: 1px solid #ccc;
     }
 </style>
 
