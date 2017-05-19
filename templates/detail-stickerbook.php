@@ -103,18 +103,23 @@
       if (isset($userStickers)){
     ?>
     <div class="row" >
-        <div class="col-xs-12">
+        <div class="col-md-12">
                 <form class="form-horizontal" method="post" action="/updateCollection/">
                    
                         <div class="main">
-                            <ul id="rb-grid" class="rb-grid clearfix">
+                            
+                        
                             <?php
                                 $i = 0;
                                 foreach ($stickers as $sticker) {
                             ?> 
-                                <li>
-                                    <div class="rb-info">
-                                        <h3><?= $sticker['codigo']?></h3>
+                                                                       
+                                <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
+                                    <div class="sticker-container">
+                                        
+                                        
+                                        
+
                                         <?php
                                             $quantidade = 0;
                                             if(isset($userStickers)){
@@ -126,51 +131,32 @@
                                                 }
                                             }
                                         ?>
-                                        <span class="rb-qtd">Qt <?=$quantidade?></span>    
-                                    </div>
-                                    <div class="rb-week">
-                                        <div><span>-1</span></div>
-                                        <div><span>+1</span></div>
-                                    </div>
-                                </li>
-                            
-                                
-                                        <!--                    
-                            
-                                  <div class="col-xs-4 sticker-box">
-                                    <div class="sticker-info">
-                                        <i class="fa fa-tag" aria-hidden="true"><?= $sticker['codigo']?></i>
                                         <?php
-                                            $quantidade = 0;
-                                            if(isset($userStickers)){
-                                                foreach ($userStickers as $userSticker) {
-                                                    if($sticker['id'] == $userSticker['cromo_id']){
-                                                        $quantidade = $userSticker['quantidade'];
-                                                        break;
-                                                    }
-                                                }
+                                            if($quantidade){
+                                        ?>
+                                                <h1><?= $sticker['codigo']?></h1>
+                                        <?php
+                                            } else {
+                                        ?>
+                                                <h1><?= $sticker['codigo']?></h1>        
+                                        <?php
                                             }
                                         ?>
-                                        <p>Qt <?=$quantidade?></p>
-                            
-                                        <button id="#btn_remove_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
-                                        <button id="#btn_add_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button> 
-                                        <input type='hidden' id='colecao' name='colecaoId' value='1'>
+                                        <div class="sticker-actions-footer">
+                                            <div class="sticker-action1"><i class="fa fa-minus-square"></i></div>
+                                            <div class="sticker-action2"><i class="fa fa-plus-square" ></i></div>
+                                        </div>
                                     </div>
-                                    <div class="sticker-actions-footer">
-                                        <div class="sticker-action1">+</div>
-                                        <div class="sticker-action2">-</div>
-                                    </div>
-                                    
-                                  </div>
-                                  -->
+
+
+                                </div>
+
                      
-                        <?php
-                            $i++;                      
-                            }
-                        ?>
-                            </ul>               
-                        </div>                   
+                            <?php
+                                $i++;                      
+                                }
+                            ?>
+                        </div>
                    
                 </form>
         </div>
@@ -185,10 +171,78 @@
 
 </div>
 
+                                    <!--
+                                        <p>Qt <?=$quantidade?></p>
+                            
+                                        <button id="#btn_remove_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
+                                        <button id="#btn_add_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button> 
+                                        <input type='hidden' id='colecao' name='colecaoId' value='1'>
+                                    </div>
+                                    <div class="sticker-actions-footer">
+                                        <div class="sticker-action1">+</div>
+                                        <div class="sticker-action2">-</div>
+                                    </div> -->
+
 <style>
     #card-create-user-account {
         margin-top: 30px;
     }
+
+    .collection-item, .collection-item-uneditable {
+        width: 78px;
+        float: left;
+        padding: 6px;
+        font-size: 0.9em;
+    }
+
+
+.sticker-container {
+    display: block;
+    border: 1px solid;
+    border-color: #dedede;
+    background-color: #8CC7DF;
+    text-align: center;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    padding: 24px 0;
+    cursor: pointer;
+    min-height: 85px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+
+.sticker-container h1 {
+    font-size: 2em;
+    color: black;
+}
+
+.sticker-container h2 {
+    font-size: 1.2em;
+    color: black;
+}
+
+.sticker-container .sticker-actions-footer {
+    border-top: 1px solid #CCCCCC;
+    bottom: 0;
+    position: absolute;
+    width: 100%;    
+}
+
+.sticker-container .sticker-action1, .sticker-container .sticker-action2 {
+    cursor: pointer;
+    width: 50%;
+    float: left;
+    text-align: center;
+    background: #2DB4B4;
+}     
+
+.sticker-container .sticker-action1:hover, .sticker-container .sticker-action2:hover {
+    background: #33CCCC;
+}
+
 </style>
 
 <script>
