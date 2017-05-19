@@ -116,10 +116,6 @@
                                                                        
                                 <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
                                     <div class="sticker-container">
-                                        
-                                        
-                                        
-
                                         <?php
                                             $quantidade = 0;
                                             if(isset($userStickers)){
@@ -134,7 +130,7 @@
                                         <?php
                                             if($quantidade){
                                         ?>
-                                                <h1><?= $sticker['codigo']?></h1>
+                                                <h1></i><?= $sticker['codigo']?></h1>
                                         <?php
                                             } else {
                                         ?>
@@ -142,9 +138,10 @@
                                         <?php
                                             }
                                         ?>
+                                    
                                         <div class="sticker-actions-footer">
-                                            <div class="sticker-action1"><i class="fa fa-minus-square"></i></div>
-                                            <div class="sticker-action2"><i class="fa fa-plus-square" ></i></div>
+                                            <div class="sticker-action1"><i class="fa fa-minus-square fa-lg"></i></div>
+                                            <div class="sticker-action2"><i class="fa fa-plus-square  fa-lg"></i></div>
                                         </div>
                                     </div>
 
@@ -200,7 +197,27 @@
     display: block;
     border: 1px solid;
     border-color: #dedede;
-    background-color: #8CC7DF;
+    background-color: #33CCCC;
+    background-color: #DD4D2C;
+
+    text-align: center;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    padding: 24px 0;
+    cursor: pointer;
+    min-height: 85px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+.sticker-container-ok {
+    display: block;
+    border: 1px solid;
+    border-color: #dedede;
+    background-color: #DD4D2C;
+
     text-align: center;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -216,7 +233,7 @@
 
 .sticker-container h1 {
     font-size: 2em;
-    color: black;
+    color: white;
 }
 
 .sticker-container h2 {
@@ -228,15 +245,17 @@
     border-top: 1px solid #CCCCCC;
     bottom: 0;
     position: absolute;
-    width: 100%;    
+    width: 100%;   
+    float: left;
 }
+
 
 .sticker-container .sticker-action1, .sticker-container .sticker-action2 {
     cursor: pointer;
     width: 50%;
     float: left;
     text-align: center;
-    background: #2DB4B4;
+    background: #29A3A3;
 }     
 
 .sticker-container .sticker-action1:hover, .sticker-container .sticker-action2:hover {
