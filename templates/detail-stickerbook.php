@@ -51,7 +51,7 @@
             </div>
             
             <div class="col-sm-6">
-                <img src='/img/capas/<?=$album['id']?>.jpg' style="width:50%">
+                <img src='/img/capas/<?=$album['nomeImagem']?>.jpg' style="width:50%">
             </div>
 
             <div class="col-sm-12">
@@ -105,15 +105,11 @@
     <div class="row" >
         <div class="col-md-12">
                 <form class="form-horizontal" method="post" action="/updateCollection/">
-                   
                         <div class="main">
-                            
-                        
                             <?php
                                 $i = 0;
                                 foreach ($stickers as $sticker) {
                             ?> 
-                                                                       
                                 <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
                                     <div class="sticker-container">
                                         <?php
@@ -144,41 +140,20 @@
                                             <div class="sticker-action2"><i class="fa fa-plus-square  fa-lg"></i></div>
                                         </div>
                                     </div>
-
-
                                 </div>
-
-                     
                             <?php
                                 $i++;                      
                                 }
                             ?>
                         </div>
-                   
                 </form>
         </div>
     <?php
       }
     ?>        
-
-
-
-
     </div>
-
 </div>
 
-                                    <!--
-                                        <p>Qt <?=$quantidade?></p>
-                            
-                                        <button id="#btn_remove_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-minus" ></i></button>
-                                        <button id="#btn_add_<?= $sticker['id'] ?>" type="button" class="btn-xs"><i class="fa fa-plus"  ></i></button> 
-                                        <input type='hidden' id='colecao' name='colecaoId' value='1'>
-                                    </div>
-                                    <div class="sticker-actions-footer">
-                                        <div class="sticker-action1">+</div>
-                                        <div class="sticker-action2">-</div>
-                                    </div> -->
 
 <style>
     #card-create-user-account {
@@ -192,13 +167,12 @@
         font-size: 0.9em;
     }
 
-
 .sticker-container {
     display: block;
     border: 1px solid;
     border-color: #dedede;
-    background-color: #33CCCC;
-    background-color: #DD4D2C;
+    background-color: #2D87B4;
+    background-color: #e52727;
 
     text-align: center;
     border-top-right-radius: 4px;
@@ -210,25 +184,7 @@
     min-height: 85px;
     position: relative;
     overflow: hidden;
-    color: white;
-}
-.sticker-container-ok {
-    display: block;
-    border: 1px solid;
-    border-color: #dedede;
-    background-color: #DD4D2C;
-
-    text-align: center;
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
-    padding: 24px 0;
-    cursor: pointer;
-    min-height: 85px;
-    position: relative;
-    overflow: hidden;
-    color: white;
+    
 }
 
 .sticker-container h1 {
@@ -247,6 +203,7 @@
     position: absolute;
     width: 100%;   
     float: left;
+    color: white;
 }
 
 

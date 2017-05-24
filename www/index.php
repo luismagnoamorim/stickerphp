@@ -210,6 +210,7 @@ $app->post("/admin/create-stickerbook/", function () use ($app)
 	$anoPublicacao		= $app->request->post("anoPublicacao");
 	$idioma				= $app->request->post("idioma");
 	$quantidadeCromo	= $app->request->post("quantidadeCromo");
+	$nomeImagem			= $app->request->post("nomeImagem");
 
 	if ($titulo == null)
 	{
@@ -231,9 +232,13 @@ $app->post("/admin/create-stickerbook/", function () use ($app)
 	{
 		$errors["quantidadeCromo"] = "Quantidade total de cromos deve ser informada.";
 	}
+	if ($nomeImagem == null)
+	{
+		$errors["nomeImagem"] = "Nome da imagem da capa deve ser informada.";
+	}
 	if (count($errors) == 0)
 	{
-		$album = StickerBook::createStickerBook($titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma);
+		$album = StickerBook::createStickerBook($titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem);
 		$stickers = StickerBook::listSticker($album['id']);
 		$app->render("header.php");
 		$data = array(
@@ -277,7 +282,8 @@ $app->post("/admin/update-stickerbook/:albumId", function () use ($app)
 	$anoPublicacao		= $app->request->post("anoPublicacao");
 	$idioma				= $app->request->post("idioma");
 	$quantidadeCromo	= $app->request->post("quantidadeCromo");
-	$album = StickerBook::updateStickerBook($albumId,$titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma);
+	$nomeImagem			= $app->request->post("nomeImagem");
+	$album = StickerBook::updateStickerBook($albumId,$titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem);
 	$stickers	= StickerBook::listSticker($albumId);
 	$app->render("header.php");
 		$data = array(

@@ -3,7 +3,7 @@
 class StickerBook
 {
 
-  public static function createStickerBook($tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma)
+  public static function createStickerBook($tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem)
   {
     self::setup();
     $album = R::dispense('album');
@@ -13,13 +13,14 @@ class StickerBook
     $album -> editora           = $editora;
     $album -> anoPublicacao     = $anoPublicacao;
     $album -> idioma            = $idioma;
+    $album -> nomeImagem        = $nomeImagem;
     
     R::store($album);
     return $album;
   }
 
   //atualiza dados do album
-  public static function updateStickerBook($albumId, $tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma)
+  public static function updateStickerBook($albumId, $tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem)
   {
     self::setup();
     $album = R::Load('album', $albumId);
@@ -28,6 +29,7 @@ class StickerBook
     $album -> editora           = $editora;
     $album -> anoPublicacao     = $anoPublicacao;
     $album -> idioma            = $idioma;
+    $album -> nomeImagem        = $nomeImagem;
    
     R::store($album);
     return $album;

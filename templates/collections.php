@@ -19,7 +19,7 @@
                         ?> 
                                 <div class="input-group col-sm-4">
                                 	<div class="thumbnail">
-                                    	<img src='/img/capas/<?=$collection['album_id']?>.jpg' style="width:50%">
+                                    	<img src='/img/capas/<?=$collection['album']['nomeImagem']?>.jpg' style="width:50%">
                                     
                                 		<div class='caption'>
                                 			<a href='/detail-stickerbook/' id='a_<?=$collection['album_id']?>_<?=$collection['id']?>' class='albumRef'><?= $collection['album']['titulo'] ?></a>

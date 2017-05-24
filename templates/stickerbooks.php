@@ -21,7 +21,7 @@
                         ?> 
                                 <div class="input-group col-sm-4">
                                 	<div class="thumbnail">
-                                    	<img src='/img/capas/<?=$stickerBook['id']?>.jpg' style="width:50%">
+                                    	<img src='/img/capas/<?=$stickerBook['nomeImagem']?>.jpg' style="width:50%">
                                     
                                 		<div class='caption'>
                                 			<a href='/detail-stickerbook/' id='a_<?=$stickerBook['id']?>' class='albumRef'><?= $stickerBook['titulo'] ?></a>
