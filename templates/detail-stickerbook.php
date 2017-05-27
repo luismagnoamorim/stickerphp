@@ -126,18 +126,15 @@
                                         <?php
                                             if($quantidade){
                                         ?>
-                                                <h1></i><?= $sticker['codigo']?></h1>
-                                        <?php
-                                            } else {
-                                        ?>
-                                                <h1><?= $sticker['codigo']?></h1>        
+                                                <h1><?= $sticker['codigo']?></h1>
                                         <?php
                                             }
                                         ?>
                                     
                                         <div class="sticker-actions-footer">
                                             <div class="sticker-action1"><i class="fa fa-minus-square fa-lg"></i></div>
-                                            <div class="sticker-action2"><i class="fa fa-plus-square  fa-lg"></i></div>
+                                            <div class="sticker-no-action"><?= $quantidade ?></div>
+                                            <div class="sticker-action2"><i class="fa fa-plus-square fa-lg"></i></div>
                                         </div>
                                     </div>
                                 </div>
@@ -172,7 +169,10 @@
     border: 1px solid;
     border-color: #dedede;
     background-color: #2D87B4;
-    background-color: #e52727;
+
+
+
+    
 
     text-align: center;
     border-top-right-radius: 4px;
@@ -203,20 +203,19 @@
     position: absolute;
     width: 100%;   
     float: left;
-    color: white;
+    color: black;
+    background: #3399CC;
 }
 
-
-.sticker-container .sticker-action1, .sticker-container .sticker-action2 {
+.sticker-container .sticker-action1, .sticker-container .sticker-action2 , .sticker-container .sticker-no-action {
     cursor: pointer;
-    width: 50%;
+    width: 33%;
     float: left;
     text-align: center;
-    background: #29A3A3;
 }     
 
 .sticker-container .sticker-action1:hover, .sticker-container .sticker-action2:hover {
-    background: #33CCCC;
+    background: #143D52;
 }
 
 </style>
@@ -244,6 +243,17 @@
             ///}
             });	//$.ajax
         });//btn.click
-        
+
+        $('.sticker-container').each( function(e){
+            var quantidadeStickerCollection = $(this).find('div.sticker-no-action').text();
+            console.log("quantidade" + quantidadeStickerCollection);
+            if( quantidadeStickerCollection == 0 ){
+                $(this).css('background-color','#DD4D2C');
+            } else if (quantidadeStickerCollection == 1) {
+                $(this).css('background-color','#339966');
+            } else {
+                $(this).css('background-color','#2D87B4');
+            };
+        });
     });//jQuery
 </script>    
