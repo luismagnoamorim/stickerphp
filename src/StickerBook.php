@@ -118,9 +118,11 @@ class StickerBook
   public static function removeStickerBookFromCollection($colecaoId){
     self::setup();
 
-    $colecao = R::load('colecao' , $colecaoId);
-    $album = R::load('album' , $colecao->album_id);
+    $colecao      = R::load('colecao' , $colecaoId);
+    $album        = R::load('album' , $colecao->album_id);
+    $cromosColecao = R::findAll('cromoColecao' , 'colecao_id = :id' , [ ':id' => $colecao->id]);
     R::trash($colecao);
+    R::trashAll($cromosColecao);
     
     return $album;
   }
@@ -170,8 +172,10 @@ class StickerBook
     }
     else {
       $cromoColecao = R::findOne('cromocolecao' , 'colecao_id = :colecaoId AND cromo_id = :cromoId' , [ ':colecaoId' => $colecaoId , ':cromoId' => $cromoId]);
-      if ($cromoColecao->quantidade > 0){
-        $cromoColecao->quantidade = $cromoColecao->quantidade - 1;
+      if(!is_null($cromoColecao)){
+        if ($cromoColecao->quantidade > 0){
+          $cromoColecao->quantidade = $cromoColecao->quantidade - 1;
+        }
       }
     }
     R::store($cromoColecao);

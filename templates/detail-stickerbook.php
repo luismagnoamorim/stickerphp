@@ -229,10 +229,17 @@
              	,url: $url
             	,dataType: 'html'
             	,data: { colecaoId: $colecaoId , cromoId: $cromoId , acao: $acao } 
-            //,success: function(response){
-            //    console.log(response);
-   			// 	$('#sticker-action517 .sticker-no-action').html('20');
-  			//}
+            ,success: function(quantidade){
+                var $quantidadeAtual =  0;
+                $quantidadeAtual = Number($('#sticker-action'+$cromoId+ ' .sticker-no-action').text()) - 1;
+                if ($quantidadeAtual < 0){
+                    $quantidadeAtual = 0;
+                }
+                //$('#sticker-action'+$cromoId+ ' .sticker-no-action').remove();
+                $('#sticker-action'+$cromoId+ ' .sticker-no-action').html($quantidadeAtual);
+                aplicaCorPorQuantidade($('#sticker-action'+$cromoId) , $quantidadeAtual);
+
+  			}
             ///,error: function(jqXHR, textStatus) {
                 //console.error("error");
                     //alert('Not working!' + textStatus);
@@ -251,10 +258,17 @@
                 ,url: $url
                 ,dataType: 'html'
                 ,data: { colecaoId: $colecaoId , cromoId: $cromoId , acao: $acao } 
-            //,success: function(html){
-            //  $("#results").append(html);
-            //        alert('textGoogleKey' + textGoogleKey);
-            //}
+            ,success: function(quantidade){
+                var $quantidadeAtual =  0;
+                $quantidadeAtual = Number($('#sticker-action'+$cromoId+ ' .sticker-no-action').text()) + 1;
+                if ($quantidadeAtual < 0){
+                    $quantidadeAtual = 0;
+                }
+                //$('#sticker-action'+$cromoId+ ' .sticker-no-action').remove();
+                $('#sticker-action'+$cromoId+ ' .sticker-no-action').html($quantidadeAtual);
+                aplicaCorPorQuantidade($('#sticker-action'+$cromoId) , $quantidadeAtual);
+
+            }
             ///,error: function(jqXHR, textStatus) {
                 //console.error("error");
                     //alert('Not working!' + textStatus);
@@ -263,14 +277,25 @@
         });//btn.click        
 
         $('.sticker-container').each( function(e){
-            var quantidadeStickerCollection = $(this).find('div.sticker-no-action').text();
-            if( quantidadeStickerCollection == 0 ){
-                $(this).css('background-color','#DD4D2C');
-            } else if (quantidadeStickerCollection == 1) {
-                $(this).css('background-color','#339966');
-            } else {
-                $(this).css('background-color','#2D87B4');
-            };
+            var $quantidadeStickerCollection = $(this).find('div.sticker-no-action').text();
+            aplicaCorPorQuantidade($(this), $quantidadeStickerCollection);
+            //if( quantidadeStickerCollection == 0 ){
+            //    $(this).css('background-color','#DD4D2C');
+            //} else if (quantidadeStickerCollection == 1) {
+            //    $(this).css('background-color','#339966');
+            //} else {
+            //    $(this).css('background-color','#2D87B4');
+            //};
         });
+
+        function aplicaCorPorQuantidade($element , $quantidade){
+            if( $quantidade == 0 ){
+                $element.css('background-color','#DD4D2C');
+            } else if ($quantidade == 1) {
+                $element.css('background-color','#339966');
+            } else {
+                $element.css('background-color','#2D87B4');
+            }; 
+        }
     });//jQuery
 </script>    

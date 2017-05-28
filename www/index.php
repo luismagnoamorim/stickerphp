@@ -410,14 +410,14 @@ $app->post("/updateCollection/", function () use ($app)
 	$stickers     = StickerBook::listSticker($album->id);    
 	$userStickers = StickerBook::listStickerCollection($colecaoId) ;
 
-	$app->render("header.php");
-		$data = array(
-			  "album"   => $album
-			, "stickers"  => $stickers 
-			, "userStickers"  => $userStickers
-	);
-	$app->render("/detail-stickerbook.php" , $data);
-	$app->render("footer.php");
+	//$app->render("header.php");
+	//	$data = array(
+	//		  "album"   => $album
+	//		, "stickers"  => $stickers 
+	//		, "userStickers"  => $userStickers
+	//);
+	//$app->render("/detail-stickerbook.php" , $data);
+	//$app->render("footer.php");
 });
 
 // -- detalhar informacoes de um album
