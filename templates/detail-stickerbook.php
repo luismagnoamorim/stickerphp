@@ -240,7 +240,7 @@
             });	//$.ajax
         });//sticker-action1 remove
 
-        $('.sticker-action2').on('click touchstart' , function(e) {
+        $('.sticker-action2').on('click' , function(e) {
             $colecaoId  = $("#colecao").attr('value');
             $acao       = 'add';
             $cromoId    = $(this).attr('id');
