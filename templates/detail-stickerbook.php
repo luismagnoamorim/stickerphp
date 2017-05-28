@@ -218,7 +218,7 @@
 
 <script>
     jQuery(document).ready(function () {
-		$('.sticker-action1').on('click touchstart' , function(e) {
+		$('.sticker-action1').on('click' , function(e) {
         	$colecaoId	= $("#colecao").attr('value');
         	$acao 		= 'remove';
         	$cromoId	= $(this).attr('id');
