@@ -48,6 +48,7 @@
             	,dataType: 'html'
             	,data: { albumId: $albumId } 
             ,success: function(response){
+                console.log(response);
    			 	$("body").html(response);
    			
   			}

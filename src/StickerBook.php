@@ -142,6 +142,15 @@ class StickerBook
     return $listStickerCollection;
   }
 
+// localizar numero do album a partir da coleção
+  public static function findAlbumByCollection($colecaoId){
+    self::setup();      
+
+    $colecao = R::load('colecao' , 'colecao_id = :id' , [ ':id' => $colecaoId]);
+    $album   = R::load('album', 'album_id = :id' , [ ':id' => $colecao->album_id]);
+    return $album;    
+  }
+
 // incluir ou remover cromo da coleção 
   public static function updateCollection($colecaoId, $cromoId , $acao){
     self::setup();      
@@ -166,7 +175,10 @@ class StickerBook
       }
     }
     R::store($cromoColecao);
+    return $cromoColecao;
   }
+
+
 
 // TODO Lógica do Negócio Aqui
 

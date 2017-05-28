@@ -4,6 +4,8 @@
 
     $_SESSION['usuarioId']   = 1;
 
+    //print_r($album);
+
 ?>
 
 <div class="container">
@@ -30,6 +32,7 @@
                                 $quantidadeColecao = $quantidadeColecao + 1;
                             }
                         }
+                        
                         $progresso = ($quantidadeColecao / $album['quantidadeCromo']) * 100;    
                 ?>
                     <p><b>Tenho </b> <?=$quantidadeColecao?> de <?= $album['quantidadeCromo']?></p>
@@ -111,7 +114,7 @@
                                 foreach ($stickers as $sticker) {
                             ?> 
                                 <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
-                                    <div class="sticker-container">
+                                    <div class="sticker-container" id="sticker-action<?= $sticker['id'] ?>">
                                         <?php
                                             $quantidade = 0;
                                             if(isset($userStickers)){
@@ -123,18 +126,11 @@
                                                 }
                                             }
                                         ?>
-                                        <?php
-                                            if($quantidade){
-                                        ?>
-                                                <h1><?= $sticker['codigo']?></h1>
-                                        <?php
-                                            }
-                                        ?>
-                                    
+                                        <h1><?= $sticker['codigo']?></h1>
                                         <div class="sticker-actions-footer">
-                                            <div class="sticker-action1"><i class="fa fa-minus-square fa-lg"></i></div>
+                                            <div class="sticker-action1" id="<?= $sticker['id'] ?>"><i class="fa fa-minus-square fa-lg"></i></div>
                                             <div class="sticker-no-action"><?= $quantidade ?></div>
-                                            <div class="sticker-action2"><i class="fa fa-plus-square fa-lg"></i></div>
+                                            <div class="sticker-action2" id="<?= $sticker['id'] ?>"><i class="fa fa-plus-square fa-lg"></i></div>
                                         </div>
                                     </div>
                                 </div>
@@ -222,10 +218,10 @@
 
 <script>
     jQuery(document).ready(function () {
-		$('.btn-xs').on('click touchstart' , function(e) {
+		$('.sticker-action1').on('click touchstart' , function(e) {
         	$colecaoId	= $("#colecao").attr('value');
-        	$acao 		= $(this).attr('id').split('_')[1];
-        	$cromoId	= $(this).attr('id').split('_')[2];
+        	$acao 		= 'remove';
+        	$cromoId	= $(this).attr('id');
         	$url 		= "/updateCollection";
         	//alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
         	$.ajax({
@@ -233,20 +229,41 @@
              	,url: $url
             	,dataType: 'html'
             	,data: { colecaoId: $colecaoId , cromoId: $cromoId , acao: $acao } 
-            //,success: function(html){
-   			// 	$("#results").append(html);
-   			//        alert('textGoogleKey' + textGoogleKey);
+            //,success: function(response){
+            //    console.log(response);
+   			// 	$('#sticker-action517 .sticker-no-action').html('20');
   			//}
             ///,error: function(jqXHR, textStatus) {
                 //console.error("error");
                     //alert('Not working!' + textStatus);
             ///}
             });	//$.ajax
-        });//btn.click
+        });//sticker-action1 remove
+
+        $('.sticker-action2').on('click touchstart' , function(e) {
+            $colecaoId  = $("#colecao").attr('value');
+            $acao       = 'add';
+            $cromoId    = $(this).attr('id');
+            $url        = "/updateCollection";
+            //alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
+            $.ajax({
+                type: 'POST'
+                ,url: $url
+                ,dataType: 'html'
+                ,data: { colecaoId: $colecaoId , cromoId: $cromoId , acao: $acao } 
+            //,success: function(html){
+            //  $("#results").append(html);
+            //        alert('textGoogleKey' + textGoogleKey);
+            //}
+            ///,error: function(jqXHR, textStatus) {
+                //console.error("error");
+                    //alert('Not working!' + textStatus);
+            ///}
+            }); //$.ajax
+        });//btn.click        
 
         $('.sticker-container').each( function(e){
             var quantidadeStickerCollection = $(this).find('div.sticker-no-action').text();
-            console.log("quantidade" + quantidadeStickerCollection);
             if( quantidadeStickerCollection == 0 ){
                 $(this).css('background-color','#DD4D2C');
             } else if (quantidadeStickerCollection == 1) {

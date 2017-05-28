@@ -405,8 +405,9 @@ $app->post("/updateCollection/", function () use ($app)
 	$cromoId   = $app->request->post("cromoId");
 	$acao      = $app->request->post("acao");
 
-	$album 	      = StickerBook::updateCollection($colecaoId , $cromoId , $acao );
-	$stickers     = StickerBook::listSticker($albumId);      //// nao implementado
+	$collection   = StickerBook::updateCollection($colecaoId , $cromoId , $acao );
+	$album        = StickerBook::findAlbumByCollection($colecaoId);
+	$stickers     = StickerBook::listSticker($album->id);    
 	$userStickers = StickerBook::listStickerCollection($colecaoId) ;
 
 	$app->render("header.php");
@@ -415,7 +416,7 @@ $app->post("/updateCollection/", function () use ($app)
 			, "stickers"  => $stickers 
 			, "userStickers"  => $userStickers
 	);
-	$app->render("/stickerbooks.php" , $data);
+	$app->render("/detail-stickerbook.php" , $data);
 	$app->render("footer.php");
 });
 
