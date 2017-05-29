@@ -335,16 +335,14 @@ $app->post("/detail-stickerbook/", function () use ($app)
 {
 	$albumId      = $app->request->post("albumId");
 	$colecaoId    = $app->request->post("colecaoId");
-
+                                           
 	$album 		  = StickerBook::detailStickerBook($albumId);
 	$stickers 	  = StickerBook::listSticker($albumId);
 	if ($colecaoId != null){
 		$userStickers = StickerBook::listStickerCollection($colecaoId);
 	} else {
-		$userStickers = NULL;
+		$userStickers = null;
 	}
-
-	
 	
 	$app->render("header.php");
 	$data = array(

@@ -120,7 +120,7 @@ class StickerBook
 
     $colecao      = R::load('colecao' , $colecaoId);
     $album        = R::load('album' , $colecao->album_id);
-    $cromosColecao = R::findAll('cromoColecao' , 'colecao_id = :id' , [ ':id' => $colecao->id]);
+    $cromosColecao = R::findAll('cromocolecao' , 'colecao_id = :id' , [ ':id' => $colecao->id]);
     R::trash($colecao);
     R::trashAll($cromosColecao);
     
@@ -140,7 +140,7 @@ class StickerBook
 // listar stickers de uma collection do usuario
   public static function listStickerCollection($colecaoId){
     self::setup();
-    $listStickerCollection = R::findAll('cromoColecao' , 'colecao_id = :id' , [ ':id' => $colecaoId]);
+    $listStickerCollection = R::findAll('cromocolecao' , 'colecao_id = :id' , [ ':id' => $colecaoId]);
     return $listStickerCollection;
   }
 
@@ -158,28 +158,32 @@ class StickerBook
     self::setup();      
 
     $colecao  = R::load('colecao' , $colecaoId);
-    $cromo    = R::load('cromo' ,  $cromoId );
-    
+
     if ($acao == "add"){
-      $cromoColecao = R::findOrCreate( 'cromocolecao', [ 'colecao_id' => $colecaoId , 'cromo_id' => $cromoId]);
+      $cromocolecao = R::findOrCreate( 'cromocolecao', [ 'colecao_id' => $colecaoId , 'cromo_id' => $cromoId]);
       
-        if(is_null($cromoColecao->quantidade)){ // se registro esta sendo criado define quantidade 1
-          $cromoColecao->quantidade = 1;
+        if(is_null($cromocolecao->quantidade)){ // se registro esta sendo criado define quantidade 1
+          $cromocolecao->quantidade = 1;
         }else{
-          $cromoColecao->quantidade = $cromoColecao->quantidade + 1;
+          $cromocolecao->quantidade = $cromocolecao->quantidade + 1;
         }
       
     }
     else {
-      $cromoColecao = R::findOne('cromocolecao' , 'colecao_id = :colecaoId AND cromo_id = :cromoId' , [ ':colecaoId' => $colecaoId , ':cromoId' => $cromoId]);
-      if(!is_null($cromoColecao)){
-        if ($cromoColecao->quantidade > 0){
-          $cromoColecao->quantidade = $cromoColecao->quantidade - 1;
+      $cromocolecao = R::findOne('cromocolecao' , 'colecao_id = :colecaoId AND cromo_id = :cromoId' , [ ':colecaoId' => $colecaoId , ':cromoId' => $cromoId]);
+      if(!is_null($cromocolecao)){
+        if ($cromocolecao->quantidade > 0){
+          $cromocolecao->quantidade = $cromocolecao->quantidade - 1;
         }
       }
     }
-    R::store($cromoColecao);
-    return $cromoColecao;
+    R::store($cromocolecao);
+
+    $colecao->quantidadeCromos = $cromocolecao->quantidade;
+    $colecao->dataUltimaAtualizacao = date("d.m.Y");
+    R::store($colecao);
+
+    return $cromocolecao;
   }
 
 
