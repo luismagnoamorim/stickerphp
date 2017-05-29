@@ -16,13 +16,7 @@
                 <h4 class="card-title text-center">Detalhes do álbum</h4>
                 <br>
             </div   >
-            <?php
-            print_r($stickers);
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++==";
-            echo "<br>";
-            print_r($userStickers);
-
-            ?>
+            
             <div class="col-sm-6">
                 <h2><?= $album['titulo']?></h2>
                 <p><b>Editora: <?= $album['editora']?></b></p>
