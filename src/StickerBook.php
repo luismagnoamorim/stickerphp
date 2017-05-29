@@ -157,8 +157,6 @@ class StickerBook
   public static function updateCollection($colecaoId, $cromoId , $acao){
     self::setup();      
 
-    $colecao  = R::load('colecao' , $colecaoId);
-
     if ($acao == "add"){
       $cromocolecao = R::findOrCreate( 'cromocolecao', [ 'colecao_id' => $colecaoId , 'cromo_id' => $cromoId]);
       
@@ -179,6 +177,7 @@ class StickerBook
     }
     R::store($cromocolecao);
 
+    $colecao  = R::load('colecao' , $colecaoId);
     $colecao->quantidadeCromos = $cromocolecao->quantidade;
     $colecao->dataUltimaAtualizacao = date("d.m.Y");
     R::store($colecao);
