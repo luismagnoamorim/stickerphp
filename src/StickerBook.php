@@ -51,7 +51,7 @@ class StickerBook
     return $album;
   }
 
-//listar albuns que compoem a collection do usuario --- SEM USO
+//listar albuns que compoem a collection do usuario 
   public static function listStickerBookCollection($usuarioId){
     self::setup();
 
@@ -67,6 +67,7 @@ class StickerBook
     return $listaAlbunsColecao;
   }
 
+  //adiciona stickers como componentes de um album
   public static function addStickerToBook($albumId, $stickerList){
     self::setup();
     $album = R::Load('album' , $albumId);
@@ -81,6 +82,7 @@ class StickerBook
     R::store($album);
   }  
 
+  //altera o atributo código de um sticker
   public static function updateSticker($stickerId, $novoCodigo){
     self::setup();
     $sticker = R::Load('cromo' , $stickerId);
@@ -88,7 +90,8 @@ class StickerBook
     R::store($sticker);
   }
 
-  public static function listSticker($albumId){ //////////////////////////////// FUNCIONAMENTO OK
+  //lista os sticker que compõem um stickerbook
+  public static function listSticker($albumId){
       self::setup();      
       $stickers = R::findAll('cromo', 'album_id = :id ', [ ':id'=>$albumId ]);
       return $stickers;
@@ -96,7 +99,7 @@ class StickerBook
 
 
 /// -----------------colecao -------------------------------------------------------------------------------
-// usuario escolhe album para colecionar
+// usuario escolhe stickerBook para colecionar e o inclui na sua collection
   public static function addStickerBookToCollection($albumId, $usuarioId){
     self::setup();
 
@@ -114,7 +117,7 @@ class StickerBook
     return $colecao;
   }
 
-// usuario escolhe album para colecionar
+// usuario remove um stickerBook da sua collection
   public static function removeStickerBookFromCollection($colecaoId){
     self::setup();
 
@@ -128,14 +131,13 @@ class StickerBook
   }
 
 
+// listar as colecoes de um usuario  -------------- SEM UTILIZACAO
+//  public static function listUserCollection($usuarioId){
+//    self::setup();
 
-// listar as colecoes de um usuario
-  public static function listUserCollection($usuarioId){
-    self::setup();
-
-    $listUserCollection = R::findAll('colecao' , 'usuario_id = :id' , [ ':id' => $usuarioId] );
-    return $listUserCollection;
-  }
+//    $listUserCollection = R::findAll('colecao' , 'usuario_id = :id' , [ ':id' => $usuarioId] );
+//    return $listUserCollection;
+//  }
 
 // listar stickers de uma collection do usuario
   public static function listStickerCollection($colecaoId){
@@ -144,7 +146,7 @@ class StickerBook
     return $listStickerCollection;
   }
 
-// localizar numero do album a partir da coleção
+// localizar numero do stickerbook a partir da collection
   public static function findAlbumByCollection($colecaoId){
     self::setup();      
 
@@ -153,7 +155,7 @@ class StickerBook
     return $album;    
   }
 
-// incluir ou remover cromo da coleção 
+// incluir ou remover sticker da collection 
   public static function updateCollection($colecaoId, $cromoId , $acao){
     self::setup();      
 
@@ -185,7 +187,31 @@ class StickerBook
     return $cromocolecao;
   }
 
+// ------------------------------------------- funcoes de login / usuario ---------------------------------------------------------------------------------------
+// -- inserir usuario basico, login e senha
+  public static function insertBasicUser($email, $password){
+    self::setup();      
+    
+    $usuario = R::dispense( 'usuario' );
+    $usuario->email = $email;
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    $usuario->senha = $hashedPassword;
+    R::store($usuario);
 
+    return $usuario;    
+  }
+
+// -- inserir usuario basico, login e senha
+  public static function validateLogin($email, $password){
+    self::setup();      
+    
+    $usuario = R::findOne('usuario' , 'email = :emailLogin' , [ ':emailLogin' => $email]);
+    if(is_null($usuario)){
+        return false;
+    } else {
+        return password_verify($password, $usuario->senha);
+    }
+  }  
 
 // TODO Lógica do Negócio Aqui
 

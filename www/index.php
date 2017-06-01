@@ -81,7 +81,8 @@ $app->post("/create-user-account/", function () use ($app)
 	}
 	if (count($errors) == 0)
 	{
-		// TODO inserir uma conta de usuário nova e efetuar login
+		$usuario = StickerBook::insertBasicUser($email, $password);
+
 		$_SESSION["user"] = array(
 			"email" => $email
 		);		
@@ -134,11 +135,17 @@ $app->post("/login/", function () use ($app)
 	}
 	if (count($errors) == 0)
 	{
+		$loginValido = StickerBook::validateLogin($email, $password);
+
+	}
+	if ($loginValido) {
 		$_SESSION["user"] = array(
 			"email" => $email
 		);		
 		$app->redirect($uri);
 	} else {
+		$errors["email"] = "E-mail ou senha inválidos";
+		
 		$app->render("header.php", array("navItem" => "login"));
 		$data = array(
 			"uri"     => $uri,
