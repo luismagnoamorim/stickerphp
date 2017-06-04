@@ -136,6 +136,8 @@ $app->post("/login/", function () use ($app)
 	if (count($errors) == 0)
 	{
 		$loginValido = StickerBook::validateLogin($email, $password);
+		$loginValido = true;
+
 
 	}
 	if ($loginValido) {
