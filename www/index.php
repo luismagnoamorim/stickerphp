@@ -137,8 +137,6 @@ $app->post("/login/", function () use ($app)
 	{
 		$loginValido = StickerBook::validateLogin($email, $password);
 		$loginValido = true;
-
-
 	}
 	if ($loginValido) {
 		$_SESSION["user"] = array(
@@ -435,7 +433,6 @@ $app->post("/collections/", function () use ($app)
 
 	$collections  = StickerBook::listStickerBookCollection($usuarioId);
 	
-
 	$app->render("header.php");
 	$data = array(
 			  	"collections"	=> $collections

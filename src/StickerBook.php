@@ -132,12 +132,12 @@ class StickerBook
 
 
 // listar as colecoes de um usuario  -------------- SEM UTILIZACAO
-//  public static function listUserCollection($usuarioId){
-//    self::setup();
+  public static function listUserCollection($usuarioId){
+    self::setup();
 
-//    $listUserCollection = R::findAll('colecao' , 'usuario_id = :id' , [ ':id' => $usuarioId] );
-//    return $listUserCollection;
-//  }
+    $listUserCollection = R::findAll('colecao' , 'usuario_id = :id' , [ ':id' => $usuarioId] );
+    return $listUserCollection;
+  }
 
 // listar stickers de uma collection do usuario
   public static function listStickerCollection($colecaoId){
