@@ -84,7 +84,8 @@ $app->post("/create-user-account/", function () use ($app)
 		$usuario = StickerBook::insertBasicUser($email, $password);
 
 		$_SESSION["user"] = array(
-			"email" => $email
+			 "email" => $email
+			,"idUsuario" => $usuarioLogado->id
 		);		
 		$app->redirect("/stickerbooks");
 	} else {
