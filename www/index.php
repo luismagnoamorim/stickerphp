@@ -118,42 +118,39 @@ $app->get("/login/", function () use ($app)
 $app->post("/login/", function () use ($app)
 {
 	$uri = $app->request->post("uri");
-	if ($uri == null)
-	{
+	if ($uri == null){
 		$uri = "/stickerbooks";
 	}
 	$errors = array();
 	$email = $app->request->post("email");
-	if ($email == null)
-	{
+	if ($email == null){
 		$errors["email"] = "Informe seu endereço de e-mail.";
 	}
 	$password = $app->request->post("password");	
-	if ($password == null)
-	{
+	if ($password == null){
 		$errors["password"] = "Informe sua senha.";
 	}
-	if (count($errors) == 0)
-	{
-		$loginValido = StickerBook::validateLogin($email, $password);
-		$loginValido = true;
+	if (count($errors) == 0){
+		$usuarioLogado = StickerBook::validateLogin($email, $password);
+		//$loginValido = true;
 	}
-	if ($loginValido) {
-		$_SESSION["user"] = array(
-			"email" => $email
-		);		
-		$app->redirect($uri);
-	} else {
+	if (is_null($usuarioLogado)) {
 		$errors["email"] = "E-mail ou senha inválidos";
 		
 		$app->render("header.php", array("navItem" => "login"));
 		$data = array(
-			"uri"     => $uri,
-			"email"   => $email,
-			"errors"  => $errors
+			 "uri"     => $uri
+			,"email"   => $email
+			,"errors"  => $errors
 		);
 		$app->render("login.php", $data);
-		$app->render("footer.php");
+		$app->render("footer.php");		
+	} else {
+		$_SESSION["user"] = array(
+			 "email" => $email
+			,"idUsuario" => $usuarioLogado->id
+		);		
+		$app->redirect($uri);
 	}
 });
 
@@ -367,7 +364,7 @@ $app->post("/collection/stickerbook/add/", function () use ($app)
 {
 	$albumId   = $app->request->post("albumId");
 	$usuarioId = $app->request->post("usuarioId");
-	$usuarioId = 1;
+	//$usuarioId = 1;
 
 	$album     	  = StickerBook::detailStickerBook($albumId);
 	$stickers  	  = StickerBook::listSticker($albumId);
@@ -429,7 +426,7 @@ $app->post("/updateCollection/", function () use ($app)
 $app->post("/collections/", function () use ($app)
 {
 	$usuarioId = $app->request->post("usuarioId");
-	$usuarioId = 1;
+	//$usuarioId = 1;
 
 	$collections  = StickerBook::listStickerBookCollection($usuarioId);
 	

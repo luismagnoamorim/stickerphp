@@ -1,4 +1,5 @@
 <?php
+require_once('Bcrypt.php');
 
 class StickerBook
 {
@@ -131,7 +132,7 @@ class StickerBook
   }
 
 
-// listar as colecoes de um usuario  -------------- SEM UTILIZACAO
+// listar as colecoes de um usuario  
   public static function listUserCollection($usuarioId){
     self::setup();
 
@@ -194,7 +195,8 @@ class StickerBook
     
     $usuario = R::dispense( 'usuario' );
     $usuario->email = $email;
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    //$hashedPassword = password_hash($password, PASSWORD_BCRYPT); apenas nas versies 5.4 ou superior
+    $hashedPassword = Bcrypt::hash($password);
     $usuario->senha = $hashedPassword;
     R::store($usuario);
 
@@ -207,9 +209,14 @@ class StickerBook
     
     $usuario = R::findOne('usuario' , 'email = :emailLogin' , [ ':emailLogin' => $email]);
     if(is_null($usuario)){
-        return false;
+        return null;
     } else {
-        return password_verify($password, $usuario->senha);
+        //return password_verify($password, $usuario->senha); apenas nas versies 5.4 ou superior
+        if (Bcrypt::check($password, $usuario->senha)) {
+            return $usuario;
+        } else {
+            return null;
+        }      
     }
   }  
 
