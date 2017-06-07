@@ -9,7 +9,6 @@ $app = new \Slim\Slim(array(
 
 $app->add(new \AuthMiddleware());
 
-
 // Home
 
 $app->get("/", function () use ($app)
@@ -336,14 +335,14 @@ $app->post("/admin/update-sticker/", function () use ($app)
 });
 
 // -- detalhar informacoes de um album
-$app->post("/detail-stickerbook/", function () use ($app)
+$app->get("/detail-stickerbook/:albumId/:colecaoId", function ($albumId, $colecaoId) use ($app)
 {
-	$albumId      = $app->request->post("albumId");
-	$colecaoId    = $app->request->post("colecaoId");
+	//$albumId      = $app->request->post("albumId");
+	//$colecaoId    = $app->request->post("colecaoId");
                                            
 	$album 		  = StickerBook::detailStickerBook($albumId);
 	$stickers 	  = StickerBook::listSticker($albumId);
-	if ($colecaoId != null){
+	if ($colecaoId != 0){
 		$userStickers = StickerBook::listStickerCollection($colecaoId);
 	} else {
 		$userStickers = null;
@@ -361,10 +360,10 @@ $app->post("/detail-stickerbook/", function () use ($app)
 });
 
 // -- incluir um stickerbook na collection de um usuario
-$app->post("/collection/stickerbook/add/", function () use ($app)
+$app->get("/collection/stickerbook/add/:albumId", function ($albumId) use ($app)
 {
-	$albumId   = $app->request->post("albumId");
-	$usuarioId = $app->request->post("usuarioId");
+	//$albumId   = $app->request->post("albumId");
+	$usuarioId = $_SESSION['user']['idUsuario'];
 	//$usuarioId = 1;
 
 	$album     	  = StickerBook::detailStickerBook($albumId);
@@ -385,16 +384,17 @@ $app->post("/collection/stickerbook/add/", function () use ($app)
 });
 
 // -- incluir um stickerbook na collection de um usuario
-$app->post("/collection/stickerbook/remove/", function () use ($app)
+$app->get("/collection/stickerbook/remove/:colecaoId", function ($colecaoId) use ($app)
 {
-	$colecaoId = $app->request->post("colecaoId");
-
-	$album 	   = StickerBook::removeStickerBookFromCollection($colecaoId);
+	//$colecaoId = $app->request->post("colecaoId");
+	$usuarioId = $_SESSION['user']['idUsuario'];
+	$album 	   = StickerBook::removeStickerBookFromCollection($colecaoId, $usuarioId);
 	$stickers  = StickerBook::listSticker($album->id);
    
 	$app->render("header.php");
 		$data = array(
 			  "album"   => $album
+			, "colecaoId" => 0	
 			, "stickers"  => $stickers 
 	);
 	$app->render("/detail-stickerbook.php" , $data);
@@ -410,7 +410,7 @@ $app->post("/updateCollection/", function () use ($app)
 
 	$collection   = StickerBook::updateCollection($colecaoId , $cromoId , $acao );
 	$album        = StickerBook::findAlbumByCollection($colecaoId);
-	$stickers     = StickerBook::listSticker($album->id);    
+	$stickers     = StickerBook::listSticker($_SESSION['user']['idUsuario']);    
 	$userStickers = StickerBook::listStickerCollection($colecaoId) ;
 
 	//$app->render("header.php");
@@ -424,9 +424,10 @@ $app->post("/updateCollection/", function () use ($app)
 });
 
 // -- detalhar informacoes de um album
-$app->post("/collections/", function () use ($app)
+$app->get("/collections/", function () use ($app)
 {
-	$usuarioId = $app->request->post("usuarioId");
+	//$usuarioId = $app->request->post("usuarioId");
+	$usuarioId = $_SESSION['user']['idUsuario'];
 	//$usuarioId = 1;
 
 	$collections  = StickerBook::listStickerBookCollection($usuarioId);

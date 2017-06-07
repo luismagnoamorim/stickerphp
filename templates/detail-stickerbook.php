@@ -2,7 +2,7 @@
 
     $email = isset($email)? $email: "";
 
-    $_SESSION['usuarioId']   = 1;
+    //$_SESSION['usuarioId']   = 1;
 
     //print_r($album);
 
@@ -25,7 +25,7 @@
                 <?php
                     $progresso;
                     $quantidadeColecao = 0;
-                    if (isset($userStickers)){
+                    if (!empty($userStickers)){
                         foreach ($userStickers as $userSticker) {
                             if($userSticker['quantidade'] > 0){
                                 $quantidadeColecao = $quantidadeColecao + 1;
@@ -58,43 +58,18 @@
 
             <div class="col-sm-12">
                 <?php
-                if (isset($userStickers)){
+                //usuario possui colecao - area de atualizacao da colecao
+                if ($colecaoId != 0 and isset($userStickers)){
                 ?>
-                    <form action="/collection/stickerbook/remove/" method="post">
-                        <input type='hidden' id='usuario' name='usuarioId' value='<?= $_SESSION['usuarioId']?>'>
-                        <input type='hidden' id='colecao' name='colecaoId' value='<?= $colecaoId?>'>
-
-                        <button type="submit" class="btn btn-default">Retirar da coleção</button>
-                    </form>
+                    <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
+                      <button class="btn btn-default">Retirar da coleção</button>
+                    </a>
                 <?php 
                 } else {
                 ?>
-                    <form action="/collection/stickerbook/add/" method="post">
-                        <?php 
-                            if (isset($_SESSION['usuario'])) { 
-                        ?>
-                        <input type='hidden' id='usuario' name='usuarioId' value='<?php echo $_SESSION['usuario']['id']?>'>
-                        <input type='hidden' id='colecao' name='colecaoId' value='<?php echo $colecao['id']?>'>
-
-                        <?php 
-                            }
-                        ?>
-                        <input type='hidden' id='album' name='albumId' value='<?php echo $album['id'] ?>'>
-
-                        
-                        <?php
-                            if (isset($userStickers)){
-                        ?>
-                              <button type="submit" class="btn btn-default" id="btnRetirar">Retirar da coleção</button>
-                              /collection/stickerbook/remove/
-                        <?php
-                            }else{
-                        ?>
-                              <button type="submit" class="btn btn-default" id="btnIncluir">Incluir na coleção</button>  
-                        <?php
-                            }
-                        ?>
-                    </form>
+                    <a href='/collection/stickerbook/add/<?= $album['id'] ?>'>
+                        <button class="btn btn-default">Incluir na coleção</button>
+                    </a>
                 <?php 
                 } 
                 ?>
@@ -102,48 +77,49 @@
         </div> 
     </div>
     <?php
-      if (isset($stickers)){
+    if (isset($stickers) and $colecaoId != 0){
     ?>
-    <div class="row" >
-        <div class="col-md-12">
-                <form class="form-horizontal" method="post" action="/updateCollection/">
-                        <div class="main">
-                            <?php
-                                $i = 0;
-                                foreach ($stickers as $sticker) {
-                            ?> 
-                                <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
-                                    <div class="sticker-container" id="sticker-action<?= $sticker['id'] ?>">
-                                        <?php
-                                            $quantidade = 0;
-                                            if(isset($userStickers)){
-                                                foreach ($userStickers as $userSticker) {
-                                                    if($sticker['id'] == $userSticker['cromo_id']){
-                                                        $quantidade = $userSticker['quantidade'];
-                                                        break;
+        <div class="row" >
+            <div class="col-md-12">
+                    <form class="form-horizontal" method="post" action="/updateCollection/">
+                            <div class="main">
+                                <?php
+                                    $i = 0;
+                                    foreach ($stickers as $sticker) {
+                                ?> 
+                                    <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
+                                        <div class="sticker-container" id="sticker-action<?= $sticker['id'] ?>">
+                                            <?php
+                                                $quantidade = 0;
+                                                if(isset($userStickers)){
+                                                    foreach ($userStickers as $userSticker) {
+                                                        if($sticker['id'] == $userSticker['cromo_id']){
+                                                            $quantidade = $userSticker['quantidade'];
+                                                            break;
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        ?>
-                                        <h1><?= $sticker['codigo']?></h1>
-                                        <div class="sticker-actions-footer">
-                                            <div class="sticker-action1" id="<?= $sticker['id'] ?>"><i class="fa fa-minus-square fa-lg"></i></div>
-                                            <div class="sticker-no-action"><?= $quantidade ?></div>
-                                            <div class="sticker-action2" id="<?= $sticker['id'] ?>"><i class="fa fa-plus-square fa-lg"></i></div>
+                                            ?>
+                                            <h1><?= $sticker['codigo']?></h1>
+                                            <div class="sticker-actions-footer">
+                                                <div class="sticker-action1" id="<?= $sticker['id'] ?>"><i class="fa fa-minus-square fa-lg"></i></div>
+                                                <div class="sticker-no-action"><?= $quantidade ?></div>
+                                                <div class="sticker-action2" id="<?= $sticker['id'] ?>"><i class="fa fa-plus-square fa-lg"></i></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            <?php
-                                $i++;                      
-                                }
-                            ?>
-                        </div>
-                </form>
+                                <?php
+                                    $i++;                      
+                                    }
+                                ?>
+                                <input type="hidden" id="colecao" value="<?= $colecaoId ?>">
+                            </div>
+                    </form>
+            </div>
+        <?php
+          }
+        ?>        
         </div>
-    <?php
-      }
-    ?>        
-    </div>
 </div>
 
 

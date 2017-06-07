@@ -52,12 +52,12 @@ class StickerBook
     return $album;
   }
 
-//listar albuns que compoem a collection do usuario 
+//listar albuns que compoem a collection do usuario, e carrega os detalhes de cada album 
   public static function listStickerBookCollection($usuarioId){
     self::setup();
 
     $listaColecao = self::listUserCollection($usuarioId);
-    $listaAlbunsColecao;
+    $listaAlbunsColecao = null;
 
     foreach ($listaColecao as $itemColecao) {
       $album = R::load('album' , $itemColecao['album_id']);  
@@ -119,10 +119,10 @@ class StickerBook
   }
 
 // usuario remove um stickerBook da sua collection
-  public static function removeStickerBookFromCollection($colecaoId){
+  public static function removeStickerBookFromCollection($colecaoId, $usuarioId){
     self::setup();
 
-    $colecao      = R::load('colecao' , $colecaoId);
+    $colecao      = R::findOne('colecao' , 'id = :colecaoId AND usuario_id = :usuarioId' , [ ':colecaoId' => $colecaoId ,  ':usuarioId' => $usuarioId] );
     $album        = R::load('album' , $colecao->album_id);
     $cromosColecao = R::findAll('cromocolecao' , 'colecao_id = :id' , [ ':id' => $colecao->id]);
     R::trash($colecao);

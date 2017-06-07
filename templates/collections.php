@@ -1,5 +1,5 @@
 <?php
-
+    //collections PHP - exibe os albuns incluidos pelo usuario
     $email = isset($email)? $email: "";
 
 ?>
@@ -13,17 +13,19 @@
                     <div class="row">
 
                         <?php
-                        	if(isset($collections)){
+                            if(!empty($collections)){
                             	foreach ($collections as $collection) {
                             	//print_r($collection);
                         ?> 
                                 <div class="input-group col-sm-4">
                                 	<div class="thumbnail">
-                                    	<img src='/img/capas/<?=$collection['album']['nomeImagem']?>.jpg' style="width:50%">
+                                    	<a href='/detail-stickerbook/<?=$collection['album_id']?>/<?=$collection['id']?>'>
+                                        <img src='/img/capas/<?=$collection['album']['nomeImagem']?>.jpg' style="width:50%">
                                     
                                 		<div class='caption'>
-                                			<a href='/detail-stickerbook/' id='a_<?=$collection['album_id']?>_<?=$collection['id']?>' class='albumRef'><?= $collection['album']['titulo'] ?></a>
+                                			<?= $collection['album']['titulo'] ?>
                                 		</div>
+                                        </a>
                                 	</div>
                                 </div>
                         <?php
@@ -43,10 +45,6 @@
                     </div>
                 </form>
         </div>
-
-
-
-
     </div>
 
 </div>
