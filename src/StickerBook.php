@@ -220,7 +220,34 @@ class StickerBook
     }
   }  
 
-// TODO Lógica do Negócio Aqui
+// ------------------------------------ funcionalidades para troca de stickers entre usuarios ----------------------------------------------------------
+// -- recuperar colecoes de outros usuarios a partir do identificador do album
+  public static function listCollectionsByAlbum($albumId , $usuarioId){
+    self::setup();      
+    
+    $collections = R::findAll('colecao' , 'albumId = :albumId AND usuario_id <> :usuarioId' , [ ':albumId' => $albumId , ':usuarioId' => $usuarioId]);
+    return $collections;
+  }
+
+// -- listar figurinhas que falta na 'minhaColecao' e que existem na 'colecaoRepetida'
+  public static function listMissingSticker($colecaoEmFaltaId , $colecaoRepetidasId){
+    self::setup();      
+    
+    $colecao = R::load('colecao' , $colecaoEmFaltaId);
+        
+    $result = R::getAll( "SELECT * FROM cromo 
+                            WHERE album_id = :albumId 
+                              AND id NOT IN (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :colecaoId)
+                              AND id IN (SELECT cromo_id FROM cromocolecao 
+                                          WHERE colecao_id = :outraColecaoId
+                                            AND quantidade > 1)"
+                         , [':albumId' => $colecao->album_id , ':colecaoId' => $colecaoEmFaltaId , ':outraColecaoId' => $colecaoRepetidasId]);
+    $missingStickers = R::convertToBeans('cromo', $result);
+    //$missingSticker = R::findAll('cromocolecao' , 'colecao = :colecaoId' , [ ':colecaoId' => $minhaColecao , ':usuarioId' => $usuarioId]);
+
+    return $missingStickers;
+  }
+
 
 // -------------- configuracao de ambiente -----------------------------------
   private static $ambiente    = null;

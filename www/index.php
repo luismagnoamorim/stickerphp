@@ -440,6 +440,25 @@ $app->get("/collections/", function () use ($app)
 	$app->render("footer.php");
 });
 
+// -- detalhar informacoes de um album
+$app->get("/collections/trade/:colecaoAId/:colecaoBId", function ($colecaoAId, $colecaoBId) use ($app)
+{
+	//$usuarioId = $app->request->post("usuarioId");
+	$usuarioId = $_SESSION['user']['idUsuario'];
+	//$usuarioId = 1;
+
+	$stickersIn  = StickerBook::listMissingSticker($colecaoAId , $colecaoBId);
+	$stickersOut = StickerBook::listMissingSticker($colecaoBId , $colecaoAId);
+	
+	$app->render("header.php");
+	$data = array(
+			  	"stickersIn"	=> $stickersIn
+			  ,	"stickersOut"	=> $stickersOut
+	);	
+	$app->render("/prepare-trade.php" , $data);
+	$app->render("footer.php");
+});
+
 
 
 $app->run();
