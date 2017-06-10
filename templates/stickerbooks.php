@@ -5,15 +5,29 @@
 
 ?>
 <div class="container">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
         <h2>Álbuns disponiveis</h2>
-            <div class="card-deck-wrapper">
-            <div class="card-deck">
+            <div class="row">
             <?php
                 foreach ($stickerBooks as $stickerBook) {
             ?> 
-                
-                  <div class="card">
+                    <div class="col-sm-2">
+                        <a href='/detail-stickerbook/<?=$stickerBook['id']?>/0' id='a_<?=$stickerBook['id']?>'>
+                        <div class="product-image-wrapper">
+                            <div class="single-products">
+                                <div class="productinfo text-center">
+                                        <img src='/img/capas/<?=$stickerBook['nomeImagem']?>.jpg' alt="">
+                                        <h2><?= $stickerBook['titulo'] ?></h2>
+                                        <p><?= $stickerBook['editora'] ?></p>
+                                        <a href="/collection/stickerbook/add/<?= $stickerBook['id'] ?>" class="btn btn-primary btn-block"></i>Incluir na coleção</a>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>                
+                  
+
+                  <!--<div class="card">
                     <a href='/detail-stickerbook/<?=$stickerBook['id']?>/0' id='a_<?=$stickerBook['id']?>'>
                         <img class="card-img-top img-fluid" src='/img/capas/<?=$stickerBook['nomeImagem']?>.jpg' alt="Card image cap" style="width:50%">
                         
@@ -39,7 +53,7 @@
 
 
 
-                    <!--<div class="input-group col-sm-4">
+                    <div class="input-group col-sm-4">
                     	<div class="thumbnail">
                             <a href='/detail-stickerbook/<?=$stickerBook['id']?>/0' id='a_<?=$stickerBook['id']?>'>
                             	<img src='/img/capas/<?=$stickerBook['nomeImagem']?>.jpg' style="width:50%">
@@ -53,7 +67,7 @@
                 }
             ?>                   
             </div>
-            </div>
+            
     </div>
 </div>  
 
@@ -63,5 +77,45 @@
 }
 .card-deck .card{
     width: initial;
+}
+
+
+.productinfo h2{
+    /*color: #FE980F;*/
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+}
+.product-overlay h2{
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+.productinfo p{
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #696763;
+}
+
+.productinfo img{
+  width: 100%;
+}
+
+.productinfo{
+ position:relative;
+}
+
+.product-image-wrapper{
+    border:1px solid #ddd;
+    overflow: hidden;
+    margin-bottom:30px;
+}
+
+.single-products {
+  position: relative;
 }
 </style>
