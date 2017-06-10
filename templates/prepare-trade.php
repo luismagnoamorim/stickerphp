@@ -18,31 +18,91 @@
             </div   >
         </div> 
     </div>
+    <div class="row" >
     <?php
     if (isset($stickersIn)){
     ?>
-        <div class="row" >
-            <div class="col-md-12">
-                <div class="main">
-                    <?php
-                        $i = 0;
-                        foreach ($stickersIn as $stickerIn) {
-                    ?> 
-                        <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
-                            <div class="sticker-container" id="sticker-action<?= $stickerIn['id'] ?>">
-                                <h1><?= $stickerIn['codigo']?></h1>
-                            </div>
+        <div class="col-md-6">
+            <div>
+                <p class="bg-info"> A receber </p>
+            </div>
+            <div class="main">
+                <?php
+                    $i = 0;
+                    foreach ($stickersIn as $stickerIn) {
+                ?> 
+                    <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
+                        <div class="sticker-container" id="sticker-action<?= $stickerIn['id'] ?>">
+                            <h1><?= $stickerIn['codigo']?></h1>
                         </div>
-                    <?php
-                        $i++;                      
-                        }
-                    ?>
-                </div>
+                    </div>
+                <?php
+                    $i++;                      
+                    }
+                ?>
             </div>
         </div>
+
     <?php
     }
-    ?>        
+    if (isset($stickersOut)){
+    ?>
+        <div class="col-md-6">
+        <div>
+            <p class="bg-success"> A entregar</p>
+        </div>            
+            <div class="main">
+                <?php
+                    $i = 0;
+                    foreach ($stickersOut as $stickerOut) {
+                ?> 
+                    <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
+                        <div class="sticker-container" id="sticker-action<?= $stickerOut['id'] ?>">
+                            <h1><?= $stickerOut['codigo']?></h1>
+                        </div>
+                    </div>
+                <?php
+                    $i++;                      
+                    }
+                ?>
+            </div>
+        </div>
+      
+    <?php
+    }
+    ?>
+    </div>
+    <?php
+    if (isset($stickersRepeated)){
+    ?>
+    <div class="row">
+        <div class="col-md-6">
+        <div>
+            <p class="bg-primary"> Incluir na troca</p>
+        </div>            
+            <div class="main">
+                <?php
+                    $i = 0;
+                    foreach ($stickersRepeated as $stickerRepeated) {
+                ?> 
+                    <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
+                        <div class="sticker-container" id="sticker-action<?= $stickerRepeated['id'] ?>">
+                            <h1><?= $stickerRepeated['codigo']?></h1>
+                        </div>
+                    </div>
+                <?php
+                    $i++;                      
+                    }
+                ?>
+            </div>
+        </div>
+    </div>
+      
+    <?php
+    }
+    ?>            
+
+
 </div>
 
 

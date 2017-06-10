@@ -4,7 +4,7 @@ require_once('Bcrypt.php');
 class StickerBook
 {
 
-  public static function createStickerBook($tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem)
+  public static function createStickerbook($tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem)
   {
     self::setup();
     $album = R::dispense('album');
@@ -21,7 +21,7 @@ class StickerBook
   }
 
   //atualiza dados do album
-  public static function updateStickerBook($albumId, $tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem)
+  public static function updateStickerbook($albumId, $tituloAlbum, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem)
   {
     self::setup();
     $album = R::Load('album', $albumId);
@@ -37,7 +37,7 @@ class StickerBook
   }
 
   // listar todos os StickerBooks disponiveis
-  public static function listStickerBooks(){
+  public static function listStickerbooks(){
     self::setup();
 
     $stickerBooks = R::findAll('album');
@@ -101,7 +101,7 @@ class StickerBook
 
 /// -----------------colecao -------------------------------------------------------------------------------
 // usuario escolhe stickerBook para colecionar e o inclui na sua collection
-  public static function addStickerBookToCollection($albumId, $usuarioId){
+  public static function addStickerbookToCollection($albumId, $usuarioId){
     self::setup();
 
     $album = R::load('album' , $albumId);
@@ -119,7 +119,7 @@ class StickerBook
   }
 
 // usuario remove um stickerBook da sua collection
-  public static function removeStickerBookFromCollection($colecaoId, $usuarioId){
+  public static function removeStickerbookFromCollection($colecaoId, $usuarioId){
     self::setup();
 
     $colecao      = R::findOne('colecao' , 'id = :colecaoId AND usuario_id = :usuarioId' , [ ':colecaoId' => $colecaoId ,  ':usuarioId' => $usuarioId] );
@@ -160,6 +160,7 @@ class StickerBook
   public static function updateCollection($colecaoId, $cromoId , $acao){
     self::setup();      
 
+    $colecao  = R::load('colecao' , $colecaoId);
     if ($acao == "add"){
       $cromocolecao = R::findOrCreate( 'cromocolecao', [ 'colecao_id' => $colecaoId , 'cromo_id' => $cromoId]);
       
@@ -168,6 +169,7 @@ class StickerBook
         }else{
           $cromocolecao->quantidade = $cromocolecao->quantidade + 1;
         }
+        $colecao->quantidadeCromos = $colecao->quantidadeCromos + 1;
       
     }
     else {
@@ -176,12 +178,11 @@ class StickerBook
         if ($cromocolecao->quantidade > 0){
           $cromocolecao->quantidade = $cromocolecao->quantidade - 1;
         }
+        $colecao->quantidadeCromos = $colecao->quantidadeCromos - 1;
       }
     }
     R::store($cromocolecao);
 
-    $colecao  = R::load('colecao' , $colecaoId);
-    $colecao->quantidadeCromos = $cromocolecao->quantidade;
     $colecao->dataUltimaAtualizacao = date("d.m.Y");
     R::store($colecao);
 
@@ -240,7 +241,8 @@ class StickerBook
                               AND id NOT IN (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :colecaoId)
                               AND id IN (SELECT cromo_id FROM cromocolecao 
                                           WHERE colecao_id = :outraColecaoId
-                                            AND quantidade > 1)"
+                                            AND quantidade > 1)
+                          ORDER BY id"
                          , [':albumId' => $colecao->album_id , ':colecaoId' => $colecaoEmFaltaId , ':outraColecaoId' => $colecaoRepetidasId]);
     $missingStickers = R::convertToBeans('cromo', $result);
     //$missingSticker = R::findAll('cromocolecao' , 'colecao = :colecaoId' , [ ':colecaoId' => $minhaColecao , ':usuarioId' => $usuarioId]);
@@ -248,6 +250,20 @@ class StickerBook
     return $missingStickers;
   }
 
+// -- listar figurinhas que falta na 'minhaColecao' e que existem na 'colecaoRepetida'
+  public static function listRepeatedSticker($colecaoId){
+    self::setup();      
+    
+    $colecao = R::load('colecao' , $colecaoId);
+  
+    $result = R::getAll('SELECT * FROM cromo WHERE id IN 
+                          (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :colecaoId AND quantidade > 1)
+                        ORDER BY id', [':colecaoId' => $colecaoId]);
+    $repeatedStickers = R::convertToBeans('cromo' , $result);
+    //$repeatedStickers = R::findAll('cromocolecao' , 'colecao_id = :colecaoId AND quantidade > 1', [':colecaoId' => $colecaoId]);
+
+    return $repeatedStickers;
+  }
 
 // -------------- configuracao de ambiente -----------------------------------
   private static $ambiente    = null;

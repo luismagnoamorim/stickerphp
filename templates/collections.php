@@ -5,7 +5,7 @@
 ?>
 
 <div class="container">
-    
+    <h2>Minhas coleções</h2>
     <div class="row">
        
         <div class="col-sm-12">
@@ -20,11 +20,11 @@
                                 <div class="input-group col-sm-4">
                                 	<div class="thumbnail">
                                     	<a href='/detail-stickerbook/<?=$collection['album_id']?>/<?=$collection['id']?>'>
-                                        <img src='/img/capas/<?=$collection['album']['nomeImagem']?>.jpg' style="width:50%">
-                                    
-                                		<div class='caption'>
-                                			<?= $collection['album']['titulo'] ?>
-                                		</div>
+                                            <img src='/img/capas/<?=$collection['album']['nomeImagem']?>.jpg' style="width:50%">
+                                        
+                                    		<div class='caption'>
+                                    			<?= $collection['album']['titulo'] ?>
+                                    		</div>
                                         </a>
                                 	</div>
                                 </div>

@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/custom.css">
-    <link rel="stylesheet" type="text/css" href="/css/component.css" />
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="/js/jquery.slim.min.js"></script>
     <script src="/js/tether.min.js"></script>
@@ -35,6 +34,12 @@
                 <?php if ($user != null) { ?>        
                     <li class="nav-item <?=$navItem == "stickerbooks"? "active" : "" ?>">
                         <a class="nav-link" href="/stickerbooks">Álbuns</a>
+                    </li>
+                    <li class="nav-item <?=$navItem == "collections"? "active" : "" ?>">
+                        <a class="nav-link" href="/collections">Minhas coleções</a>
+                    </li>
+                    <li class="nav-item <?=$navItem == "trade"? "active" : "" ?>">
+                        <a class="nav-link" href="/trocas">Trocas</a>
                     </li>
                 <?php } ?>
             </ul>

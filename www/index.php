@@ -22,7 +22,7 @@ $app->get("/", function () use ($app)
 
 $app->get("/stickerbooks/", function () use ($app)
 {
-	$stickerBooks = StickerBook::listStickerBooks();
+	$stickerBooks = StickerBook::listStickerbooks();
 
 	$app->render("header.php", array("navItem" => "stickerbooks"));
 	$data = array(
@@ -242,7 +242,7 @@ $app->post("/admin/create-stickerbook/", function () use ($app)
 	}
 	if (count($errors) == 0)
 	{
-		$album = StickerBook::createStickerBook($titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem);
+		$album = StickerBook::createStickerbook($titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem);
 		$stickers = StickerBook::listSticker($album['id']);
 		$app->render("header.php");
 		$data = array(
@@ -287,7 +287,7 @@ $app->post("/admin/update-stickerbook/:albumId", function () use ($app)
 	$idioma				= $app->request->post("idioma");
 	$quantidadeCromo	= $app->request->post("quantidadeCromo");
 	$nomeImagem			= $app->request->post("nomeImagem");
-	$album = StickerBook::updateStickerBook($albumId,$titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem);
+	$album = StickerBook::updateStickerbook($albumId,$titulo, $quantidadeCromo, $editora, $anoPublicacao, $idioma, $nomeImagem);
 	$stickers	= StickerBook::listSticker($albumId);
 	$app->render("header.php");
 		$data = array(
@@ -368,7 +368,7 @@ $app->get("/collection/stickerbook/add/:albumId", function ($albumId) use ($app)
 
 	$album     	  = StickerBook::detailStickerBook($albumId);
 	$stickers  	  = StickerBook::listSticker($albumId);
-	$colecao   	  = StickerBook::addStickerBookToCollection($albumId, $usuarioId);
+	$colecao   	  = StickerBook::addStickerbookToCollection($albumId, $usuarioId);
 	$userStickers = StickerBook::listStickerCollection($colecao->id);
    
 	$app->render("header.php");
@@ -388,7 +388,7 @@ $app->get("/collection/stickerbook/remove/:colecaoId", function ($colecaoId) use
 {
 	//$colecaoId = $app->request->post("colecaoId");
 	$usuarioId = $_SESSION['user']['idUsuario'];
-	$album 	   = StickerBook::removeStickerBookFromCollection($colecaoId, $usuarioId);
+	$album 	   = StickerBook::removeStickerbookFromCollection($colecaoId, $usuarioId);
 	$stickers  = StickerBook::listSticker($album->id);
    
 	$app->render("header.php");
@@ -449,11 +449,13 @@ $app->get("/collections/trade/:colecaoAId/:colecaoBId", function ($colecaoAId, $
 
 	$stickersIn  = StickerBook::listMissingSticker($colecaoAId , $colecaoBId);
 	$stickersOut = StickerBook::listMissingSticker($colecaoBId , $colecaoAId);
+	$stickersRepeated = StickerBook::listRepeatedSticker($colecaoAId);
 	
 	$app->render("header.php");
 	$data = array(
-			  	"stickersIn"	=> $stickersIn
-			  ,	"stickersOut"	=> $stickersOut
+			  	"stickersIn"	   => $stickersIn
+			  ,	"stickersOut"	   => $stickersOut
+			  , "stickersRepeated" => $stickersRepeated
 	);	
 	$app->render("/prepare-trade.php" , $data);
 	$app->render("footer.php");
