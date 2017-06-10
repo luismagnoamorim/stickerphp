@@ -72,7 +72,7 @@
     <div class="col-md-12">
     <div class="card mb-3">
         <h4 class="card-header">Figurinhas</h4>
-        <div class="card-block">        
+        <div>        
             <div class="col-md-12">
                     <form class="form-horizontal" method="post" action="/updateCollection/">
                             <div class="main">

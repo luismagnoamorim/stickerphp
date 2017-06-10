@@ -27,7 +27,7 @@
                         <input id="quantidadeCromo" class="form-control form-control-lg <?=isset($errors["quantidadeCromo"])? "form-control-danger": "" ?>"
                             name="quantidadeCromo" type="text" placeholder="Quantidade total de cromos" value="<?=$email ?>">
                         <input id="nomeImagem" class="form-control form-control-lg <?=isset($errors["nomeImagem"])? "form-control-danger": "" ?>"
-                            name="nomeImagem" type="text" placeholder="Nome da imagem de capa" value="<?=$nomeImagem ?>">
+                            name="nomeImagem" type="text" placeholder="Nome da imagem de capa" value="<?=$email ?>">
                         <?php if (isset($errors["titulo"])) { ?>
                             <div class="form-control-feedback"><?=$errors["titulo"] ?></div>
                         <?php } ?>

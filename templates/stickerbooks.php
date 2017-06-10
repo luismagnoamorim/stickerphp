@@ -5,9 +5,9 @@
 
 ?>
 <div class="container">
-    <div class="col-sm-12">
+    <div class="col-xs-12">
         <h2>Álbuns disponiveis</h2>
-        
+            <div class="card-deck-wrapper">
             <div class="card-deck">
             <?php
                 foreach ($stickerBooks as $stickerBook) {
@@ -15,12 +15,12 @@
                 
                   <div class="card">
                     <a href='/detail-stickerbook/<?=$stickerBook['id']?>/0' id='a_<?=$stickerBook['id']?>'>
-                        <img class="card-img-top" src='/img/capas/<?=$stickerBook['nomeImagem']?>.jpg' alt="Card image cap" style="width:100%">
-                    
+                        <img class="card-img-top img-fluid" src='/img/capas/<?=$stickerBook['nomeImagem']?>.jpg' alt="Card image cap" style="width:50%">
+                        
                     
 
                     <div class="card-block">
-                      <h4 class="card-title"><?= $stickerBook['titulo'] ?></h4>
+                      <h5 class="card-title"><?= $stickerBook['titulo'] ?></h5>
                       <p class="card-text"><?= $stickerBook['editora'] ?></p>
                       
                     </div>
@@ -53,6 +53,15 @@
                 }
             ?>                   
             </div>
-        
+            </div>
     </div>
 </div>  
+
+<style>
+.card-deck {
+    width: 100%;
+}
+.card-deck .card{
+    width: initial;
+}
+</style>
