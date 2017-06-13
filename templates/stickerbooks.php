@@ -4,9 +4,9 @@
     //$idUsuario = isset($idUsuario)? $idUsuario: null;
 
 ?>
-<div class="container">
-    <div class="col-sm-12">
-        <h2>Álbuns disponiveis</h2>
+<div class="container-fluid">
+
+        <h2>Álbuns disponíveis</h2>
             <div class="row">
             <?php
                 foreach ($stickerBooks as $stickerBook) {
@@ -68,36 +68,29 @@
             ?>                   
             </div>
             
-    </div>
+    
 </div>  
 
 <style>
-.card-deck {
-    width: 100%;
-}
-.card-deck .card{
-    width: initial;
-}
 
 
 .productinfo h2{
     /*color: #FE980F;*/
     font-family: 'Roboto', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 18px;
+    
 }
 .product-overlay h2{
     color: #fff;
     font-family: 'Roboto', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 18px;
+    
 }
 
 
 .productinfo p{
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
-  font-weight: 400;
   color: #696763;
 }
 
@@ -111,6 +104,7 @@
 
 .product-image-wrapper{
     border:1px solid #ddd;
+    
     overflow: hidden;
     margin-bottom:30px;
 }

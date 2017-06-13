@@ -21,11 +21,11 @@
     }
 ?>
 
-<div class="container">
+<div class="container-fluid">
     
     
         <div class="col-md-8">
-            <div class="card mb-3">
+            <div class="card mb-1">
               <h3 class="card-header"><?= $album['titulo']?> - <?=number_format($progresso,1)?>%</h3>
               <div class="card-block">
                 <h4 class="card-title">Editora: <?= $album['editora']?></h4>
@@ -57,9 +57,9 @@
                         } 
                         ?>                        
                     </div>
-                    <div class="col-sm-4">
-                        <img src='/img/capas/<?=$album['nomeImagem']?>.jpg' style="max-width:50%">
-                    </div>
+                    <!--<div class="col-sm-4">
+                        <img src='/img/capas/<?=$album['nomeImagem']?>.jpg' style="max-width:80%">
+                    </div>-->
                 </div>
 
               </div>
@@ -70,10 +70,9 @@
     if (isset($stickers) and $colecaoId != 0){
     ?>
     <div class="col-md-12">
-    <div class="card mb-3">
-        <h4 class="card-header">Figurinhas</h4>
-        <div>        
-            <div class="col-md-12">
+    <div class="card">
+        <h4 class="card-header">Figurinhas</h4> 
+            <div class="col-md-12" style="padding-left:0">
                     <form class="form-horizontal" method="post" action="/updateCollection/">
                             <div class="main">
                                 <?php
@@ -112,17 +111,13 @@
         <?php
           }
         ?>        
-        </div>
+
     </div>    
     </div>
 </div>
 
 
 <style>
-    #card-create-user-account {
-        margin-top: 30px;
-    }
-
     .collection-item, .collection-item-uneditable {
         width: 78px;
         float: left;

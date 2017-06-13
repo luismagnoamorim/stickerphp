@@ -4,7 +4,7 @@
 
 ?>
 
-<div class="container">
+<div class="container-fluid">
     <h2>Minhas coleções</h2>
     <div class="row">
        
