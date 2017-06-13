@@ -39,7 +39,7 @@
                         <a class="nav-link" href="/collections">Minhas coleções</a>
                     </li>
                     <li class="nav-item <?=$navItem == "trade"? "active" : "" ?>">
-                        <a class="nav-link" href="/trocas">Trocas</a>
+                        <a class="nav-link" href="/trades">Trocas</a>
                     </li>
                 <?php } ?>
             </ul>

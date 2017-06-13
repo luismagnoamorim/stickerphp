@@ -22,101 +22,84 @@
 ?>
 
 <div class="container-fluid">
-    
-    
-        <div class="col-md-8">
-            <div class="card mb-1">
-              <h3 class="card-header"><?= $album['titulo']?> - <?=number_format($progresso,1)?>%</h3>
-              <div class="card-block">
-                <h4 class="card-title">Editora: <?= $album['editora']?></h4>
-                <div class="row">
-                    <div class="col-sm-8">
-                            <p class="card-text">Tenho <?=$quantidadeColecao?> de <?= $album['quantidadeCromo']?> </p>
-                            <!--<div class="progress">
-                              <div class="progress-bar" role="progressbar" aria-valuenow="<?=number_format($progresso,1) ?>"
-                              aria-valuemin="0" aria-valuemax="100" style="width:<?=$progresso?>%">
-                                <?=number_format($progresso,0)?>%
-                              </div>
-                            </div> -->
- 
-                        <p class="card-text">Data inclusão:</b> <?php echo $album['dataInclusao']?></p>                    
-                        <?php
-                        //usuario possui colecao - area de atualizacao da colecao
-                        if ($colecaoId != 0 and isset($userStickers)){
-                        ?>
-                            <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
-                              <button class="btn btn-danger">Retirar da coleção</button>
-                            </a>
-                        <?php 
-                        } else {
-                        ?>
-                            <a href='/collection/stickerbook/add/<?= $album['id'] ?>'>
-                                <button class="btn btn-success">Incluir na coleção</button>
-                            </a>
-                        <?php 
-                        } 
-                        ?>                        
-                    </div>
-                    <!--<div class="col-sm-4">
-                        <img src='/img/capas/<?=$album['nomeImagem']?>.jpg' style="max-width:80%">
-                    </div>-->
+    <div class="col-md-8" style="padding-left:0">
+        <div class="card mb-1">
+          <h3 class="card-header"><?= $album['titulo']?> - <?=number_format($progresso,1)?>%</h3>
+          <div class="card-block">
+            <h4 class="card-title">Editora: <?= $album['editora']?></h4>
+            <div class="row">
+                <div class="col-sm-8">
+                    <p class="card-text">Tenho <?=$quantidadeColecao?> de <?= $album['quantidadeCromo']?> </p>
+                    <p class="card-text">Data inclusão:</b> <?php echo $album['dataInclusao']?></p>                    
+                    <?php
+                    //usuario possui colecao - area de atualizacao da colecao
+                    if ($colecaoId != 0 and isset($userStickers)){
+                    ?>
+                        <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
+                          <button class="btn btn-danger">Retirar da coleção</button>
+                        </a>
+                    <?php 
+                    } else {
+                    ?>
+                        <a href='/collection/stickerbook/add/<?= $album['id'] ?>'>
+                            <button class="btn btn-success">Incluir na coleção</button>
+                        </a>
+                    <?php 
+                    } 
+                    ?>                        
                 </div>
-
-              </div>
+                <!--<div class="col-sm-4">
+                    <img src='/img/capas/<?=$album['nomeImagem']?>.jpg' style="max-width:80%">
+                </div>-->
             </div>
-        </div> 
+          </div>
+        </div>
+    </div> 
     
     <?php
     if (isset($stickers) and $colecaoId != 0){
     ?>
-    
     <div class="card">
         <h4 class="card-header">Figurinhas</h4> 
-            <div class="col-md-12" style="padding-left:0">
-                    <form class="form-horizontal" method="post" action="/updateCollection/">
-                            <div class="main">
-                                <?php
-                                    $i = 0;
-                                    foreach ($stickers as $sticker) {
-                                ?> 
-                                    <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
-                                        <div class="sticker-container" id="sticker-action<?= $sticker['id'] ?>">
-                                            <?php
-                                                $quantidade = 0;
-                                                if(isset($userStickers)){
-                                                    foreach ($userStickers as $userSticker) {
-                                                        if($sticker['id'] == $userSticker['cromo_id']){
-                                                            $quantidade = $userSticker['quantidade'];
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-                                            ?>
-                                            <h1><?= $sticker['codigo']?></h1>
-                                            <div class="sticker-actions-footer">
-                                                <div class="sticker-action1" id="<?= $sticker['id'] ?>"><i class="fa fa-minus-square fa-lg"></i></div>
-                                                <div class="sticker-no-action"><?= $quantidade ?></div>
-                                                <div class="sticker-action2" id="<?= $sticker['id'] ?>"><i class="fa fa-plus-square fa-lg"></i></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php
-                                    $i++;                      
+            
+      
+        <div class="main">
+            <?php
+                $i = 0;
+                foreach ($stickers as $sticker) {
+            ?> 
+                <div data-toggle="tooltip" data-container="body" data-placement="top" title="" data-original-title="" class="collection-item">
+                    <div class="sticker-container" id="sticker-action<?= $sticker['id'] ?>">
+                        <?php
+                            $quantidade = 0;
+                            if(isset($userStickers)){
+                                foreach ($userStickers as $userSticker) {
+                                    if($sticker['id'] == $userSticker['cromo_id']){
+                                        $quantidade = $userSticker['quantidade'];
+                                        break;
                                     }
-                                ?>
-                                <input type="hidden" id="colecao" value="<?= $colecaoId ?>">
-                            </div>
-                    </form>
-            </div>
-        <?php
-          }
-        ?>        
-
+                                }
+                            }
+                        ?>
+                        <h1><?= $sticker['codigo']?></h1>
+                        <div class="sticker-actions-footer">
+                            <div class="sticker-action1" id="<?= $sticker['id'] ?>"><i class="fa fa-minus-square fa-lg"></i></div>
+                            <div class="sticker-no-action"><?= $quantidade ?></div>
+                            <div class="sticker-action2" id="<?= $sticker['id'] ?>"><i class="fa fa-plus-square fa-lg"></i></div>
+                        </div>
+                    </div>
+                </div>
+            <?php
+                $i++;                      
+                }
+            ?>
+            <input type="hidden" id="colecao" value="<?= $colecaoId ?>">
+        </div>
+    <?php
+    }
+    ?>        
     </div>    
-    
 </div>
-
-
 <style>
     .collection-item, .collection-item-uneditable {
         width: 78px;
