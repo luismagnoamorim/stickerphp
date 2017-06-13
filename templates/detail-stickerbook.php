@@ -69,7 +69,7 @@
     <?php
     if (isset($stickers) and $colecaoId != 0){
     ?>
-    <div class="col-md-12">
+    
     <div class="card">
         <h4 class="card-header">Figurinhas</h4> 
             <div class="col-md-12" style="padding-left:0">
@@ -113,7 +113,7 @@
         ?>        
 
     </div>    
-    </div>
+    
 </div>
 
 
