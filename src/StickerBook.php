@@ -52,6 +52,15 @@ class StickerBook
     return $album;
   }
 
+
+// listar as colecoes de um usuario  
+  public static function listUserCollection($usuarioId){
+    self::setup();
+
+    $listUserCollection = R::findAll('colecao' , 'usuario_id = :id' , [ ':id' => $usuarioId] );
+    return $listUserCollection;
+  }
+
 //listar albuns que compoem a collection do usuario, e carrega os detalhes de cada album 
   public static function listStickerBookCollection($usuarioId){
     self::setup();
@@ -67,6 +76,23 @@ class StickerBook
     
     return $listaAlbunsColecao;
   }
+
+//listar albuns que compoem a collection do usuario, e carrega os detalhes de cada album 
+  public static function listStickerBookCollectionByEmail($usuarioEmail)      {
+    self::setup();
+
+    $usuario = R::findOne('usuario' , 'email = :email' , [':email' => $usuarioEmail]);
+    $listaColecao = self::listUserCollection($usuario->id);
+    $listaAlbunsColecao = null;
+
+    foreach ($listaColecao as $itemColecao) {
+      $album = R::load('album' , $itemColecao['album_id']);  
+      $itemColecao -> album = $album;
+      $listaAlbunsColecao[] = $itemColecao;
+    }
+    
+    return $listaAlbunsColecao;
+  }  
 
   //adiciona stickers como componentes de um album
   public static function addStickerToBook($albumId, $stickerList){
@@ -129,15 +155,6 @@ class StickerBook
     R::trashAll($cromosColecao);
     
     return $album;
-  }
-
-
-// listar as colecoes de um usuario  
-  public static function listUserCollection($usuarioId){
-    self::setup();
-
-    $listUserCollection = R::findAll('colecao' , 'usuario_id = :id' , [ ':id' => $usuarioId] );
-    return $listUserCollection;
   }
 
 // listar stickers de uma collection do usuario
@@ -222,6 +239,15 @@ class StickerBook
   }  
 
 // ------------------------------------ funcionalidades para troca de stickers entre usuarios ----------------------------------------------------------
+// -- retornar JSON com emails dos usuarios cadastrados
+  public static function listTraders($query){
+    self::setup();      
+      
+    $traders = R::getAll('SELECT email, id FROM usuario WHERE email LIKE :emailPsq' , [ ':emailPsq' => '%' . $query . '%']);
+    return $traders;
+
+  }
+
 // -- recuperar colecoes de outros usuarios a partir do identificador do album
   public static function listCollectionsByAlbum($albumId , $usuarioId){
     self::setup();      

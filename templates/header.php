@@ -18,8 +18,9 @@
     <script src="/js/jquery.slim.min.js"></script>
     <script src="/js/tether.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>  
-    <script src="/js/custom.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/typeahead.bundle.min.js"></script>
 </head>
 <body class="bg-faded">
     <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
@@ -32,14 +33,14 @@
         <div class="collapse navbar-collapse" id="navbar-content">
             <ul class="navbar-nav mr-auto">
                 <?php if ($user != null) { ?>        
-                    <li class="nav-item <?=$navItem == "stickerbooks"? "active" : "" ?>">
-                        <a class="nav-link" href="/stickerbooks">Álbuns</a>
-                    </li>
                     <li class="nav-item <?=$navItem == "collections"? "active" : "" ?>">
                         <a class="nav-link" href="/collections">Minhas coleções</a>
                     </li>
+                    <li class="nav-item <?=$navItem == "stickerbooks"? "active" : "" ?>">
+                        <a class="nav-link" href="/stickerbooks">Álbuns</a>
+                    </li>
                     <li class="nav-item <?=$navItem == "trade"? "active" : "" ?>">
-                        <a class="nav-link" href="/trades">Trocas</a>
+                        <a class="nav-link" href="/trade/">Trocas</a>
                     </li>
                 <?php } ?>
             </ul>

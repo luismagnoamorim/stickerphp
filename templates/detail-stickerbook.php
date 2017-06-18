@@ -38,6 +38,9 @@
                         <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
                           <button class="btn btn-danger">Retirar da coleção</button>
                         </a>
+                        <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
+                          <button class="btn btn-danger">Trocar Figurinhas</button>
+                        </a>
                     <?php 
                     } else {
                     ?>
@@ -108,59 +111,67 @@
         font-size: 0.9em;
     }
 
-.sticker-container {
-    display: block;
-    border: 1px solid;
-    border-color: #dedede;
-    background-color: #2D87B4;
+    .sticker-container {
+        display: block;
+        border: 1px solid;
+        border-color: #dedede;
+        background-color: #2D87B4;
+        text-align: center;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        padding: 24px 0;
+        cursor: pointer;
+        min-height: 85px;
+        position: relative;
+        overflow: hidden;
+    }
 
+    .sticker-container h1 {
+        font-size: 2em;
+        color: white;
+    }
 
+    .sticker-container h2 {
+        font-size: 1.2em;
+        color: black;
+    }
 
-    
+    .sticker-container .sticker-actions-footer {
+        border-top: 1px solid #CCCCCC;
+        bottom: 0;
+        position: absolute;
+        width: 100%;   
+        float: left;
+        color: black;
+        background: #3399CC;
+    }
 
-    text-align: center;
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
-    padding: 24px 0;
-    cursor: pointer;
-    min-height: 85px;
-    position: relative;
-    overflow: hidden;
-    
-}
+    .sticker-container .sticker-action1, .sticker-container .sticker-action2 , .sticker-container .sticker-no-action {
+        cursor: pointer;
+        width: 33%;
+        float: left;
+        text-align: center;
+    }     
 
-.sticker-container h1 {
-    font-size: 2em;
-    color: white;
-}
+    .sticker-container .sticker-action1:hover, .sticker-container .sticker-action2:hover {
+        background: #143D52;
+    }
 
-.sticker-container h2 {
-    font-size: 1.2em;
-    color: black;
-}
+    a#scrollUp {
+      bottom: 0px;
+      right: 10px;
+      padding: 5px 10px;
+      background: #4286f4;
+      color: #FFF;
+      -webkit-animation: bounce 2s ease infinite;
+      animation: bounce 2s ease infinite;
+    }
 
-.sticker-container .sticker-actions-footer {
-    border-top: 1px solid #CCCCCC;
-    bottom: 0;
-    position: absolute;
-    width: 100%;   
-    float: left;
-    color: black;
-    background: #3399CC;
-}
-
-.sticker-container .sticker-action1, .sticker-container .sticker-action2 , .sticker-container .sticker-no-action {
-    cursor: pointer;
-    width: 33%;
-    float: left;
-    text-align: center;
-}     
-
-.sticker-container .sticker-action1:hover, .sticker-container .sticker-action2:hover {
-    background: #143D52;
-}
+    a#scrollUp i{
+      font-size: 30px;
+    }
 
 </style>
 
@@ -244,6 +255,33 @@
             } else {
                 $element.css('background-color','#2D87B4');
             }; 
-        }
+        };
+
+
+        $(function () {
+            $.scrollUp({
+                scrollName: 'scrollUp', // Element ID
+                scrollDistance: 300, // Distance from top/bottom before showing element (px)
+                scrollFrom: 'top', // 'top' or 'bottom'
+                scrollSpeed: 300, // Speed back to top (ms)
+                easingType: 'linear', // Scroll to top easing (see http://easings.net/)
+                animation: 'fade', // Fade, slide, none
+                animationSpeed: 200, // Animation in speed (ms)
+                scrollTrigger: false, // Set a custom triggering element. Can be an HTML string or jQuery object
+                        //scrollTarget: false, // Set a custom target element for scrolling to the top
+                scrollText: '<i class="fa fa-angle-up"></i>', // Text for element, can contain HTML
+                scrollTitle: false, // Set a custom <a> title if required.
+                scrollImg: false, // Set true to use image
+                activeOverlay: false, // Set CSS color to display scrollUp active point, e.g '#00FFFF'
+                zIndex: 2147483647 // Z-Index for the overlay
+            });
+        });
+
+
+
+
+
+
     });//jQuery
 </script>    
+<script src="/js/jquery.scrollUp.min.js"></script>

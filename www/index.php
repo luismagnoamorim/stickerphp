@@ -80,13 +80,13 @@ $app->post("/create-user-account/", function () use ($app)
 	}
 	if (count($errors) == 0)
 	{
-		$usuario = StickerBook::insertBasicUser($email, $password);
+		$usuarioLogado = StickerBook::insertBasicUser($email, $password);
 
 		$_SESSION["user"] = array(
 			 "email" => $email
 			,"idUsuario" => $usuarioLogado->id
 		);		
-		$app->redirect("/stickerbooks");
+		$app->redirect("/collections");
 	} else {
 		$app->render("header.php", array("navItem" => "login"));
 		$data = array(
@@ -108,7 +108,7 @@ $app->get("/login/", function () use ($app)
  	$uri = $app->request->post("uri");
 	if ($uri == null)
 	{
-		$uri = "/stickerbooks";
+		$uri = "/collections";
 	}
 	$app->render("header.php", array("navItem" => "login"));
 	$app->render("login.php", array("uri" => $uri));
@@ -119,7 +119,7 @@ $app->post("/login/", function () use ($app)
 {
 	$uri = $app->request->post("uri");
 	if ($uri == null){
-		$uri = "/stickerbooks";
+		$uri = "/collections";
 	}
 	$errors = array();
 	$email = $app->request->post("email");
@@ -440,12 +440,73 @@ $app->get("/collections/", function () use ($app)
 	$app->render("footer.php");
 });
 
-// -- detalhar informacoes de um album
-$app->get("/collections/trade/:colecaoAId/:colecaoBId", function ($colecaoAId, $colecaoBId) use ($app)
+// -- pagina principal das trocas de figurinhas
+$app->get("/trade/", function () use ($app)
 {
 	//$usuarioId = $app->request->post("usuarioId");
 	$usuarioId = $_SESSION['user']['idUsuario'];
 	//$usuarioId = 1;
+
+	//$stickersIn  = StickerBook::listMissingSticker($colecaoAId , $colecaoBId);
+	//$stickersOut = StickerBook::listMissingSticker($colecaoBId , $colecaoAId);
+	//$stickersRepeated = StickerBook::listRepeatedSticker($colecaoAId);
+	
+	$app->render("header.php");
+	//$data = array(
+	//		  	"stickersIn"	   => $stickersIn
+	//		  ,	"stickersOut"	   => $stickersOut
+	//		  , "stickersRepeated" => $stickersRepeated
+	//);	
+	$app->render("/search-trader.php");// , $data);
+	$app->render("footer.php");
+});
+
+//retornar JSON com emails dos usuarios
+$app->get("/trade/trader/:query", function ($query) use ($app)
+{
+	$usuarioId = $_SESSION['user']['idUsuario'];
+
+	$traders  = StickerBook::listTraders($query);
+	echo json_encode($traders);
+
+//	$app->render("header.php");
+	//$data = array(
+	//		  	"traders"	   => $json
+	//		  ,	"stickersOut"	   => $stickersOut
+	//		  , "stickersRepeated" => $stickersRepeated
+	//);	
+	//$app->render("/search-trader.php" , $data);
+//	$app->render("footer.php");*/
+});
+
+$app->get("/trade/trader/collection/:traderId", function ($traderEmail) use ($app)
+{
+	$collections  = StickerBook::listStickerBookCollectionByEmail($traderEmail);
+	//echo json_encode($collections);
+	foreach ($collections as $collection) {
+		echo '
+		    <div class="input-group col-sm-4">
+                <div class="thumbnail">
+                   	<a href="/trade/negotiate/'.$collection->id.'/'.$collection->id.'">
+                        <img src="/img/capas/'.$collection->album->nomeImagem.'.jpg" style="width:50%">
+                   		<div class="caption">
+                  			'.$collection->album->titulo.'
+                   		</div>
+                    </a>
+                </div>
+            </div>';
+	}
+	//$data = array(
+	//		  	"collections"	=> $collections
+	//);	
+	//$app->render("/search-trader.php" , $data);
+	//$app->render("footer.php");
+});
+
+// -- pagina para propor a troca de figurinhas
+$app->get("/trade/negotiate/:colecaoAId/:colecaoBId", function ($colecaoAId, $colecaoBId) use ($app)
+{
+	$usuarioId = $_SESSION['user']['idUsuario'];
 
 	$stickersIn  = StickerBook::listMissingSticker($colecaoAId , $colecaoBId);
 	$stickersOut = StickerBook::listMissingSticker($colecaoBId , $colecaoAId);
@@ -457,10 +518,8 @@ $app->get("/collections/trade/:colecaoAId/:colecaoBId", function ($colecaoAId, $
 			  ,	"stickersOut"	   => $stickersOut
 			  , "stickersRepeated" => $stickersRepeated
 	);	
-	$app->render("/prepare-trade.php" , $data);
+	$app->render("/prepare-trade.php");// , $data);
 	$app->render("footer.php");
 });
-
-
 
 $app->run();
