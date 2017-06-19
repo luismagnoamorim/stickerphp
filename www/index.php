@@ -440,67 +440,54 @@ $app->get("/collections/", function () use ($app)
 	$app->render("footer.php");
 });
 
-// -- pagina principal das trocas de figurinhas
-$app->get("/trade/", function () use ($app)
-{
-	//$usuarioId = $app->request->post("usuarioId");
-	$usuarioId = $_SESSION['user']['idUsuario'];
-	//$usuarioId = 1;
 
-	//$stickersIn  = StickerBook::listMissingSticker($colecaoAId , $colecaoBId);
-	//$stickersOut = StickerBook::listMissingSticker($colecaoBId , $colecaoAId);
-	//$stickersRepeated = StickerBook::listRepeatedSticker($colecaoAId);
+// ===============================================================================================================
+// ============================= AREA DE NEGOGICIAÇÕES DE FIGURINHAS - TRADES   ==================================
+// ===============================================================================================================
+// -- pagina principal das trocas de figurinhas
+$app->get("/trade/findtrader/:myCollection", function ($myCollection) use ($app)
+{
+	$usuarioId = $_SESSION['user']['idUsuario'];
 	
+	//TODO implementar verificação da colecao do usuario
+		
 	$app->render("header.php");
-	//$data = array(
-	//		  	"stickersIn"	   => $stickersIn
-	//		  ,	"stickersOut"	   => $stickersOut
+	$data = array(
+			  	"collectionId"	   => $myCollection
+	//		  ,	"stickersOut"	   => $stickersOut		
 	//		  , "stickersRepeated" => $stickersRepeated
-	//);	
-	$app->render("/search-trader.php");// , $data);
+	);	
+	$app->render("/search-trader.php" , $data);
 	$app->render("footer.php");
 });
 
-//retornar JSON com emails dos usuarios
+//retornar JSON com emails dos usuarios - NÃO RENDERIZA PAGINA
 $app->get("/trade/trader/:query", function ($query) use ($app)
 {
-	$usuarioId = $_SESSION['user']['idUsuario'];
-
 	$traders  = StickerBook::listTraders($query);
 	echo json_encode($traders);
-
-//	$app->render("header.php");
-	//$data = array(
-	//		  	"traders"	   => $json
-	//		  ,	"stickersOut"	   => $stickersOut
-	//		  , "stickersRepeated" => $stickersRepeated
-	//);	
-	//$app->render("/search-trader.php" , $data);
-//	$app->render("footer.php");*/
 });
 
-$app->get("/trade/trader/collection/:traderId", function ($traderEmail) use ($app)
+//URL para listar collections de um usuario - NÃO RENDERIZA PAGINA
+$app->get("/trade/trader/collection/:traderId/:collectionId", function ($traderEmail, $collectionId) use ($app)
 {
-	$collections  = StickerBook::listStickerBookCollectionByEmail($traderEmail);
+	$collections  = StickerBook::listStickerBookCollectionByEmail($traderEmail, $collectionId);
 	//echo json_encode($collections);
-	foreach ($collections as $collection) {
-		echo '
-		    <div class="input-group col-sm-4">
-                <div class="thumbnail">
-                   	<a href="/trade/negotiate/'.$collection->id.'/'.$collection->id.'">
-                        <img src="/img/capas/'.$collection->album->nomeImagem.'.jpg" style="width:50%">
-                   		<div class="caption">
-                  			'.$collection->album->titulo.'
-                   		</div>
-                    </a>
-                </div>
-            </div>';
+	if(!empty($collections)){
+		foreach ($collections as $collection) {
+			echo '
+			    <div class="input-group col-sm-4">
+	                <div class="thumbnail">
+	                   	<a href="/trade/negotiate/'.$collectionId.'/'.$collection->id.'">
+	                        <img src="/img/capas/'.$collection->album->nomeImagem.'.jpg" style="width:50%">
+	                   		<div class="caption">
+	                  			'.$collection->album->titulo.'
+	                   		</div>
+	                    </a>
+	                </div>
+	            </div>';
+		}
 	}
-	//$data = array(
-	//		  	"collections"	=> $collections
-	//);	
-	//$app->render("/search-trader.php" , $data);
-	//$app->render("footer.php");
 });
 
 // -- pagina para propor a troca de figurinhas
@@ -510,7 +497,7 @@ $app->get("/trade/negotiate/:colecaoAId/:colecaoBId", function ($colecaoAId, $co
 
 	$stickersIn  = StickerBook::listMissingSticker($colecaoAId , $colecaoBId);
 	$stickersOut = StickerBook::listMissingSticker($colecaoBId , $colecaoAId);
-	$stickersRepeated = StickerBook::listRepeatedSticker($colecaoAId);
+	$stickersRepeated = StickerBook::listRepeatedSticker($colecaoAId, $colecaoBId);
 	
 	$app->render("header.php");
 	$data = array(
@@ -518,7 +505,7 @@ $app->get("/trade/negotiate/:colecaoAId/:colecaoBId", function ($colecaoAId, $co
 			  ,	"stickersOut"	   => $stickersOut
 			  , "stickersRepeated" => $stickersRepeated
 	);	
-	$app->render("/prepare-trade.php");// , $data);
+	$app->render("/prepare-trade.php" , $data);
 	$app->render("footer.php");
 });
 

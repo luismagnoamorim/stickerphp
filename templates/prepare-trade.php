@@ -4,7 +4,9 @@
 
     //$_SESSION['usuarioId']   = 1;
 
-    //print_r($album);
+    //print_r($stickerIn);
+    //print_r($stickerOut);
+    //print_r($stickersRepeated);
 
 ?>
 
@@ -101,8 +103,6 @@
     <?php
     }
     ?>            
-
-
 </div>
 
 
@@ -124,10 +124,6 @@
     border-color: #dedede;
     background-color: #2D87B4;
 
-
-
-    
-
     text-align: center;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -138,7 +134,6 @@
     min-height: 85px;
     position: relative;
     overflow: hidden;
-    
 }
 
 .sticker-container h1 {

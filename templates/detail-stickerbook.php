@@ -38,8 +38,8 @@
                         <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
                           <button class="btn btn-danger">Retirar da coleção</button>
                         </a>
-                        <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
-                          <button class="btn btn-danger">Trocar Figurinhas</button>
+                        <a href='/trade/findtrader/<?= $colecaoId ?>'>
+                          <button class="btn btn-primary">Trocar Figurinhas</button>
                         </a>
                     <?php 
                     } else {

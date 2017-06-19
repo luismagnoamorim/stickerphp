@@ -61,6 +61,14 @@ class StickerBook
     return $listUserCollection;
   }
 
+// listar as colecoes de um usuario  
+  public static function listUserCollectionByStickerbook($usuarioId, $albumId){
+    self::setup();
+
+    $listUserCollectionByStickerbook = R::findAll('colecao' , 'usuario_id = :id AND album_id = :albumId' , [ ':id' => $usuarioId , ':albumId' => $albumId] );
+    return $listUserCollectionByStickerbook;
+  }
+
 //listar albuns que compoem a collection do usuario, e carrega os detalhes de cada album 
   public static function listStickerBookCollection($usuarioId){
     self::setup();
@@ -77,12 +85,13 @@ class StickerBook
     return $listaAlbunsColecao;
   }
 
-//listar albuns que compoem a collection do usuario, e carrega os detalhes de cada album 
-  public static function listStickerBookCollectionByEmail($usuarioEmail)      {
+//listar albuns que compoem a collection do usuario de um album especifico, e carrega os detalhes de cada album 
+  public static function listStickerBookCollectionByEmail($usuarioEmail, $colecaoId)      {
     self::setup();
 
     $usuario = R::findOne('usuario' , 'email = :email' , [':email' => $usuarioEmail]);
-    $listaColecao = self::listUserCollection($usuario->id);
+    $colecaoDoUsuario = R::load('colecao', $colecaoId);
+    $listaColecao = self::listUserCollectionByStickerbook($usuario->id, $colecaoDoUsuario->album_id);
     $listaAlbunsColecao = null;
 
     foreach ($listaColecao as $itemColecao) {
@@ -257,19 +266,19 @@ class StickerBook
   }
 
 // -- listar figurinhas que falta na 'minhaColecao' e que existem na 'colecaoRepetida'
-  public static function listMissingSticker($colecaoEmFaltaId , $colecaoRepetidasId){
+  public static function listMissingSticker($myCollectionId , $otherCollectionId){
     self::setup();      
     
-    $colecao = R::load('colecao' , $colecaoEmFaltaId);
+    $colecao = R::load('colecao' , $myCollectionId);
         
     $result = R::getAll( "SELECT * FROM cromo 
                             WHERE album_id = :albumId 
-                              AND id NOT IN (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :colecaoId)
+                              AND id NOT IN (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :myCollectionId)
                               AND id IN (SELECT cromo_id FROM cromocolecao 
-                                          WHERE colecao_id = :outraColecaoId
+                                          WHERE colecao_id = :otherCollectionId
                                             AND quantidade > 1)
                           ORDER BY id"
-                         , [':albumId' => $colecao->album_id , ':colecaoId' => $colecaoEmFaltaId , ':outraColecaoId' => $colecaoRepetidasId]);
+                         , [':albumId' => $colecao->album_id , ':myCollectionId' => $myCollectionId , ':otherCollectionId' => $otherCollectionId]);
     $missingStickers = R::convertToBeans('cromo', $result);
     //$missingSticker = R::findAll('cromocolecao' , 'colecao = :colecaoId' , [ ':colecaoId' => $minhaColecao , ':usuarioId' => $usuarioId]);
 
@@ -277,16 +286,14 @@ class StickerBook
   }
 
 // -- listar figurinhas que falta na 'minhaColecao' e que existem na 'colecaoRepetida'
-  public static function listRepeatedSticker($colecaoId){
+  public static function listRepeatedSticker($myCollectionId){
     self::setup();      
     
-    $colecao = R::load('colecao' , $colecaoId);
-  
+    $colecao = R::load('colecao' , $myCollectionId);
     $result = R::getAll('SELECT * FROM cromo WHERE id IN 
-                          (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :colecaoId AND quantidade > 1)
-                        ORDER BY id', [':colecaoId' => $colecaoId]);
+                          (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :myCollectionId AND quantidade > 1)
+                        ORDER BY id', [':myCollectionId' => $myCollectionId]);
     $repeatedStickers = R::convertToBeans('cromo' , $result);
-    //$repeatedStickers = R::findAll('cromocolecao' , 'colecao_id = :colecaoId AND quantidade > 1', [':colecaoId' => $colecaoId]);
 
     return $repeatedStickers;
   }

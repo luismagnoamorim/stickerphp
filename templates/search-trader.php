@@ -1,6 +1,7 @@
 <?php
     //collections PHP - exibe os albuns incluidos pelo usuario
     $email = isset($email)? $email: "";
+    $collectionId = isset($collectionId)? $collectionId: "";
 
 ?>
 
@@ -10,31 +11,11 @@
             <br/>
             <h1>Pesquisar traders</h1>   
             <input class="typeahead form-control" style="margin:0px auto;width:300px;" type="text" placeholder="Email" id="email-trader">
+            <input type="hidden" id="collection-id" value="<?= $collectionId?>">
             <button class="btn btn-primary" id="btn-trader">Ok</button>
         </div>
     </div>
     <div class="row" id="trader-collection">
-                        <?php
-                            if(!empty($collections)){
-                                foreach ($collections as $collection) {
-                                //print_r($collection);
-                        ?> 
-                                <div class="input-group col-sm-4">
-                                    <div class="thumbnail">
-                                        <a href='/detail-stickerbook/<?=$collection['album_id']?>/<?=$collection['id']?>'>
-                                            <img src='/img/capas/<?=$collection['album']['nomeImagem']?>.jpg' style="width:50%">
-                                        
-                                            <div class='caption'>
-                                                <?= $collection['album']['titulo'] ?>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                        <?php
-                                }
-                            }
-                        
-                        ?>                   
     </div>
 </div>
 
@@ -65,8 +46,10 @@ jQuery(document).ready(function () {
     );
 
     $('#btn-trader').on('click' , function(e) {
-            $traderId  = $("#email-trader").val();
-            $url        = "/trade/trader/collection/" + $traderId;
+            $traderId     = $("#email-trader").val();
+            $collectionId = $("#collection-id").val();
+            $url        = "/trade/trader/collection/" + $traderId + "/" + $collectionId;
+            //alert($url);
             $.ajax({
                 type: 'GET'
                 ,url: $url
