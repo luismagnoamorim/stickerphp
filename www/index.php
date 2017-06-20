@@ -497,7 +497,7 @@ $app->get("/trade/negotiate/:colecaoAId/:colecaoBId", function ($colecaoAId, $co
 
 	$stickersIn  = StickerBook::listMissingSticker($colecaoAId , $colecaoBId);
 	$stickersOut = StickerBook::listMissingSticker($colecaoBId , $colecaoAId);
-	$stickersRepeated = StickerBook::listRepeatedSticker($colecaoAId, $colecaoBId);
+	$stickersRepeated = StickerBook::listRepeatedSticker($colecaoAId);
 	
 	$app->render("header.php");
 	$data = array(

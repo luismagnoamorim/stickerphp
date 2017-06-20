@@ -273,7 +273,7 @@ class StickerBook
         
     $result = R::getAll( "SELECT * FROM cromo 
                             WHERE album_id = :albumId 
-                              AND id NOT IN (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :myCollectionId)
+                              AND id NOT IN (SELECT cromo_id FROM cromocolecao WHERE colecao_id = :myCollectionId AND quantidade <> 0)
                               AND id IN (SELECT cromo_id FROM cromocolecao 
                                           WHERE colecao_id = :otherCollectionId
                                             AND quantidade > 1)
