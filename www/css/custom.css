@@ -8,3 +8,42 @@ input[type=submit], button {
   height: 380px;
   width: 10%;
 }
+
+.productinfo h2{
+    /*color: #FE980F;*/
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    
+}
+.product-overlay h2{
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    
+}
+
+
+.productinfo p{
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #696763;
+}
+
+.productinfo img{
+  width: 100%;
+}
+
+.productinfo{
+ position:relative;
+}
+
+.product-image-wrapper{
+    border:1px solid #ddd;
+    
+    overflow: hidden;
+    margin-bottom:30px;
+}
+
+.single-products {
+  position: relative;
+}

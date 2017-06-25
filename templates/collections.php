@@ -4,27 +4,52 @@
 
 ?>
 
+
+
 <div class="container-fluid">
     <h2>Minhas coleções</h2>
     <div class="row">
        
         <div class="col-sm-12">
-                <form class="form-horizontal" method="post" action="/updateCollection/">
+                
                     <div class="row">
 
                         <?php
                             if(!empty($collections)){
                             	foreach ($collections as $collection) {
-                            	//print_r($collection);
+
+                                $progresso = 0;
+                                $quantidadeColecao = 0;
+                                $quantidadeRepetidas = 0;
+                                if (!empty($collection->userStickers)){
+                                    foreach ($collection->userStickers as $userSticker) {
+                                        if($userSticker['quantidade'] > 0){
+                                            $quantidadeColecao = $quantidadeColecao + 1;
+                                            if($userSticker['quantidade'] > 1){
+                                                $quantidadeRepetidas = $quantidadeRepetidas + ( $userSticker['quantidade'] - 1 );
+                                            }
+                                        }
+                                    }
+                                    $progresso = ($quantidadeColecao / $collection['album']['quantidadeCromo']) * 100;    
+                                }
                         ?> 
-                                <div class="input-group col-sm-4">
-                                	<div class="thumbnail">
+
+
+
+                                <div class="col-md-6 col-sm-4 col-xs-6">
+                                	<div class="stickerbook-wrapper">
                                     	<a href='/detail-stickerbook/<?=$collection['album_id']?>/<?=$collection['id']?>'>
-                                            <img src='/img/capas/<?=$collection['album']['nomeImagem']?>.jpg' style="width:50%">
-                                        
-                                    		<div class='caption'>
-                                    			<?= $collection['album']['titulo'] ?>
-                                    		</div>
+                                            <div class="row">
+                                                <!--<div class="col-md-7 col-sm-2 col-xs-6">
+                                                    <img class="img-responsive" src='/img/capas/<?=$collection['album']['nomeImagem']?>.jpg' style="max-width:100px">
+                                                </div>-->
+                                        		<div class="col-md-10 col-sm-4 col-xs-6">
+                                        			<h4><?= $collection['album']['titulo'] ?></h4>
+                                                    <p>Tenho <?= $quantidadeColecao ?> de <?=$collection['album']['quantidadeCromo']?></p>
+                                                    <p><?=$progresso?> % completo</p>
+                                                    <p>Quantidade de repetidas <?= $quantidadeRepetidas ?></p>
+                                        		</div>
+                                            </div>
                                         </a>
                                 	</div>
                                 </div>
@@ -43,7 +68,7 @@
 
                         ?>                   
                     </div>
-                </form>
+                
         </div>
     </div>
 
@@ -51,36 +76,18 @@
 
 <style>
 
-    #card-create-user-account {
-        margin-top: 30px;
-    }
+.stickerbook-wrapper{
+    border:1px solid #ddd;
+    background-color: #2b62bc;
+    width: 25rem;
+    float: left;
+    margin-bottom:3px;
+}
+
+
+.stickerbook-wrapper a {
+    color: #FFFFFF;
+}
+
 
 </style>
-
-<script>
-    jQuery(document).ready(function () {
-		$('a.albumRef').click(function(e) {
-			
-        	event.preventDefault();
-        	$albumId    = $(this).attr('id').split('_')[1];
-        	$colecaoId	= $(this).attr('id').split('_')[2];
-        	$url 		= $(this).attr("href");	
-        	//alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
-        	$.ajax({
-            	type: 'POST'
-             	,url: $url
-            	,dataType: 'html'
-            	,data: { albumId: $albumId , colecaoId: $colecaoId} 
-            ,success: function(response){
-   			 	$("body").html(response);
-   			
-  			}
-            ///,error: function(jqXHR, textStatus) {
-                //console.error("error");
-                    //alert('Not working!' + textStatus);
-            ///}
-            });	//$.ajax
-        });//href.click
-        
-    });//jQuery
-</script>    

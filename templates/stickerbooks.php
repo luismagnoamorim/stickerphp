@@ -11,7 +11,7 @@
             <?php
                 foreach ($stickerBooks as $stickerBook) {
             ?> 
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <a href='/detail-stickerbook/<?=$stickerBook['id']?>/0' id='a_<?=$stickerBook['id']?>'>
                         <div class="product-image-wrapper">
                             <div class="single-products">
@@ -104,9 +104,10 @@
 
 .product-image-wrapper{
     border:1px solid #ddd;
-    
-    overflow: hidden;
-    margin-bottom:30px;
+    width: 10rem;
+    float: left;
+
+    margin-bottom:3px;
 }
 
 .single-products {

@@ -427,14 +427,20 @@ $app->post("/updateCollection/", function () use ($app)
 $app->get("/collections/", function () use ($app)
 {
 	//$usuarioId = $app->request->post("usuarioId");
+	$userCollections = [];
 	$usuarioId = $_SESSION['user']['idUsuario'];
 	//$usuarioId = 1;
 
 	$collections  = StickerBook::listStickerBookCollection($usuarioId);
-	
+	foreach ($collections as $collection) {
+		$userStickers = StickerBook::listStickerCollection($collection->id);
+		$collection->userStickers = $userStickers;
+		$userCollections[] = $collection;
+	}
+
 	$app->render("header.php");
 	$data = array(
-			  	"collections"	=> $collections
+			  	"collections"	=> $userCollections
 	);	
 	$app->render("/collections.php" , $data);
 	$app->render("footer.php");
