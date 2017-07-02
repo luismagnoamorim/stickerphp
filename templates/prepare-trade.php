@@ -123,7 +123,7 @@
     border: 1px solid;
     border-color: #dedede;
     background-color: #2D87B4;
-
+    /*#f5f5f5*/
     text-align: center;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -136,6 +136,16 @@
     overflow: hidden;
 }
 
+.sticker-container.trade {
+    background-color: #e44c4c;
+    border: 1px solid #e44c4c;
+}
+
+.sticker-container.no-trade {
+    background-color: #e44c4c;
+    border: 1px solid #e44c4c;
+}
+
 .sticker-container h1 {
     font-size: 2em;
     color: white;
@@ -146,61 +156,25 @@
     color: black;
 }
 
-.sticker-container .sticker-actions-footer {
-    border-top: 1px solid #CCCCCC;
-    bottom: 0;
-    position: absolute;
-    width: 100%;   
-    float: left;
-    color: black;
-    background: #3399CC;
-}
-
-.sticker-container .sticker-action1, .sticker-container .sticker-action2 , .sticker-container .sticker-no-action {
-    cursor: pointer;
-    width: 33%;
-    float: left;
-    text-align: center;
-}     
-
-.sticker-container .sticker-action1:hover, .sticker-container .sticker-action2:hover {
-    background: #143D52;
-}
-
 </style>
 
 <script>
     jQuery(document).ready(function () {
-		$('.sticker-action1').on('click' , function(e) {
-        	$colecaoId	= $("#colecao").attr('value');
-        	$acao 		= 'remove';
-        	$cromoId	= $(this).attr('id');
-        	$url 		= "/updateCollection";
-        	//alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
-        	$.ajax({
-            	type: 'POST'
-             	,url: $url
-            	,dataType: 'html'
-            	,data: { colecaoId: $colecaoId , cromoId: $cromoId , acao: $acao } 
-            ,success: function(quantidade){
-                var $quantidadeAtual =  0;
-                $quantidadeAtual = Number($('#sticker-action'+$cromoId+ ' .sticker-no-action').text()) - 1;
-                if ($quantidadeAtual < 0){
-                    $quantidadeAtual = 0;
-                }
-                //$('#sticker-action'+$cromoId+ ' .sticker-no-action').remove();
-                $('#sticker-action'+$cromoId+ ' .sticker-no-action').html($quantidadeAtual);
-                aplicaCorPorQuantidade($('#sticker-action'+$cromoId) , $quantidadeAtual);
+		$('.sticker-container').on('click' , function(e) {
+            e.preventDefault()
 
-  			}
-            ///,error: function(jqXHR, textStatus) {
-                //console.error("error");
-                    //alert('Not working!' + textStatus);
-            ///}
-            });	//$.ajax
+            $(".sticker-container").removeClass("trade");
+            $(e.target).addClass("trade");
+
+        	//$colecaoId	= $("#colecao").attr('value');
+        	$cromoId	= $(this).attr('id');
+
+
+        	//alert($cromoId );
+
         });//sticker-action1 remove
 
-        $('.sticker-action2').on('click' , function(e) {
+        /*$('.sticker-action2').on('click' , function(e) {
             $colecaoId  = $("#colecao").attr('value');
             $acao       = 'add';
             $cromoId    = $(this).attr('id');
@@ -219,7 +193,7 @@
                 }
                 //$('#sticker-action'+$cromoId+ ' .sticker-no-action').remove();
                 $('#sticker-action'+$cromoId+ ' .sticker-no-action').html($quantidadeAtual);
-                aplicaCorPorQuantidade($('#sticker-action'+$cromoId) , $quantidadeAtual);
+                //aplicaCorPorQuantidade($('#sticker-action'+$cromoId) , $quantidadeAtual);
 
             }
             ///,error: function(jqXHR, textStatus) {
@@ -227,11 +201,11 @@
                     //alert('Not working!' + textStatus);
             ///}
             }); //$.ajax
-        });//btn.click        
+        });//btn.click*/
 
-        $('.sticker-container').each( function(e){
-            var $quantidadeStickerCollection = $(this).find('div.sticker-no-action').text();
-            aplicaCorPorQuantidade($(this), $quantidadeStickerCollection);
+        //$('.sticker-container').each( function(e){
+            //var $quantidadeStickerCollection = $(this).find('div.sticker-no-action').text();
+            //aplicaCorPorQuantidade($(this), $quantidadeStickerCollection);
             //if( quantidadeStickerCollection == 0 ){
             //    $(this).css('background-color','#DD4D2C');
             //} else if (quantidadeStickerCollection == 1) {
@@ -239,7 +213,7 @@
             //} else {
             //    $(this).css('background-color','#2D87B4');
             //};
-        });
+        //});
 
         function aplicaCorPorQuantidade($element , $quantidade){
             if( $quantidade == 0 ){
