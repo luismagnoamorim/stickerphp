@@ -6,7 +6,27 @@
 
     //print_r($album);
 
+                        $progresso = 0;
+                        $quantidadeColecao = 0;
+                        $quantidadeRepetidas = 0;
+                        $quantidadeFaltantes = 0;
+                        if (!empty($collection->userStickers)){
+                            foreach ($collection->userStickers as $userSticker) {
+                                if($userSticker['quantidade'] > 0){
+                                    $quantidadeColecao = $quantidadeColecao + 1;
+                                    if($userSticker['quantidade'] > 1){
+                                        $quantidadeRepetidas = $quantidadeRepetidas + ( $userSticker['quantidade'] - 1 );
+                                    }
+                                }
+                            }
+                            $progresso = ($quantidadeColecao / $collection['album']['quantidadeCromo']) * 100;    
+                            $quantidadeFaltantes = $collection['album']['quantidadeCromo'] - $quantidadeColecao;
+                        }
+
+
+
 ?>
+
 
 
 
