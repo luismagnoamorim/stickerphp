@@ -8,18 +8,7 @@
 
 ?>
 
-<?php
-    $progresso = 0;
-    $quantidadeColecao = 0;
-    if (!empty($userStickers)){
-        foreach ($userStickers as $userSticker) {
-            if($userSticker['quantidade'] > 0){
-                $quantidadeColecao = $quantidadeColecao + 1;
-            }
-        }
-        $progresso = ($quantidadeColecao / $album['quantidadeCromo']) * 100;    
-    }
-?>
+
 
 <div class="container-fluid">
     <div class="col-md-8" style="padding-left:0">
@@ -104,7 +93,7 @@
     </div>    
 </div>
 <style>
-    .collection-item, .collection-item-uneditable {
+    .collection-item{
         width: 78px;
         float: left;
         padding: 6px;
