@@ -510,6 +510,8 @@ $app->get("/trade/negotiate/:colecaoAId/:colecaoBId", function ($colecaoAId, $co
 			  	"stickersIn"	   => $stickersIn
 			  ,	"stickersOut"	   => $stickersOut
 			  , "stickersRepeated" => $stickersRepeated
+			  , "collectionIn"	   => $colecaoAId
+			  , "collectionOut"	   => $colecaoBId
 	);	
 	$app->render("/prepare-trade.php" , $data);
 	$app->render("footer.php");
