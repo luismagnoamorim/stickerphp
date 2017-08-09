@@ -298,6 +298,38 @@ class StickerBook
     return $repeatedStickers;
   }
 
+
+// -- salvar trade - incluir proposta de troca com outro usuario
+  public static function saveTrade($colecaoAId , $colecaoBId , $arrEntrada , $arrSaida){
+    self::setup();      
+
+    $trade = R::dispense( 'troca' );
+    $trade -> colecaoEntrada          = $colecaoAId;
+    $trade -> colecaoSaida            = $colecaoBId;
+    $trade -> dataInclusao            = date("d.m.Y");
+    $trade -> estado                  = 1; //1 - Aguardando Confirmação
+    $trade -> quantidadeCromoEntrada  = count($arrEntrada);
+    $trade -> quantidadeCromoSaida    = count($arrSaida);
+
+
+    //Tipo de Trade = 1-Entrada, 2-Saida
+    for ($i = 0; $i < count($arrEntrada); $i++) {
+      $cromoTroca = R::dispense( 'cromotroca' );     
+      $cromoTroca -> tipoTroca = 1 ; //1-Entrada
+      $cromoTroca -> codigo = (int)$arrEntrada[$i]; 
+      $trade -> ownCromotrocaList[] = $cromoTroca ;
+    }
+
+    for ($i = 0; $i < count($arrSaida); $i++) {
+      $cromoTroca = R::dispense( 'cromotroca' );
+      $cromoTroca -> tipoTroca = 2 ; //1-Saida
+      $cromoTroca -> codigo = (int)$arrSaida[$i]; 
+      $trade -> ownCromotrocaList[] = $cromoTroca ;
+    } 
+    R::store($trade);
+
+    return $trade;
+  }
 // -------------- configuracao de ambiente -----------------------------------
   private static $ambiente    = null;
   private static $configurado = false;

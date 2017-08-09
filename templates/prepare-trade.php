@@ -16,6 +16,8 @@
 ?>
 
 <div class="container">
+    <input type="hidden" id="colecaoEntrada" value="<?= $collectionIn ?>">
+    <input type="hidden" id="colecaoSaida" value="<?= $collectionOut ?>">
     <div class="row">
         <div class="card">
             <h3 class="card-header">Trade</h3>
@@ -177,29 +179,39 @@
                 
 
         $('#btn-inclui-troca').on('click' , function(e) {
+            var $arrEntrada = [];
+            var $arrSaida   = [];
             $('.inCheckbox').each( function(e){
-                alert($(this).is(':checked') + ' ' + $(this).val() );
+                if ($(this).is(':checked')){
+                    $arrEntrada = $arrEntrada.concat($(this).val());
+                }
             });
 
+            $('.outCheckbox').each( function(e){
+                if ($(this).is(':checked')){
+                    $arrSaida = $arrSaida.concat($(this).val());
+                }
+            });
+            $colecaoAId = $("#colecaoEntrada").attr('value');
+            $colecaoBId = $("#colecaoSaida").attr('value');
+            //alert( 'Colecao A:' + $colecaoAId  + 'Colecao B:' + $arrEntrada[1]);
             
-            /*$colecaoId  = $("#colecao").attr('value');
-            $acao       = 'add';
-            $cromoId    = $(this).attr('id');
-            $url        = "/updateCollection";
-            //alert($colecaoId + ' ' + $acao + ' ' + $cromoId );
+            
+            $url    = "/trade/negotiate/save/";
             $.ajax({
                 type: 'POST'
                 ,url: $url
                 ,dataType: 'html'
-                ,data: { colecaoId: $colecaoId , cromoId: $cromoId , acao: $acao } 
+                ,data: { colecaoAId: $colecaoAId , colecaoBId: $colecaoBId , arrEntrada: $arrEntrada , arrSaida: $arrSaida } 
             ,success: function(quantidade){
-                var $quantidadeAtual =  0;
-                $quantidadeAtual = Number($('#sticker-action'+$cromoId+ ' .sticker-no-action').text()) + 1;
-                if ($quantidadeAtual < 0){
-                    $quantidadeAtual = 0;
-                }
+                alert("gravado");
+            //    var $quantidadeAtual =  0;
+            //    $quantidadeAtual = Number($('#sticker-action'+$cromoId+ ' .sticker-no-action').text()) + 1;
+            //    if ($quantidadeAtual < 0){
+            //        $quantidadeAtual = 0;
+            //    }
                 //$('#sticker-action'+$cromoId+ ' .sticker-no-action').remove();
-                $('#sticker-action'+$cromoId+ ' .sticker-no-action').html($quantidadeAtual);
+            //    $('#sticker-action'+$cromoId+ ' .sticker-no-action').html($quantidadeAtual);
                 //aplicaCorPorQuantidade($('#sticker-action'+$cromoId) , $quantidadeAtual);
 
             }
@@ -208,6 +220,7 @@
                     //alert('Not working!' + textStatus);
             ///}
             }); //$.ajax */
+            
         });
     });//jQuery
 </script>    

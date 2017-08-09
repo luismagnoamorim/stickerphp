@@ -517,4 +517,24 @@ $app->get("/trade/negotiate/:colecaoAId/:colecaoBId", function ($colecaoAId, $co
 	$app->render("footer.php");
 });
 
+// -- gravar solicitação de troca
+$app->post("/trade/negotiate/save/", function () use ($app)
+{
+	$colecaoAId = $app->request->post("colecaoAId");
+	$colecaoBId = $app->request->post("colecaoBId");
+	$arrEntrada = $app->request->post("arrEntrada");
+	$arrSaida   = $app->request->post("arrSaida");
+
+	$trade   = StickerBook::saveTrade($colecaoAId , $colecaoBId , $arrEntrada , $arrSaida );
+
+	//$app->render("header.php");
+	//	$data = array(
+	//		  "album"   => $album
+	//		, "stickers"  => $stickers 
+	//		, "userStickers"  => $userStickers
+	//);
+	//$app->render("/detail-stickerbook.php" , $data);
+	//$app->render("footer.php");
+});
+
 $app->run();
