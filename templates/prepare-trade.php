@@ -17,14 +17,13 @@
 
 <div class="container">
     <input type="hidden" id="colecaoEntrada" value="<?= $collectionIn ?>">
-    <input type="hidden" id="colecaoSaida" value="<?= $collectionOut ?>">
     <div class="row">
         <div class="card">
-            <h3 class="card-header">Trade</h3>
+            <h3 class="card-header">Negociar troca</h3>
                 <div class="card-block">
-                    <h4 class="card-title">Propor troca de figurinhas</h4>
-                    <p class="card-text">Selecione as figurinhas repetidas da sua coleção que você deseja trocar e então grave a solicitação que após ser aceita atualizará sua coleção.</p>
-                    <a href="#" class="btn btn-primary" id="btn-inclui-troca">Solicitar troca</a>
+                    
+                    <p class="card-text">Selecione as figurinhas que faltam na sua coleção e as suas repetidas que serão trocadas e confirme para atualizar a sua coleção.</p>
+                    <a href="#" class="btn btn-primary" id="btn-inclui-troca">Confirma troca</a>
                 </div>
         </div>
     </div>
@@ -35,7 +34,7 @@
     ?>
         <div class="col-md-6">
             <div>
-                <p class="bg-info"> A receber </p>
+                <p class="bg-info"> Não tenho</p>
             </div>
             <div class="main">
                 <?php
@@ -67,7 +66,7 @@
 
         <div class="col-md-6">
         <div>
-            <p class="bg-success"> A entregar</p>
+            <p class="bg-success"> Minhas repetidas</p>
         </div>            
             <div class="main">
                 <?php
@@ -192,9 +191,9 @@
                     $arrSaida = $arrSaida.concat($(this).val());
                 }
             });
-            $colecaoAId = $("#colecaoEntrada").attr('value');
-            $colecaoBId = $("#colecaoSaida").attr('value');
-            //alert( 'Colecao A:' + $colecaoAId  + 'Colecao B:' + $arrEntrada[1]);
+            $colecaoId = $("#colecaoEntrada").attr('value');
+            
+            //alert( 'Colecao A:' + $colecaoId  + 'Entrada:' + $arrEntrada+ 'Saida:' + $arrSaida);
             
             
             $url    = "/trade/negotiate/save/";
@@ -202,9 +201,9 @@
                 type: 'POST'
                 ,url: $url
                 ,dataType: 'html'
-                ,data: { colecaoAId: $colecaoAId , colecaoBId: $colecaoBId , arrEntrada: $arrEntrada , arrSaida: $arrSaida } 
+                ,data: { colecaoId: $colecaoId , arrEntrada: $arrEntrada , arrSaida: $arrSaida } 
             ,success: function(quantidade){
-                alert("gravado");
+                //alert("gravado");
             //    var $quantidadeAtual =  0;
             //    $quantidadeAtual = Number($('#sticker-action'+$cromoId+ ' .sticker-no-action').text()) + 1;
             //    if ($quantidadeAtual < 0){

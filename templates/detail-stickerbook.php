@@ -2,29 +2,22 @@
 
     $email = isset($email)? $email: "";
 
-    //$_SESSION['usuarioId']   = 1;
-
-    //print_r($album);
-
-                        $progresso = 0;
-                        $quantidadeColecao = 0;
-                        $quantidadeRepetidas = 0;
-                        $quantidadeFaltantes = 0;
-                        if (!empty($collection->userStickers)){
-                            foreach ($collection->userStickers as $userSticker) {
-                                if($userSticker['quantidade'] > 0){
-                                    $quantidadeColecao = $quantidadeColecao + 1;
-                                    if($userSticker['quantidade'] > 1){
-                                        $quantidadeRepetidas = $quantidadeRepetidas + ( $userSticker['quantidade'] - 1 );
-                                    }
-                                }
-                            }
-                            $progresso = ($quantidadeColecao / $collection['album']['quantidadeCromo']) * 100;    
-                            $quantidadeFaltantes = $collection['album']['quantidadeCromo'] - $quantidadeColecao;
-                        }
-
-
-
+    $progresso = 0;
+    $quantidadeColecao = 0;
+    $quantidadeRepetidas = 0;
+    $quantidadeFaltantes = 0;
+    if (!empty($userStickers)){
+        foreach ($userStickers as $userSticker) {
+            if($userSticker['quantidade'] > 0){
+                $quantidadeColecao = $quantidadeColecao + 1;
+                if($userSticker['quantidade'] > 1){
+                    $quantidadeRepetidas = $quantidadeRepetidas + ( $userSticker['quantidade'] - 1 );
+                }
+            }
+        }
+        $progresso = ($quantidadeColecao / $album['quantidadeCromo']) * 100;    
+        $quantidadeFaltantes = $album['quantidadeCromo'] - $quantidadeColecao;
+    }
 ?>
 
 
@@ -39,17 +32,18 @@
             <div class="row">
                 <div class="col-sm-8">
                     <p class="card-text">Tenho <?=$quantidadeColecao?> de <?= $album['quantidadeCromo']?> </p>
-                    <p class="card-text">Data inclusão:</b> <?php echo $album['dataInclusao']?></p>                    
+                    <p class="card-text">Faltam <?= $quantidadeFaltantes?> </p>
+                    <p class="card-text">Data inclusão:</b> <?php echo $album['dataInclusao']?></p>
                     <?php
                     //usuario possui colecao - area de atualizacao da colecao
                     if ($colecaoId != 0 and isset($userStickers)){
                     ?>
-                        <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
-                          <button class="btn btn-danger">Retirar da coleção</button>
-                        </a>
                         <a href='/trade/findtrader/<?= $colecaoId ?>'>
                           <button class="btn btn-primary">Trocar Figurinhas</button>
                         </a>
+                        <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
+                          <button class="btn btn-danger">Retirar da coleção</button>
+                        </a>                        
                     <?php 
                     } else {
                     ?>

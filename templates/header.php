@@ -41,9 +41,6 @@
                     <li class="nav-item <?=$navItem == "stickerbooks"? "active" : "" ?>">
                         <a class="nav-link" href="/stickerbooks">Álbuns</a>
                     </li>
-                    <!--<li class="nav-item <?=$navItem == "trade"? "active" : "" ?>">
-                        <a class="nav-link" href="/trade/">Trocas</a>
-                    </li>-->
                 <?php } ?>
             </ul>
             <ul class="navbar-nav">

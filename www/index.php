@@ -451,6 +451,32 @@ $app->get("/collections/", function () use ($app)
 // ============================= AREA DE NEGOGICIAÇÕES DE FIGURINHAS - TRADES   ==================================
 // ===============================================================================================================
 // -- pagina principal das trocas de figurinhas
+$app->get("/trade/", function () use ($app)
+{
+	$userId = $_SESSION['user']['idUsuario'];
+	$stickerbook = null;
+	$pendindTradesIn  = StickerBook::listPendindTradeIn($userId);
+	$pendindTradesOut = StickerBook::listPendindTradeOut($userId);
+	if (!empty($pendindTradesIn)) {
+		$pendindTrade = reset($pendindTradesIn);
+		$stickerbook      = StickerBook::findAlbumByCollection($pendindTrade->colecao_entrada);	
+	} else if (!empty($pendindTradesOut)) {
+		$pendindTrade = reset($pendindTradesOut);
+		$stickerbook      = StickerBook::findAlbumByCollection($pendindTrade->colecao_entrada);	
+	}
+	
+		
+	$app->render("header.php");
+	$data = array(
+			    "pendindTradesIn"	=> $pendindTradesIn
+			  ,	"pendindTradesOut"	=> $pendindTradesOut
+			  , "stickerbook"		=> $stickerbook
+	);	
+	$app->render("/trades.php" , $data);
+	$app->render("footer.php");
+});
+
+// -- pagina principal das trocas de figurinhas
 $app->get("/trade/findtrader/:myCollection", function ($myCollection) use ($app)
 {
 	$usuarioId = $_SESSION['user']['idUsuario'];
@@ -503,6 +529,7 @@ $app->get("/trade/negotiate/:colecaoAId/:colecaoBId", function ($colecaoAId, $co
 
 	$stickersIn  = StickerBook::listMissingSticker($colecaoAId , $colecaoBId);
 	$stickersOut = StickerBook::listMissingSticker($colecaoBId , $colecaoAId);
+
 	$stickersRepeated = StickerBook::listRepeatedSticker($colecaoAId);
 	
 	$app->render("header.php");
@@ -520,12 +547,14 @@ $app->get("/trade/negotiate/:colecaoAId/:colecaoBId", function ($colecaoAId, $co
 // -- gravar solicitação de troca
 $app->post("/trade/negotiate/save/", function () use ($app)
 {
-	$colecaoAId = $app->request->post("colecaoAId");
-	$colecaoBId = $app->request->post("colecaoBId");
-	$arrEntrada = $app->request->post("arrEntrada");
-	$arrSaida   = $app->request->post("arrSaida");
+	$usuarioId	= $_SESSION['user']['idUsuario'];
+	$colecaoId	= $app->request->post("colecaoId");
+	//$colecaoBId		= $app->request->post("colecaoBId");
+	$arrEntrada	= $app->request->post("arrEntrada");
+	$arrSaida	= $app->request->post("arrSaida");
+	//$usuarioIdOut	= StickerBook::detailCollection($colecaoBId);
 
-	$trade   = StickerBook::saveTrade($colecaoAId , $colecaoBId , $arrEntrada , $arrSaida );
+	$trade   = StickerBook::saveTrade($usuarioId , $colecaoId , $arrEntrada , $arrSaida );
 
 	//$app->render("header.php");
 	//	$data = array(

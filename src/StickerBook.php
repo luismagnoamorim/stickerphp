@@ -153,6 +153,15 @@ class StickerBook
     return $colecao;
   }
 
+  // recuperar detalhes de uma collection
+  public static function detailCollection($colecaoId){
+      self::setup();
+      
+      $collection = R::Load('colecao', $colecaoId );
+      return $collection;
+    }
+
+
 // usuario remove um stickerBook da sua collection
   public static function removeStickerbookFromCollection($colecaoId, $usuarioId){
     self::setup();
@@ -177,8 +186,8 @@ class StickerBook
   public static function findAlbumByCollection($colecaoId){
     self::setup();      
 
-    $colecao = R::load('colecao' , 'colecao_id = :id' , [ ':id' => $colecaoId]);
-    $album   = R::load('album', 'album_id = :id' , [ ':id' => $colecao->album_id]);
+    $colecao = R::load('colecao' , $colecaoId);
+    $album   = R::load('album', $colecao->album_id);
     return $album;    
   }
 
@@ -299,8 +308,56 @@ class StickerBook
   }
 
 
-// -- salvar trade - incluir proposta de troca com outro usuario
-  public static function saveTrade($colecaoAId , $colecaoBId , $arrEntrada , $arrSaida){
+// -- salvar trade - efetuar atualizacao na colecao adicionando cromos de entrada e subtraindo cromos de saída
+  public static function saveTrade($usuarioId, $colecaoId , $arrEntrada , $arrSaida){
+    self::setup();      
+
+    $colecao = R::load('colecao' , $colecaoId);
+
+    for ($i = 0; $i < count($arrEntrada); $i++) {
+      $cromocolecao = R::findOrCreate( 'cromocolecao', [ 'colecao_id' => $colecaoId , 'cromo_id' => (int)$arrEntrada[$i]  ]);
+      if(is_null($cromocolecao->quantidade)){ // se registro esta sendo criado define quantidade 1
+        $cromocolecao->quantidade = 1;
+      }else{
+        $cromocolecao->quantidade = $cromocolecao->quantidade + 1;
+      }
+      R::store($cromocolecao);
+      $colecao->quantidadeCromos = $colecao->quantidadeCromos + 1;
+    }
+
+    for ($i = 0; $i < count($arrSaida); $i++) {
+      $cromocolecao = R::findOne('cromocolecao' , 'colecao_id = :colecaoId AND cromo_id = :cromoId' , [ ':colecaoId' => $colecaoId , ':cromoId' => (int)$arrSaida[$i] ]);
+      $cromocolecao->quantidade = $cromocolecao->quantidade - 1;
+      $colecao->quantidadeCromos = $colecao->quantidadeCromos - 1;
+      R::store($cromocolecao);
+    }
+    $colecao->dataUltimaAtualizacao = date("d.m.Y");
+    R::store($colecao);
+
+    return $colecao;
+  }
+
+
+  // -- listar trocas pendentes solicitadas pelo usuário - aguardando confirmação pelo outro usuário
+  public static function listPendindTradeIn($userId){
+    self::setup();      
+
+    $listaTroca = R::findAll('troca' , 'usuario_id_in = :usuarioId AND estado = 1' , [ ':usuarioId' => $userId ]);
+        
+    return $listaTroca;
+  }
+
+  // -- listar trocas pendentes solicitadas por outro usuário - aguardando confirmação do usuário proponente
+  public static function listPendindTradeOut($userId){
+    self::setup();      
+
+    $listaTroca = R::findAll('troca' , 'usuario_id_out = :usuarioId AND estado = 1' , [ ':usuarioId' => $userId ]);
+        
+    return $listaTroca;
+  }  
+
+  // -- salvar trade - incluir proposta de troca com outro usuario
+  public static function confirmTrade($colecaoAId , $colecaoBId , $arrEntrada , $arrSaida){
     self::setup();      
 
     $trade = R::dispense( 'troca' );
