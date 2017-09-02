@@ -8,22 +8,20 @@
     //print_r($collectionIn);
     //print_r($collectionOut);
     //print_r($stickerOut);
-
-
-
     //print_r($stickersRepeated);
 
 ?>
-
 <div class="container">
-    <input type="hidden" id="colecaoEntrada" value="<?= $collectionIn ?>">
+    <form method="post" action="/trade/negotiate/save/">
+    <input type="hidden" id="colecaoEntrada" name="colecaoId" value="<?= $collectionIn ?>">
     <div class="row">
         <div class="card">
             <h3 class="card-header">Negociar troca</h3>
                 <div class="card-block">
                     
-                    <p class="card-text">Selecione as figurinhas que faltam na sua coleção e as suas repetidas que serão trocadas e confirme para atualizar a sua coleção.</p>
-                    <a href="#" class="btn btn-primary" id="btn-inclui-troca">Confirma troca</a>
+                    <p class="card-text">Marque as figurinhas que faltam na sua coleção que você está recebendo e as suas figurinhas que você está entregando na troca e confirme para atualizar a sua coleção.</p>
+                    <!--<a href="#" class="btn btn-primary" id="btn-inclui-troca">Confirma troca</a>-->
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Confirmar troca</button>
                 </div>
         </div>
     </div>
@@ -34,7 +32,7 @@
     ?>
         <div class="col-md-6">
             <div>
-                <p class="bg-info"> Não tenho</p>
+                <p class="bg-info">Não tenho</p>
             </div>
             <div class="main">
                 <?php
@@ -45,7 +43,7 @@
                                 <div data-toggle="buttons" class="btn-group bizmoduleselect">
                                     <label class="btn btn-default">
                                         <div class="bizcontent">
-                                            <input class="inCheckbox" type="checkbox" name="var_id[]" autocomplete="off" value="<?= $stickerIn['colecao']?> <?= $stickerIn['id']?>">
+                                            <input class="inCheckbox" type="checkbox" name="arrEntrada[]" autocomplete="off" value="<?= $stickerIn['colecao']?> <?= $stickerIn['id']?>">
                                             <h1><?= $stickerIn['codigo']?></h1>
                                             <span class="fa fa-check fa-lg"></span>
                                         </div>
@@ -77,7 +75,7 @@
                                 <div data-toggle="buttons" class="btn-group bizmoduleselect">
                                     <label class="btn btn-default">
                                         <div class="bizcontent">
-                                            <input class="outCheckbox" type="checkbox" name="var_id[]" autocomplete="off" value="<?= $stickerOut['id']?>">
+                                            <input class="outCheckbox" type="checkbox" name="arrSaida[]" autocomplete="off" value="<?= $stickerOut['id']?>">
                                             <h1><?= $stickerOut['codigo']?></h1>
                                             <span class="fa fa-check fa-lg"></span>
                                         </div>
@@ -125,6 +123,7 @@
     <?php
     }
     ?>-->            
+    </form>
 </div>
 
 
@@ -176,7 +175,7 @@
             });
         });
                 
-
+        /*
         $('#btn-inclui-troca').on('click' , function(e) {
             var $arrEntrada = [];
             var $arrSaida   = [];
@@ -218,8 +217,8 @@
                 //console.error("error");
                     //alert('Not working!' + textStatus);
             ///}
-            }); //$.ajax */
+            }); //$.ajax 
             
-        });
+        }); */
     });//jQuery
 </script>    

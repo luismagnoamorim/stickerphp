@@ -1,4 +1,8 @@
 <?php
+    //print_r($album);
+    //print_r($stickers);
+    //print_r($colecaoId);
+    //print_r($userStickers);
 
     $email = isset($email)? $email: "";
 
@@ -41,9 +45,13 @@
                         <a href='/trade/findtrader/<?= $colecaoId ?>'>
                           <button class="btn btn-primary">Trocar Figurinhas</button>
                         </a>
-                        <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
+                        <!--<a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
                           <button class="btn btn-danger">Retirar da coleção</button>
-                        </a>                        
+                        </a>--> 
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#retiraColecaoModal">
+                          Retirar da coleção
+                        </button>                        
+
                     <?php 
                     } else {
                     ?>
@@ -105,6 +113,30 @@
     }
     ?>        
     </div>    
+</div>
+<!-- Modal -->
+<div class="modal fade" id="retiraColecaoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Excluir álbum da coleção</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Você deseja excluir esse álbum da sua coleção e todas as suas figurinhas?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
+        <a href='/collection/stickerbook/remove/<?= $colecaoId ?>'>
+            <button class="btn btn-danger">Excluir</button>
+        </a>
+        <!--<button type="button" class="btn btn-primary">Excluir</button>-->
+      </div>
+    </div>
+  </div>
 </div>
 <style>
     .collection-item{

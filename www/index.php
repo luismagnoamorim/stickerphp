@@ -556,14 +556,23 @@ $app->post("/trade/negotiate/save/", function () use ($app)
 
 	$trade   = StickerBook::saveTrade($usuarioId , $colecaoId , $arrEntrada , $arrSaida );
 
-	//$app->render("header.php");
-	//	$data = array(
-	//		  "album"   => $album
-	//		, "stickers"  => $stickers 
-	//		, "userStickers"  => $userStickers
-	//);
-	//$app->render("/detail-stickerbook.php" , $data);
-	//$app->render("footer.php");
+	$album 		= StickerBook::findAlbumByCollection($colecaoId);
+	$stickers 	= StickerBook::listSticker($album->id);
+	if ($colecaoId != 0){
+		$userStickers = StickerBook::listStickerCollection($colecaoId);
+	} else {
+		$userStickers = null;
+	}	
+
+	$app->render("header.php");
+	$data = array(
+			  "album"        => $album
+			, "stickers"     => $stickers
+			, "colecaoId"    => $colecaoId
+			, "userStickers" => $userStickers
+	);	
+	$app->render("/detail-stickerbook.php" , $data);
+	$app->render("footer.php");
 });
 
 $app->run();
