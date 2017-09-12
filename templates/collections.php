@@ -62,6 +62,17 @@
                 	}
                 ?>                   
             </div>
+            <div class="row">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- StickerTrade -->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:320px;height:100px"
+                     data-ad-client="ca-pub-2494591908945933"
+                     data-ad-slot="6689319364"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>            
+            </div>
         </div>
     </div>
 </div>
@@ -87,3 +98,4 @@
 
 
 </style>
+
