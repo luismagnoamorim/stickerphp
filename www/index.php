@@ -432,10 +432,12 @@ $app->get("/collections/", function () use ($app)
 	//$usuarioId = 1;
 
 	$collections  = StickerBook::listStickerBookCollection($usuarioId);
-	foreach ($collections as $collection) {
-		$userStickers = StickerBook::listStickerCollection($collection->id);
-		$collection->userStickers = $userStickers;
-		$userCollections[] = $collection;
+    if (!is_null($collections)){
+		foreach ($collections as $collection) {
+			$userStickers = StickerBook::listStickerCollection($collection->id);
+			$collection->userStickers = $userStickers;
+			$userCollections[] = $collection;
+		}
 	}
 
 	$app->render("header.php");
