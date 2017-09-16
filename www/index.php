@@ -150,7 +150,7 @@ $app->post("/login/", function () use ($app)
 			 "email" => $email
 			,"idUsuario" => $usuarioLogado->id
 		);		
-		$app->redirect($uri);
+		//$app->redirect($uri);
 	}
 });
 
