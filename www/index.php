@@ -577,4 +577,16 @@ $app->post("/trade/negotiate/save/", function () use ($app)
 	$app->render("footer.php");
 });
 
+
+// area de envio de emails para usuarios
+$app->get("/testmail", function () use ($app)
+{
+
+	
+
+
+	$app->render("/test-mail.php");
+	
+});
+
 $app->run();
