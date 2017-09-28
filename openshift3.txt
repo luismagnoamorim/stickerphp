@@ -1,0 +1,1 @@
+oc login https://api.starter-us-east-1.openshift.com --token=7I5VbeJAg05F5W0jPN0dV-rb7SKZuKg0uF0WzgcAV3k
