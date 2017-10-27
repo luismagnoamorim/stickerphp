@@ -1,5 +1,5 @@
 <?php
-require_once('Bcrypt.php');
+//require_once('Bcrypt.php');
 
 class StickerBook
 {
@@ -231,8 +231,8 @@ class StickerBook
     
     $usuario = R::dispense( 'usuario' );
     $usuario->email = $email;
-    //$hashedPassword = password_hash($password, PASSWORD_BCRYPT); apenas nas versies 5.4 ou superior
-    $hashedPassword = Bcrypt::hash($password);
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT); 
+    //$hashedPassword = Bcrypt::hash($password);
     $usuario->senha = $hashedPassword;
     R::store($usuario);
 
@@ -247,12 +247,16 @@ class StickerBook
     if(is_null($usuario)){
         return null;
     } else {
-        //return password_verify($password, $usuario->senha); apenas nas versies 5.4 ou superior
-        if (Bcrypt::check($password, $usuario->senha)) {
-            return $usuario;
-        } else {
-            return null;
-        }      
+        if(password_verify($password, $usuario->senha)){
+          return $usuario;
+        }else{
+          return null;
+        }  
+        //if (Bcrypt::check($password, $usuario->senha)) {
+        //    return $usuario;
+        //} else {
+        //    return null;
+        //}      
     }
   }  
 
